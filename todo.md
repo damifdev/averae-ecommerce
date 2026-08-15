@@ -16,3 +16,4 @@
 - [x] SEO metadata, sitemap/robots structure, structured-data foundations, loading states, error states, empty states, and reduced-motion support
 - [x] Vitest coverage for core ecommerce helpers and auth/cart behavior
 - [x] Browser and responsive visual verification
+- [x] Fix invisible hero CTA label and restore readable button contrast
