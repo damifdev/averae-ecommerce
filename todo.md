@@ -1,0 +1,18 @@
+# Project TODO
+
+- [x] Centralized AVERAE brand configuration for identity, colors, typography, contact details, currency, country, and announcement content
+- [x] Premium responsive storefront shell with announcement bar, desktop/mobile navigation, footer, and accessible focus states
+- [x] Editorial homepage with hero, featured collection, new arrivals, brand story, collection banner, best sellers, promotion, newsletter, and social gallery
+- [x] Shop listing with product grid, filters, sorting, search, badges, wishlist actions, and quick add
+- [x] Product detail experience with gallery, zoom/lightbox, variants, quantity, shipping/returns, product details, reviews, and related products
+- [x] Cart page and cart drawer with quantities, save for later, summary, recommendations, and checkout CTA
+- [ ] Wishlist experience with guest-local behavior and authenticated-user pathway
+- [ ] Search overlay with suggestions, recent searches, popular searches, results, and empty state
+- [x] Customer authentication entry points and account dashboard layouts for profile, orders, addresses, and wishlist
+- [ ] Checkout flow shell with contact, shipping, delivery, payment, review, confirmation, and provider-ready configuration
+- [x] Admin dashboard with productivity sidebar, overview metrics, sales chart, products, orders, inventory, customers, reviews, promotions, journal, newsletter, analytics, and settings sections
+- [ ] Relational ecommerce schema and server procedures for products, variants, inventory, collections, orders, wishlists, reviews, promotions, journal, newsletter, notifications, and site settings
+- [x] Realistic non-review demo catalog/content seed strategy without fabricated customer reviews or testimonials
+- [x] SEO metadata, sitemap/robots structure, structured-data foundations, loading states, error states, empty states, and reduced-motion support
+- [x] Vitest coverage for core ecommerce helpers and auth/cart behavior
+- [x] Browser and responsive visual verification
