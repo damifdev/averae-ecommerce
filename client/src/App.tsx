@@ -9,6 +9,7 @@ import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Account from './pages/Account';
 import Admin from './pages/Admin';
+import Checkout from './pages/Checkout';
 import NotFound from './pages/NotFound';
 
 function Router() {
@@ -19,6 +20,7 @@ function Router() {
     <Route path="/cart" component={Cart} />
     <Route path="/account" component={Account} />
     <Route path="/admin" component={Admin} />
+    <Route path="/checkout" component={Checkout} />
     <Route component={NotFound} />
   </Switch>;
 }

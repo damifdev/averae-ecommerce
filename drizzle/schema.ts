@@ -1,28 +1,21 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, decimal, boolean } from "drizzle-orm/mysql-core";
 
-/**
- * Core user table backing auth flow.
- * Extend this file with additional tables as your product grows.
- * Columns use camelCase to match both database fields and generated types.
- */
-export const users = mysqlTable("users", {
-  /**
-   * Surrogate primary key. Auto-incremented numeric value managed by the database.
-   * Use this for relations between tables.
-   */
-  id: int("id").autoincrement().primaryKey(),
-  /** Manus OAuth identifier (openId) returned from the OAuth callback. Unique per user. */
-  openId: varchar("openId", { length: 64 }).notNull().unique(),
-  name: text("name"),
-  email: varchar("email", { length: 320 }),
-  loginMethod: varchar("loginMethod", { length: 64 }),
-  role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
-});
+export const users = mysqlTable("users", { id: int("id").autoincrement().primaryKey(), openId: varchar("openId", { length: 64 }).notNull().unique(), name: text("name"), email: varchar("email", { length: 320 }), loginMethod: varchar("loginMethod", { length: 64 }), role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(), createdAt: timestamp("createdAt").defaultNow().notNull(), updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(), lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull() });
+export const categories = mysqlTable("categories", { id: int("id").autoincrement().primaryKey(), name: varchar("name", { length: 160 }).notNull(), slug: varchar("slug", { length: 180 }).notNull().unique(), description: text("description"), createdAt: timestamp("createdAt").defaultNow().notNull() });
+export const collections = mysqlTable("collections", { id: int("id").autoincrement().primaryKey(), name: varchar("name", { length: 160 }).notNull(), slug: varchar("slug", { length: 180 }).notNull().unique(), description: text("description"), coverImageUrl: text("coverImageUrl"), status: mysqlEnum("status", ["draft", "active"]).default("active").notNull(), createdAt: timestamp("createdAt").defaultNow().notNull() });
+export const products = mysqlTable("products", { id: int("id").autoincrement().primaryKey(), name: varchar("name", { length: 220 }).notNull(), slug: varchar("slug", { length: 240 }).notNull().unique(), description: text("description"), price: decimal("price", { precision: 12, scale: 2 }).notNull(), salePrice: decimal("salePrice", { precision: 12, scale: 2 }), sku: varchar("sku", { length: 80 }).notNull().unique(), categoryId: int("categoryId"), collectionId: int("collectionId"), status: mysqlEnum("status", ["draft", "active", "archived"]).default("active").notNull(), featured: boolean("featured").default(false).notNull(), bestseller: boolean("bestseller").default(false).notNull(), isNew: boolean("isNew").default(false).notNull(), limited: boolean("limited").default(false).notNull(), createdAt: timestamp("createdAt").defaultNow().notNull(), updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull() });
+export const productVariants = mysqlTable("productVariants", { id: int("id").autoincrement().primaryKey(), productId: int("productId").notNull(), color: varchar("color", { length: 80 }).notNull(), size: varchar("size", { length: 40 }).notNull(), sku: varchar("sku", { length: 100 }).notNull().unique(), price: decimal("price", { precision: 12, scale: 2 }), createdAt: timestamp("createdAt").defaultNow().notNull() });
+export const inventory = mysqlTable("inventory", { id: int("id").autoincrement().primaryKey(), variantId: int("variantId").notNull().unique(), availableStock: int("availableStock").default(0).notNull(), reservedStock: int("reservedStock").default(0).notNull(), lowStockThreshold: int("lowStockThreshold").default(3).notNull(), updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull() });
+export const productImages = mysqlTable("productImages", { id: int("id").autoincrement().primaryKey(), productId: int("productId").notNull(), url: text("url").notNull(), altText: varchar("altText", { length: 255 }), sortOrder: int("sortOrder").default(0).notNull() });
+export const orders = mysqlTable("orders", { id: int("id").autoincrement().primaryKey(), userId: int("userId"), orderNumber: varchar("orderNumber", { length: 40 }).notNull().unique(), subtotal: decimal("subtotal", { precision: 12, scale: 2 }).notNull(), total: decimal("total", { precision: 12, scale: 2 }).notNull(), status: mysqlEnum("status", ["pending", "payment_confirmed", "processing", "packed", "shipped", "out_for_delivery", "delivered", "cancelled", "refunded"]).default("pending").notNull(), paymentProvider: varchar("paymentProvider", { length: 60 }), paymentReference: varchar("paymentReference", { length: 160 }), createdAt: timestamp("createdAt").defaultNow().notNull() });
+export const orderItems = mysqlTable("orderItems", { id: int("id").autoincrement().primaryKey(), orderId: int("orderId").notNull(), productId: int("productId").notNull(), variantId: int("variantId"), productName: varchar("productName", { length: 220 }).notNull(), quantity: int("quantity").notNull(), unitPrice: decimal("unitPrice", { precision: 12, scale: 2 }).notNull() });
+export const wishlists = mysqlTable("wishlists", { id: int("id").autoincrement().primaryKey(), userId: int("userId").notNull().unique(), createdAt: timestamp("createdAt").defaultNow().notNull() });
+export const wishlistItems = mysqlTable("wishlistItems", { id: int("id").autoincrement().primaryKey(), wishlistId: int("wishlistId").notNull(), productId: int("productId").notNull(), createdAt: timestamp("createdAt").defaultNow().notNull() });
+export const reviews = mysqlTable("reviews", { id: int("id").autoincrement().primaryKey(), productId: int("productId").notNull(), userId: int("userId").notNull(), rating: int("rating").notNull(), body: text("body"), verifiedPurchase: boolean("verifiedPurchase").default(false).notNull(), status: mysqlEnum("status", ["pending", "approved", "rejected"]).default("pending").notNull(), createdAt: timestamp("createdAt").defaultNow().notNull() });
+export const coupons = mysqlTable("coupons", { id: int("id").autoincrement().primaryKey(), code: varchar("code", { length: 40 }).notNull().unique(), type: mysqlEnum("type", ["percentage", "fixed"]).notNull(), value: decimal("value", { precision: 12, scale: 2 }).notNull(), minimumOrderValue: decimal("minimumOrderValue", { precision: 12, scale: 2 }), expiresAt: timestamp("expiresAt"), usageLimit: int("usageLimit"), createdAt: timestamp("createdAt").defaultNow().notNull() });
+export const journalPosts = mysqlTable("journalPosts", { id: int("id").autoincrement().primaryKey(), title: varchar("title", { length: 220 }).notNull(), slug: varchar("slug", { length: 240 }).notNull().unique(), category: varchar("category", { length: 80 }).notNull(), excerpt: text("excerpt"), body: text("body"), coverImageUrl: text("coverImageUrl"), publishedAt: timestamp("publishedAt"), createdAt: timestamp("createdAt").defaultNow().notNull() });
+export const newsletterSubscribers = mysqlTable("newsletterSubscribers", { id: int("id").autoincrement().primaryKey(), email: varchar("email", { length: 320 }).notNull().unique(), createdAt: timestamp("createdAt").defaultNow().notNull() });
+export const siteSettings = mysqlTable("siteSettings", { id: int("id").autoincrement().primaryKey(), settingKey: varchar("settingKey", { length: 120 }).notNull().unique(), settingValue: text("settingValue"), updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull() });
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
-
-// TODO: Add your tables here
