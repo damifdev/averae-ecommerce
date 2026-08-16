@@ -10,6 +10,7 @@ import Cart from './pages/Cart';
 import Account from './pages/Account';
 import Admin from './pages/Admin';
 import Checkout from './pages/Checkout';
+import { Edit, EditArticle, Trends } from './pages/Discovery';
 import NotFound from './pages/NotFound';
 
 function Router() {
@@ -21,6 +22,9 @@ function Router() {
     <Route path="/account" component={Account} />
     <Route path="/admin" component={Admin} />
     <Route path="/checkout" component={Checkout} />
+    <Route path="/trends" component={Trends} />
+    <Route path="/edit" component={Edit} />
+    <Route path="/edit/:slug" component={EditArticle} />
     <Route component={NotFound} />
   </Switch>;
 }

@@ -49,4 +49,42 @@ export const products: Product[] = [
   { id: 6, name: "Daylight Knit", category: "Ready to Wear", collection: "Quiet Form", price: 76000, color: "Oat", colors: ["Oat", "Ivory"], sizes: ["XS", "S", "M", "L"], description: "A featherweight knit for the in-between hours.", image: "/manus-storage/averae-product-linen_48e45a38.jpg", secondaryImage: "/manus-storage/averae-product-bag_c6fe5185.jpg", stock: 9 },
 ];
 
+export const marketplaceCategories = [
+  { slug: 'women', label: 'Women', description: 'Fashion, shoes, bags, accessories and more.', image: '/manus-storage/averae-editorial_41cdaa8e.jpg' },
+  { slug: 'men', label: 'Men', description: 'Clothing, footwear, watches, accessories and more.', image: '/manus-storage/averae-product-linen_48e45a38.jpg' },
+  { slug: 'kids', label: 'Kids', description: 'Clothing, footwear and accessories.', image: '/manus-storage/averae-product-bag_c6fe5185.jpg' },
+  { slug: 'jewelry', label: 'Jewelry', description: 'Necklaces, bracelets, rings, earrings and more.', image: '/manus-storage/averae-product-bag_c6fe5185.jpg' },
+  { slug: 'shoes', label: 'Shoes', description: 'Sneakers, heels, sandals, boots and more.', image: '/manus-storage/averae-product-linen_48e45a38.jpg' },
+  { slug: 'bags', label: 'Bags', description: 'Handbags, backpacks, crossbody bags and more.', image: '/manus-storage/averae-product-bag_c6fe5185.jpg' },
+  { slug: 'accessories', label: 'Accessories', description: 'Watches, sunglasses, belts, hats and more.', image: '/manus-storage/averae-editorial_41cdaa8e.jpg' },
+  { slug: 'beauty-lifestyle', label: 'Beauty & Lifestyle', description: 'Objects and rituals for everyday expression.', image: '/manus-storage/averae-product-linen_48e45a38.jpg' },
+] as const;
+
+export const trendItems = [
+  { label: 'Trending', title: 'The new uniform', description: 'Relaxed tailoring, tactile layers and considered ease.', productId: 1 },
+  { label: "Editor's Pick", title: 'Soft structure', description: 'Pieces that move between work, weekend and everywhere after.', productId: 3 },
+  { label: 'Just In', title: 'Objects of ease', description: 'Accessories that finish the look without overstatement.', productId: 2 },
+] as const;
+
+export const editorialEntries = [
+  { slug: 'styles-defining-this-season', label: 'The Áveraẹ Edit', title: '5 styles defining this season', description: 'A visual guide to the pieces and proportions shaping what comes next.', image: '/manus-storage/averae-editorial_41cdaa8e.jpg' },
+  { slug: 'rooted-here-worn-everywhere', label: 'Cultural spotlight', title: 'Rooted here. Worn everywhere.', description: 'Contemporary African fashion, creators and a global point of view.', image: '/manus-storage/averae-marketplace-hero_ccb2d39f.jpg' },
+  { slug: 'how-to-style-linen', label: 'Style guide', title: 'How to style linen this season', description: 'Five pieces, endless combinations and a softer way to dress.', image: '/manus-storage/averae-product-linen_48e45a38.jpg' },
+] as const;
+
+export const featuredLook = {
+  title: 'The everyday statement',
+  description: 'A versatile edit designed to move from day to night, from one expression to the next.',
+  image: '/manus-storage/averae-marketplace-hero_ccb2d39f.jpg',
+  productIds: [1, 2, 4],
+} as const;
+
+export const heroContent = {
+  eyebrow: 'Discover · Explore · Express · Shop',
+  title: 'Discover what’s next.',
+  description: 'Fashion, culture and style curated for everyone.',
+  primaryCta: 'Shop the latest',
+  secondaryCta: 'Explore trends',
+} as const;
+
 export const formatPrice = (value: number) => `${brand.currency}${value.toLocaleString("en-NG")}`;

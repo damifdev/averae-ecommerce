@@ -26,3 +26,11 @@
 - [x] Add configurable shortened intro timing for returning visitors
 - [x] Replay the intro transition when navigating back to the homepage through the app shell
 - [x] Track intro completion and Skip Intro analytics events
+- [x] Expand Áveraẹ into an inclusive fashion and lifestyle marketplace with broad category pathways
+- [x] Replace the gender-specific hero with inclusive marketplace messaging and a CMS-ready hero configuration
+- [x] Add prominent Shop by Category cards for Women, Men, Kids, Jewelry, Shoes, Bags, Accessories, and Beauty & Lifestyle
+- [x] Add Trending Now as a first-class discovery experience with real product/content states
+- [x] Add The Áveraẹ Edit journal and article-style editorial discovery entry points
+- [x] Add Shop the Look content with linked products and purchase actions
+- [x] Redesign navigation to expose marketplace categories and Trends immediately
+- [x] Verify African-inspired contemporary art direction, inclusive content, responsive states, and marketplace interactions
