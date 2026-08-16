@@ -26,10 +26,10 @@ function IntroTransition() {
     return () => window.clearTimeout(timer);
   }, [isReturning]);
   if (!visible) return null;
-  return <div className={`fixed inset-0 z-[60] flex min-h-screen items-center justify-center overflow-hidden bg-[#F6F0E6] text-[#382820] ${exiting ? 'intro-exit' : ''}`} role="dialog" aria-label={`Welcome to ${brand.name}`}>
-    <div className="absolute inset-0 intro-image opacity-20"><img src="/manus-storage/averae-marketplace-hero_ccb2d39f.jpg" alt="" className="h-full w-full object-cover" /></div>
-    <div className="relative z-10 flex flex-col items-center text-center"><p className="intro-wordmark font-display text-6xl tracking-[.16em] sm:text-8xl">{brand.name}</p><p className="mt-5 text-[10px] uppercase tracking-[.26em] text-[#866F62]">{brand.tagline}</p><div className="mt-14 flex flex-col items-center gap-3 text-[10px] uppercase tracking-[.22em] text-[#866F62]"><span>Scroll</span><span className="scroll-line block h-10 w-px bg-[#B7654A]" /></div></div>
-    <button onClick={() => dismiss('intro_skip')} className="focus-ring absolute right-5 top-5 z-20 text-[10px] uppercase tracking-[.16em] text-[#866F62] hover:text-[#B7654A]">Skip intro</button>
+  return <div className={`fixed inset-0 z-[60] flex min-h-screen items-center justify-center overflow-hidden bg-[#382820] text-[#FFFDF8] ${exiting ? 'intro-exit' : ''}`} role="dialog" aria-label={`Welcome to ${brand.name}`}>
+    <div className="absolute inset-0 intro-image opacity-35"><img src="/manus-storage/averae-marketplace-hero_ccb2d39f.jpg" alt="" className="h-full w-full object-cover" /></div><div className="absolute inset-0 bg-[#382820]/65" />
+    <div className="relative z-10 flex flex-col items-center text-center"><p className="intro-wordmark font-display text-6xl tracking-[.16em] sm:text-8xl">{brand.name}</p><p className="mt-5 text-[10px] uppercase tracking-[.26em] text-[#FFFDF8]/75">{brand.tagline}</p><div className="mt-14 flex flex-col items-center gap-3 text-[10px] uppercase tracking-[.22em] text-[#FFFDF8]/75"><span>Scroll</span><span className="scroll-line block h-10 w-px bg-[#D7C2A7]" /></div></div>
+    <button onClick={() => dismiss('intro_skip')} className="focus-ring absolute right-5 top-5 z-20 text-[10px] uppercase tracking-[.16em] text-[#FFFDF8]/75 hover:text-[#D7C2A7]">Skip intro</button>
     <button aria-label={`Enter ${brand.name}`} onClick={() => dismiss('intro_complete')} className="absolute inset-0 z-0" />
   </div>;
 }

@@ -34,3 +34,5 @@
 - [x] Add Shop the Look content with linked products and purchase actions
 - [x] Redesign navigation to expose marketplace categories and Trends immediately
 - [x] Verify African-inspired contemporary art direction, inclusive content, responsive states, and marketplace interactions
+- [x] Darken the intro image overlay so the Áveraẹ wordmark and controls remain readable
+- [x] Increase the intro animation duration for the full and returning-visitor modes
