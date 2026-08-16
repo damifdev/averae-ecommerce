@@ -22,3 +22,4 @@
 - [x] Replace mismatched homepage secondary CTA and improve intro-to-hero transition
 - [x] Add refined interaction motion for mobile navigation, search/filter states, cart feedback, product actions, and wishlist
 - [x] Verify redesigned cart, checkout, filtering, wishlist, admin, and CMS-related interactions
+- [x] Make the Áveraẹ entry animation play on every full page reload instead of persisting the seen state
