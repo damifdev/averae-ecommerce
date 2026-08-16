@@ -17,3 +17,8 @@
 - [x] Vitest coverage for core ecommerce helpers and auth/cart behavior
 - [x] Browser and responsive visual verification
 - [x] Fix invisible hero CTA label and restore readable button contrast
+- [x] Apply the redesign and animation specification from Averae_Manus_AI_Redesign_Animation_Prompt.docx
+- [x] Apply Áveraẹ palette, typography, and motion tokens consistently across Shop, Product Detail, Cart, Checkout, Account, and Admin
+- [x] Replace mismatched homepage secondary CTA and improve intro-to-hero transition
+- [x] Add refined interaction motion for mobile navigation, search/filter states, cart feedback, product actions, and wishlist
+- [x] Verify redesigned cart, checkout, filtering, wishlist, admin, and CMS-related interactions
