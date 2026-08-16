@@ -14,6 +14,13 @@ export const brand = {
   },
   contact: { email: "hello@averae.com", phone: "+234 800 000 0000" },
   social: { instagram: "#", pinterest: "#" },
+  intro: {
+    replayOnHomeNavigation: true,
+    showShortenedForReturningVisitors: true,
+    fullDurationMs: 3200,
+    returningDurationMs: 1000,
+    exitDurationMs: 450,
+  },
 } as const;
 
 export type Product = {

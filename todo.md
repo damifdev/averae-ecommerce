@@ -23,3 +23,6 @@
 - [x] Add refined interaction motion for mobile navigation, search/filter states, cart feedback, product actions, and wishlist
 - [x] Verify redesigned cart, checkout, filtering, wishlist, admin, and CMS-related interactions
 - [x] Make the Áveraẹ entry animation play on every full page reload instead of persisting the seen state
+- [x] Add configurable shortened intro timing for returning visitors
+- [x] Replay the intro transition when navigating back to the homepage through the app shell
+- [x] Track intro completion and Skip Intro analytics events
