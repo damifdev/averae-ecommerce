@@ -17,9 +17,9 @@ export const brand = {
   intro: {
     replayOnHomeNavigation: true,
     showShortenedForReturningVisitors: true,
-    fullDurationMs: 5200,
-    returningDurationMs: 2600,
-    exitDurationMs: 450,
+    fullDurationMs: 7200,
+    returningDurationMs: 4200,
+    exitDurationMs: 700,
   },
 } as const;
 

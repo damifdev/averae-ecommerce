@@ -18,16 +18,22 @@ button { cursor: pointer; }
 @keyframes introWordmark { from { opacity: 0; letter-spacing: .62em; transform: translateY(10px); } to { opacity: 1; letter-spacing: .16em; transform: translateY(0); } }
 @keyframes introImage { from { opacity: 0; transform: scale(1.03); } to { opacity: 1; transform: scale(1); } }
 @keyframes scrollPulse { 0%,100% { transform: scaleY(.45); transform-origin: top; opacity: .45; } 50% { transform: scaleY(1); transform-origin: top; opacity: 1; } }
-@keyframes introExit { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(1.02); } }
+@keyframes introExit { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(1.015); } }
+@keyframes homepageReveal { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes panelIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-.intro-exit { animation: introExit .45s var(--ease-soft) both; pointer-events: none; }
+.intro-exit { animation: introExit .7s var(--ease-soft) both; pointer-events: none; }
+.homepage-content { opacity: 0; }
+.homepage-content-waiting { opacity: 0; }
+.homepage-content-visible { animation: homepageReveal 1.6s var(--ease-out) both; }
+.icon-tooltip { pointer-events: none; position: absolute; right: 50%; top: calc(100% + 10px); z-index: 50; width: max-content; transform: translate(50%, -4px); border: 1px solid #D7C2A7; background: #382820; padding: 6px 8px; color: #FFFDF8; font-size: 9px; letter-spacing: .12em; opacity: 0; transition: opacity .2s var(--ease-out), transform .2s var(--ease-out); }
+.icon-action:hover .icon-tooltip, .icon-action:focus-visible .icon-tooltip { opacity: 1; transform: translate(50%, 0); }
 .panel-in { animation: panelIn .24s var(--ease-out) both; }
 .pressable:hover { transform: translateY(-2px); }
 .pressable:active { transform: scale(.97); }
 .motion-surface { transition: transform .35s var(--ease-out), box-shadow .35s var(--ease-out); }
 .motion-surface:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(56,40,32,.08); }
-.intro-wordmark { animation: introWordmark 1.5s var(--ease-out) both; }
-.intro-image { animation: introImage 1.8s var(--ease-soft) .35s both; }
+.intro-wordmark { animation: introWordmark 2.1s var(--ease-out) both; }
+.intro-image { animation: introImage 2.8s var(--ease-soft) .45s both; }
 .scroll-line { animation: scrollPulse 1.8s ease-in-out infinite; }
 .reveal-on-scroll { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease-out), transform .7s var(--ease-out); }
 .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
@@ -35,4 +41,5 @@ button, a, input, select { transition: color .25s var(--ease-out), background-co
 input:focus, select:focus { border-color: #B7654A; box-shadow: 0 3px 0 rgba(183,101,74,.18); }
 button:active, a:active { transform: scale(.98); }
 .focus-ring:focus-visible { outline: 2px solid #B7654A; outline-offset: 3px; }
+@media (max-width: 640px) { .intro-wordmark { font-size: clamp(3rem, 16vw, 5rem); letter-spacing: .12em; } .intro-image { opacity: .28; } .homepage-content-visible { animation-delay: .15s; } .icon-tooltip { right: 0; transform: translate(0, -4px); } .icon-action:hover .icon-tooltip, .icon-action:focus-visible .icon-tooltip { transform: translate(0, 0); } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } .reveal-on-scroll { opacity: 1; transform: none; } }

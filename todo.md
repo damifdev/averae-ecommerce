@@ -36,3 +36,8 @@
 - [x] Verify African-inspired contemporary art direction, inclusive content, responsive states, and marketplace interactions
 - [x] Darken the intro image overlay so the Áveraẹ wordmark and controls remain readable
 - [x] Increase the intro animation duration for the full and returning-visitor modes
+- [x] Add visible hover/focus labels for search, account, wishlist, and cart icons
+- [x] Extend the intro animation and make its motion seamless
+- [x] Add a gradual fade-in transition from the intro to homepage content
+- [x] Make the intro overlay and typography responsive on mobile screens
+- [x] Synchronize the homepage fade-in with intro dismissal so the transition is visible after the overlay exits
