@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'wouter';
 import { ArrowRight, Heart, Search, ShoppingBag, UserRound } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { type CSSProperties, useEffect, useState } from 'react';
 import { brand, editorialEntries, featuredLook, formatPrice, heroContent, marketplaceCategories, products, trendItems } from '@/lib/brand';
 
 function trackIntroEvent(event: 'intro_complete' | 'intro_skip') {
@@ -10,10 +10,14 @@ function trackIntroEvent(event: 'intro_complete' | 'intro_skip') {
   else window.dispatchEvent(new CustomEvent('averae-analytics', { detail: { event } }));
 }
 
-function IntroTransition() {
+function IntroTransition({ contentReady }: { contentReady: boolean }) {
   const [isReturning] = useState(() => typeof window !== 'undefined' && sessionStorage.getItem('averae-visited') === '1');
   const [visible, setVisible] = useState(true);
   const [exiting, setExiting] = useState(false);
+  const [heroReady, setHeroReady] = useState(false);
+  const [durationComplete, setDurationComplete] = useState(false);
+  const introDuration = isReturning && brand.intro.showShortenedForReturningVisitors ? brand.intro.returningDurationMs : brand.intro.fullDurationMs;
+  const readyToEnter = heroReady && contentReady && durationComplete;
   const dismiss = (reason: 'intro_complete' | 'intro_skip' = 'intro_complete') => {
     if (exiting) return;
     trackIntroEvent(reason);
@@ -22,13 +26,16 @@ function IntroTransition() {
   };
   useEffect(() => {
     sessionStorage.setItem('averae-visited', '1');
-    const timer = window.setTimeout(() => dismiss('intro_complete'), isReturning && brand.intro.showShortenedForReturningVisitors ? brand.intro.returningDurationMs : brand.intro.fullDurationMs);
+    const timer = window.setTimeout(() => setDurationComplete(true), introDuration);
     return () => window.clearTimeout(timer);
-  }, [isReturning]);
+  }, [introDuration]);
+  useEffect(() => {
+    if (durationComplete && heroReady && contentReady) dismiss('intro_complete');
+  }, [durationComplete, heroReady, contentReady]);
   if (!visible) return null;
-  return <div className={`fixed inset-0 z-[60] flex min-h-screen items-center justify-center overflow-hidden bg-[#382820] text-[#FFFDF8] ${exiting ? 'intro-exit' : ''}`} role="dialog" aria-label={`Welcome to ${brand.name}`}>
-    <div className="absolute inset-0 intro-image opacity-35"><img src="/manus-storage/averae-marketplace-hero_ccb2d39f.jpg" alt="" className="h-full w-full object-cover" /></div><div className="absolute inset-0 bg-[#382820]/65" />
-    <div className="relative z-10 flex flex-col items-center text-center"><p className="intro-wordmark font-display text-6xl tracking-[.16em] sm:text-8xl">{brand.name}</p><p className="mt-5 text-[10px] uppercase tracking-[.26em] text-[#FFFDF8]/75">{brand.tagline}</p><div className="mt-14 flex flex-col items-center gap-3 text-[10px] uppercase tracking-[.22em] text-[#FFFDF8]/75"><span>Scroll</span><span className="scroll-line block h-10 w-px bg-[#D7C2A7]" /></div></div>
+  return <div className={`fixed inset-0 z-[60] flex min-h-screen items-center justify-center overflow-hidden bg-[#382820] text-[#FFFDF8] ${exiting ? 'intro-exit' : ''}`} role="dialog" aria-label={`Welcome to ${brand.name}`} style={{ '--intro-duration': `${introDuration}ms` } as CSSProperties}>
+    <div className="absolute inset-0 intro-image opacity-35"><img src="/manus-storage/averae-marketplace-hero_ccb2d39f.jpg" alt="" className="h-full w-full object-cover" loading="eager" onLoad={() => setHeroReady(true)} onError={() => setHeroReady(true)} /></div><div className="absolute inset-0 bg-[#382820]/65" />
+    <div className="relative z-10 flex flex-col items-center text-center"><p className="intro-wordmark font-display text-6xl tracking-[.16em] sm:text-8xl">{brand.name}</p><p className="mt-5 text-[10px] uppercase tracking-[.26em] text-[#FFFDF8]/75">{brand.tagline}</p><div className="mt-14 flex flex-col items-center gap-3 text-[10px] uppercase tracking-[.22em] text-[#FFFDF8]/75"><span>Scroll</span><span className="scroll-line block h-10 w-px bg-[#D7C2A7]" /></div><div className="intro-progress-wrap mt-10 w-40 sm:w-52"><div className={`intro-progress-track ${readyToEnter ? 'intro-progress-ready' : 'intro-progress-loading'}`} role="progressbar" aria-label={readyToEnter ? 'Site content ready' : 'Preparing site content'} aria-valuetext={readyToEnter ? '100 percent, ready to enter' : 'Loading site content'} {...(readyToEnter ? { 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-valuenow': 100 } : {})}><span className={`intro-progress-bar ${readyToEnter ? 'intro-progress-complete' : 'intro-progress-indeterminate'}`} /></div><span className="mt-2 block text-[9px] uppercase tracking-[.2em] text-[#FFFDF8]/55" role="status">{readyToEnter ? 'Ready to enter' : 'Loading experience'}</span></div></div>
     <button onClick={() => dismiss('intro_skip')} className="focus-ring absolute right-5 top-5 z-20 text-[10px] uppercase tracking-[.16em] text-[#FFFDF8]/75 hover:text-[#D7C2A7]">Skip intro</button>
     <button aria-label={`Enter ${brand.name}`} onClick={() => dismiss('intro_complete')} className="absolute inset-0 z-0" />
   </div>;
@@ -48,12 +55,14 @@ function Footer() { return <footer className="bg-[#382820] px-5 py-14 text-[#FFF
 export default function Home() {
   const [location] = useLocation();
   const [introExited, setIntroExited] = useState(false);
+  const [homepageReady, setHomepageReady] = useState(false);
   useEffect(() => {
+    setHomepageReady(true);
     const handleIntroExit = () => setIntroExited(true);
     window.addEventListener('averae-intro-exit', handleIntroExit);
     return () => window.removeEventListener('averae-intro-exit', handleIntroExit);
   }, [location]);
-  return <div><IntroTransition key={brand.intro.replayOnHomeNavigation ? location : 'intro'} /><div className={`homepage-content ${introExited ? 'homepage-content-visible' : 'homepage-content-waiting'}`}><Header /><main>
+  return <div><IntroTransition key={brand.intro.replayOnHomeNavigation ? location : 'intro'} contentReady={homepageReady} /><div className={`homepage-content ${introExited ? 'homepage-content-visible' : 'homepage-content-waiting'}`}><Header /><main>
     <section className="relative min-h-[650px] overflow-hidden bg-[#D7C2A7]"><img src="/manus-storage/averae-marketplace-hero_ccb2d39f.jpg" alt="A diverse group styled in contemporary fashion in a warm architectural setting" className="absolute inset-0 h-full w-full object-cover" /><div className="absolute inset-0 bg-gradient-to-r from-[#382820]/75 via-[#382820]/35 to-transparent" /><div className="container relative flex min-h-[650px] items-end pb-20 text-[#FFFDF8] md:items-center md:pb-0"><div className="max-w-xl animate-in"><p className="eyebrow text-[#D7C2A7]">{heroContent.eyebrow}</p><h1 className="mt-5 max-w-lg font-display text-6xl leading-[1.02] sm:text-8xl">{heroContent.title}</h1><p className="mt-6 max-w-sm text-sm leading-7 text-[#FFFDF8]/85">{heroContent.description}</p><div className="mt-8 flex flex-wrap gap-3"><Link href="/shop" className="focus-ring inline-flex items-center justify-center bg-[#B7654A] px-6 py-3 text-[10px] uppercase tracking-[.16em] text-[#FFFDF8] transition hover:bg-[#FFFDF8] hover:text-[#382820]">{heroContent.primaryCta}</Link><Link href="/trends" className="focus-ring border border-[#FFFDF8]/70 px-6 py-3 text-[10px] uppercase tracking-[.16em] transition hover:bg-[#FFFDF8]/10">{heroContent.secondaryCta}</Link></div></div></div></section>
     <section className="container py-20 md:py-28"><div className="flex items-end justify-between gap-6"><div><p className="eyebrow text-[#866F62]">Find your expression</p><h2 className="mt-3 font-display text-4xl">Shop by category</h2></div><Link href="/shop" className="hidden items-center gap-2 text-[10px] uppercase tracking-[.16em] sm:flex">View all <ArrowRight size={15} /></Link></div><div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">{marketplaceCategories.map(category => <Link key={category.slug} href={`/shop?category=${category.slug}`} className="group"><div className="relative aspect-[4/5] overflow-hidden bg-[#D7C2A7]"><img src={category.image} alt={`${category.label} category`} className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]" /><div className="absolute inset-0 bg-[#382820]/25 transition group-hover:bg-[#382820]/45" /><div className="absolute inset-x-4 bottom-4 text-[#FFFDF8]"><h3 className="font-display text-2xl">{category.label}</h3><p className="mt-1 text-xs leading-5 text-[#FFFDF8]/80">{category.description}</p></div></div></Link>)}</div></section>
     <section className="bg-[#D7C2A7] py-20 md:py-28"><div className="container"><div className="flex items-end justify-between gap-6"><div><p className="eyebrow text-[#866F62]">What’s relevant now</p><h2 className="mt-3 font-display text-4xl">Trending now</h2></div><Link href="/trends" className="flex items-center gap-2 text-[10px] uppercase tracking-[.16em]">Explore trends <ArrowRight size={15} /></Link></div><div className="mt-10 grid gap-6 md:grid-cols-3">{trendItems.map(item => <Link key={item.title} href={`/product/${item.productId}`} className="group border-t border-[#866F62]/50 pt-5"><div className="flex items-center justify-between"><span className="text-[10px] uppercase tracking-[.16em] text-[#B7654A]">{item.label}</span><ArrowRight size={16} className="transition group-hover:translate-x-1" /></div><h3 className="mt-10 font-display text-3xl">{item.title}</h3><p className="mt-3 max-w-xs text-sm leading-7 text-[#382820]/70">{item.description}</p><span className="mt-8 inline-block text-[10px] uppercase tracking-[.16em] underline underline-offset-4">Discover the look</span></Link>)}</div></div></section>

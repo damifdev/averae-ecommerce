@@ -13,6 +13,16 @@ button { cursor: pointer; }
 .font-display { font-family: 'Playfair Display', serif; }
 .container { width: 100%; max-width: 1440px; margin-inline: auto; padding-inline: clamp(20px, 4vw, 64px); }
 .eyebrow { letter-spacing: .16em; text-transform: uppercase; font-size: 10px; font-weight: 600; }
+.nav-link { position: relative; display: inline-flex; padding-block: 4px; transition: color .25s var(--ease-out), transform .25s var(--ease-out); }
+.nav-link::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: #B7654A; transform: scaleX(0); transform-origin: right; transition: transform .3s var(--ease-out); }
+.nav-link:hover, .nav-link:focus-visible { color: #B7654A; transform: translateY(-1px); }
+.nav-link:hover::after, .nav-link:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+.intro-progress-wrap { opacity: .92; }
+.intro-progress-track { height: 1px; overflow: hidden; background: rgba(255,253,248,.25); }
+.intro-progress-bar { display: block; height: 100%; background: #D7C2A7; transition: width .45s var(--ease-out), transform .45s var(--ease-out); }
+.intro-progress-indeterminate { width: 38%; animation: introProgressIndeterminate 1.5s var(--ease-in-out) infinite; }
+.intro-progress-complete { width: 100%; }
+@keyframes introProgressIndeterminate { 0% { transform: translateX(-120%); } 50% { transform: translateX(120%); } 100% { transform: translateX(260%); } }
 .animate-in { animation: appear .7s var(--ease-out) both; }
 @keyframes appear { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes introWordmark { from { opacity: 0; letter-spacing: .62em; transform: translateY(10px); } to { opacity: 1; letter-spacing: .16em; transform: translateY(0); } }

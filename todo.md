@@ -41,3 +41,9 @@
 - [x] Add a gradual fade-in transition from the intro to homepage content
 - [x] Make the intro overlay and typography responsive on mobile screens
 - [x] Synchronize the homepage fade-in with intro dismissal so the transition is visible after the overlay exits
+- [x] Add a subtle hover animation to the main navigation links
+- [x] Add a loading progress indicator during the intro animation
+- [x] Tie the intro progress indicator to actual hero asset and homepage readiness signals
+- [x] Add truthful progressbar semantics with accessible progress values and status text
+- [x] Replace arbitrary intro progress percentages with truthful indeterminate loading and 100% completion states
+- [x] Re-verify progressbar accessibility values and matching status text
