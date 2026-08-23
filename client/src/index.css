@@ -37,6 +37,8 @@ button { cursor: pointer; }
 .homepage-content-visible { animation: homepageReveal 1.6s var(--ease-out) both; }
 .icon-tooltip { pointer-events: none; position: absolute; right: 50%; top: calc(100% + 10px); z-index: 50; width: max-content; transform: translate(50%, -4px); border: 1px solid #D7C2A7; background: #382820; padding: 6px 8px; color: #FFFDF8; font-size: 9px; letter-spacing: .12em; opacity: 0; transition: opacity .2s var(--ease-out), transform .2s var(--ease-out); }
 .icon-action:hover .icon-tooltip, .icon-action:focus-visible .icon-tooltip { opacity: 1; transform: translate(50%, 0); }
+.product-card-overlay { opacity: 0; transform: translateY(8px); transition: opacity .25s var(--ease-out), transform .25s var(--ease-out); }
+.group:hover .product-card-overlay, .group:focus-within .product-card-overlay { opacity: 1; transform: translateY(0); }
 .panel-in { animation: panelIn .24s var(--ease-out) both; }
 .pressable:hover { transform: translateY(-2px); }
 .pressable:active { transform: scale(.97); }

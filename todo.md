@@ -70,3 +70,13 @@
 - [x] Fix homepage hero crop so the woman’s face remains visible on desktop and mobile
 - [x] Change the SHOP NOW hover color so its text remains readable
 - [x] Restore VIEW PRODUCT hover overlays for New Arrivals and The Editor’s Picks product images
+- [x] Add dedicated approved-style imagery for every homepage department card and integrate the new uploaded assets
+- [x] Add a real pointer-interaction regression test for New Arrivals and The Editor’s Picks VIEW PRODUCT overlays
+- [x] Verify the hero image crop at tablet breakpoints and document that the woman’s face remains fully visible
+- [x] Confirm all seven generated department image URLs resolve in the rendered homepage category grid and preserve distinct visual sources
+- [x] Wait for the current v2 department assets to finish generation and verify the live homepage uses final non-placeholder imagery
+- [x] Re-run asset resolution checks against the current v2 department URLs and record the results
+- [x] Add a reproducible machine-checkable tablet hero-crop assertion for 768px and 1024px widths
+- [x] Add a reproducible placeholder-detection check for the current v2 department asset bytes and metadata
+- [x] Add a machine-checkable homepage audit confirming every department card renders its configured current department image URL
+- [x] Align the homepage asset-audit checklist wording with the implemented contract: each department card renders its configured current asset URL, with v2 assets for regenerated departments

@@ -76,6 +76,20 @@ async function clickAndRead(href) {
 
 async function auditViewport(width, height) {
   await command('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: width < 600 });
+  const expectedDepartmentImages = {
+    clothing: '/manus-storage/averae-department-clothing_b3b7c47b.jpg',
+    shoes: '/manus-storage/averae-department-shoes-v2_a6a9e572.jpg',
+    bags: '/manus-storage/averae-department-bags-v2_199bf048.jpg',
+    jewelry: '/manus-storage/averae-department-jewelry-v2_8be58182.jpg',
+    accessories: '/manus-storage/averae-department-accessories-v2_af4f197a.jpg',
+    watches: '/manus-storage/averae-department-watches-v2_77fa47cf.jpg',
+    'beauty-lifestyle': '/manus-storage/averae-department-beauty-lifestyle-v2_4ea1504e.jpg',
+  };
+  await navigate('/');
+  const departmentImages = await evaluate(`(() => {
+    const cards = [...document.querySelectorAll('img[alt$=" category"]')];
+    return Object.fromEntries(Object.entries(${JSON.stringify(expectedDepartmentImages)}).map(([slug, src]) => [slug, cards.some(card => card.getAttribute('src') === src)]));
+  })()`);
   const categories = ['clothing', 'shoes', 'bags', 'jewelry', 'accessories', 'watches', 'beauty-lifestyle'];
   const categoryResults = {};
   for (const slug of categories) {
@@ -128,7 +142,7 @@ async function auditViewport(width, height) {
   const matchingSearch = await typeProductSearch('linen');
   const emptySearch = await typeProductSearch('zzzz');
 
-  return { viewport: `${width}x${height}`, categoryResults, audienceResults, editLanding, articleResult: { ...articleResult, ...articleState }, search: { ...searchOpen, inputFound: searchInput, ...searchState }, searchFiltering: { matchingSearch, emptySearch } };
+  return { viewport: `${width}x${height}`, departmentImages, categoryResults, audienceResults, editLanding, articleResult: { ...articleResult, ...articleState }, search: { ...searchOpen, inputFound: searchInput, ...searchState }, searchFiltering: { matchingSearch, emptySearch } };
 }
 
 await command('Page.enable');

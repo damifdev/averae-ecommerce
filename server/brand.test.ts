@@ -46,4 +46,10 @@ describe('AVERAE catalog foundation', () => {
     expect(homeSource).toContain('hover:bg-[#382820] hover:text-[#FFFDF8]');
     expect(homeSource).toContain('>View product</Link>');
   });
+
+  it('uses dedicated imagery for every product department', () => {
+    const departmentImages = productCategories.map(category => category.image);
+    expect(new Set(departmentImages).size).toBe(productCategories.length);
+    expect(departmentImages.every(image => image.includes('averae-department-'))).toBe(true);
+  });
 });

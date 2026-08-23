@@ -31,3 +31,23 @@ The same real-input audit typed `linen` into Shop and observed one visible produ
 ## Homepage issue fixes
 
 The homepage visual pass at 1280×900 and 390×844 confirms the hero now frames the woman’s face within the visible composition. The SHOP NOW CTA now transitions from terracotta to cocoa while retaining ivory text for contrast. The shared ProductCard used by both New arrivals and The Editor’s Picks now exposes a z-indexed, focusable `VIEW PRODUCT` hover overlay matching the Trending now treatment. TypeScript and Vitest both pass after the changes.
+
+## Homepage refinement follow-up — August 23, 2026
+
+The department category configuration now uses dedicated generated imagery for Clothing, Shoes, Bags, Jewelry, Accessories, Watches, and Beauty & Lifestyle. The regenerated asset URLs resolve through the project storage paths and are unique per department; the latest generated images are reserved and will replace their temporary placeholders automatically when processing completes.
+
+The real-pointer regression now scrolls each target card into view, moves Chromium’s pointer over the product image, confirms the card enters `:hover`, and asserts the VIEW PRODUCT overlay becomes visibly opaque in both New Arrivals and The Editor’s Picks. The full suite passes with 9 tests across 3 files.
+
+Tablet verification was completed at 768 × 1024 and 1024 × 900. The hero woman’s face remains fully visible at both widths, with the subject’s head and upper body kept inside the frame. The revised overlay behavior and department mapping preserve the approved warm editorial visual system.
+
+## Department imagery and tablet verification — August 23, 2026
+
+The regenerated v2 department imagery is now final and rendered in the homepage category grid. Shoes, Bags, Jewelry, Accessories, Watches, and Beauty & Lifestyle each show distinct visual sources with the same warm architectural editorial direction as Clothing. The current v2 storage URLs resolve successfully and the homepage screenshot confirms the new imagery is visible rather than a generating placeholder.
+
+The real-pointer regression passes for both New Arrivals and The Editor’s Picks. It scrolls each product card into view, dispatches a Chromium pointer event over the product image, confirms the card enters `:hover`, and asserts the VIEW PRODUCT overlay reaches visible opacity. The full suite now passes with 10 tests across 3 files.
+
+A machine-checkable tablet audit passes at 768 × 1024 and 1024 × 900. At both widths, the hero image is loaded, fills the content viewport within the expected scrollbar allowance, and retains `object-position: 50% 0%`, matching the visual checks that keep the woman’s face in frame.
+
+## Final department asset assertions — August 23, 2026
+
+The saved asset validator confirms all seven current department URLs return final-size WebP image bytes, exceed the placeholder-size threshold, and have distinct SHA-256 hashes. The saved Chromium homepage audit confirms that every department card references its exact current image URL at both 1280 × 900 desktop and 390 × 844 mobile viewports. The tablet hero audit remains green at 768 × 1024 and 1024 × 900, with a loaded image, full content-width coverage, and top-aligned framing.
