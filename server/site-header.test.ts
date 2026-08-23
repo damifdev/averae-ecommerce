@@ -10,13 +10,28 @@ const requiredLabels = [
   'Shop', 'Women', 'Men', 'Kids', 'Jewelry', 'Shoes', 'Trends', 'The Edit',
   'Shop by audience', 'Shop by category', 'Shop by discovery',
   'EXPLORE ALL TRENDS', 'EXPLORE THE EDIT', 'VIEW ALL WOMEN', 'VIEW ALL MEN', 'VIEW ALL KIDS',
-  'Search products, brands, trends...', 'Recent searches', 'Sign In', 'Create Account', 'Logout',
+  'Search products, brands, trends, or stories...', 'Recent searches', 'Sign In', 'Create Account', 'Logout',
   'Quantity ·', 'Subtotal', 'Continue shopping', 'View bag', 'Checkout',
 ];
 
 describe('shared SiteHeader specification contract', () => {
   it('keeps all required desktop discovery and commerce labels', () => {
     for (const label of requiredLabels) expect(headerSource).toContain(label);
+  });
+
+  it('keeps grouped Search discovery suggestions and query-aware destinations', () => {
+    expect(headerSource).toContain('>Products</p>');
+    expect(headerSource).toContain('>Categories</p>');
+    expect(headerSource).toContain('>Brands</p>');
+    expect(headerSource).toContain('>Trending</p>');
+    expect(headerSource).toContain('>The Edit</p>');
+    expect(headerSource).toContain('matchingProducts');
+    expect(headerSource).toContain('matchingCategories');
+    expect(headerSource).toContain('matchingBrands');
+    expect(headerSource).toContain('matchingTrends');
+    expect(headerSource).toContain('matchingEdit');
+    expect(headerSource).toContain('href={`/trends#${item.slug}`}');
+    expect(headerSource).toContain('href={`/edit/${entry.slug}`}');
   });
 
   it('keeps keyboard and dismissal affordances in the shared shell', () => {
@@ -46,6 +61,25 @@ describe('shared SiteHeader specification contract', () => {
     expect(headerSource).toContain('className={`relative z-50 border-b');
     expect(headerSource).not.toContain('className={`sticky top-0 z-50 border-b');
     expect(headerSource).toContain('<nav className="fixed inset-x-0 bottom-0 z-30');
+  });
+
+  it('keeps Search and no-results discovery copy actionable', () => {
+    const shopSource = readFileSync(new URL('../client/src/pages/Shop.tsx', import.meta.url), 'utf8');
+    const discoverySource = readFileSync(new URL('../client/src/pages/Discovery.tsx', import.meta.url), 'utf8');
+    expect(shopSource).toContain('No results for');
+    expect(shopSource).toContain("suggestedSearches = ['linen', 'essentials', 'bags']");
+    expect(shopSource).toContain('Popular categories');
+    expect(shopSource).toContain('Trending products');
+    expect(shopSource).toContain('New arrivals');
+    expect(shopSource).toContain('EXPLORE TRENDING');
+    expect(discoverySource).toContain('Trending products');
+    expect(discoverySource).toContain('trendCollections.map');
+    expect(discoverySource).toContain('{trend.label}');
+    expect(discoverySource).toContain('{trend.description}');
+    for (const label of ['Trending categories', 'Trending styles', 'Trending colours', 'Trending accessories']) expect(brandSource).toContain(`label: '${label}'`);
+    expect(brandSource).toContain('label: "Editor\'s Picks"');
+    expect(discoverySource).toContain('EXPLORE TREND');
+    expect(discoverySource).toContain('SHOP THE TREND');
   });
 
   it('keeps preview cards rich, truthful, and keyboard-addressable', () => {

@@ -167,3 +167,10 @@
 - [x] Add thumbnail, price, and direct Checkout action to the shopping bag quick preview
 - [x] Add a wishlist quick preview for the most recently favorited item with its image
 - [x] Add friendly empty states to both bag and wishlist quick preview tooltips
+
+- [x] UX Part 4: Make Search a structured discovery tool for products, categories, brands, trends, and editorial content
+- [x] UX Part 4: Add useful typed suggestions and easy-to-scan grouped search results
+- [x] UX Part 4: Create a resilient no-results state with suggested searches, categories, trending products, new arrivals, and EXPLORE TRENDING
+- [x] UX Part 4: Upgrade Trends into a major destination with themed product, category, style, colour, accessory, and Editor’s Picks sections
+- [x] UX Part 4: Give each trend an explanation, related products, EXPLORE TREND, and SHOP THE TREND pathways
+- [x] UX Part 4: Add responsive accessibility regression coverage for Search and Trends journeys

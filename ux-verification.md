@@ -93,3 +93,9 @@ Wishlist and bag badges now run a subtle scale bounce only when their respective
 ## Header preview enrichment — August 24, 2026
 
 The bag quick preview now shows the most recently added item’s thumbnail, name, selected variant, quantity, price, and a direct Checkout action. The wishlist quick preview mirrors the same compact presentation with the most recently favorited item and its image. Both previews retain keyboard focus linkage and truthful data sourced from the guest store; they show friendly empty states when no item has been added or favorited. Desktop and mobile responsive checks confirm the header remains uncluttered, while the focused and full regression suites pass with 18 files and 48 tests.
+
+## UX Refinement Part 4 — Search and Trends visual verification — August 24, 2026
+
+The desktop `/trends` route now reads as a destination rather than a product listing: it opens with “Trending now.”, provides a six-part trend map, and leads into a dedicated Trending Products section while preserving the approved Cream/Cocoa/Terracotta palette and editorial typography. The desktop `/shop?search=xyz` route keeps the applied query visible and begins a structured “Keep exploring” fallback under `No results for “xyz”` instead of presenting an empty page.
+
+At 390px mobile width, the Trends taxonomy wraps cleanly under “Find your next direction.” and the fixed five-item bottom navigation remains unobstructed. The mobile no-results Shop state keeps its search/filter controls, readable heading, and discovery copy within the viewport without horizontal overflow.

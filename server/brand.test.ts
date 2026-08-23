@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { audienceCategories, brand, editorialEntries, featuredLook, formatPrice, heroContent, productCategories, products, trendItems } from '../client/src/lib/brand';
+import { audienceCategories, brand, editorialEntries, featuredLook, formatPrice, heroContent, productCategories, products, trendCollections, trendItems } from '../client/src/lib/brand';
 
 describe('AVERAE catalog foundation', () => {
   it('uses the configured Nigerian currency formatter', () => {
@@ -32,6 +32,18 @@ describe('AVERAE catalog foundation', () => {
     expect(trendItems.every(item => ['Trending', 'New', "Editor's Pick", 'Popular'].includes(item.label))).toBe(true);
     expect(trendItems.every(item => products.some(product => product.id === item.productId))).toBe(true);
     expect(editorialEntries.every(entry => entry.slug.length > 0)).toBe(true);
+  });
+
+  it('exposes a complete, purchasable trend taxonomy for the Trends destination', () => {
+    expect(trendCollections.map(collection => collection.label)).toEqual([
+      'Trending styles', 'Trending colours', 'Trending accessories', 'Trending now', 'Trending categories', "Editor's Picks",
+    ]);
+    expect(trendCollections.map(collection => collection.title)).toEqual([
+      'Soft structure', 'Quiet neutrals', 'Objects of ease', 'African contemporary', 'Everyday essentials', 'The considered edit',
+    ]);
+    expect(trendCollections.every(collection => collection.description && collection.keywords && collection.productIds.length > 0)).toBe(true);
+    expect(trendCollections.every(collection => collection.productIds.every(id => products.some(product => product.id === id)))).toBe(true);
+    expect(trendCollections.every(collection => collection.shopHref.startsWith('/shop?'))).toBe(true);
   });
 
   it('keeps every marketplace department browseable in the demo catalog', () => {

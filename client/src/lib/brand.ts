@@ -90,6 +90,15 @@ export const trendItems = [
   { label: 'Popular', title: 'The finishing touch', description: 'Small details that make the everyday feel intentional.', productId: 5 },
 ] as const;
 
+export const trendCollections = [
+  { slug: 'soft-structure', label: 'Trending styles', title: 'Soft structure', description: 'Relaxed tailoring, linen and tactile layers for a considered everyday silhouette.', keywords: 'soft structure linen tailoring', productIds: [1, 3, 4, 6], shopHref: '/shop?category=clothing' },
+  { slug: 'quiet-neutrals', label: 'Trending colours', title: 'Quiet neutrals', description: 'Ivory, oat, sand and cocoa bring warmth to the season’s easiest combinations.', keywords: 'quiet neutrals ivory oat sand cocoa', productIds: [1, 3, 6, 7], shopHref: '/shop?search=oat' },
+  { slug: 'objects-of-ease', label: 'Trending accessories', title: 'Objects of ease', description: 'Bags, jewelry and finishing pieces that bring intention to the everyday.', keywords: 'objects ease accessories bags jewelry', productIds: [2, 5, 8, 9], shopHref: '/shop?category=accessories' },
+  { slug: 'african-contemporary', label: 'Trending now', title: 'African contemporary', description: 'Rooted references, modern proportions and a point of view that travels.', keywords: 'african contemporary rooted culture', productIds: [2, 7, 8, 11], shopHref: '/shop?category=accessories' },
+  { slug: 'everyday-essentials', label: 'Trending categories', title: 'Everyday essentials', description: 'The pieces that build a wardrobe with room for every expression.', keywords: 'everyday essentials wardrobe basics', productIds: [1, 4, 6, 10], shopHref: '/shop?search=essentials' },
+  { slug: 'editors-picks', label: "Editor's Picks", title: 'The considered edit', description: 'A focused selection chosen for texture, proportion and everyday relevance.', keywords: 'editors picks considered edit', productIds: [1, 2, 3, 11], shopHref: '/shop?sort=popular' },
+] as const;
+
 export const editorialEntries = [
   { slug: 'styles-defining-this-season', label: 'The Áveraẹ Edit', title: '5 styles defining this season', description: 'A visual guide to the pieces and proportions shaping what comes next.', image: '/manus-storage/averae-editorial_41cdaa8e.jpg' },
   { slug: 'rooted-here-worn-everywhere', label: 'Cultural spotlight', title: 'Rooted here. Worn everywhere.', description: 'Contemporary African fashion, creators and a global point of view.', image: '/manus-storage/averae-marketplace-hero_ccb2d39f.jpg' },
