@@ -1,6 +1,7 @@
 const WISHLIST_KEY = 'averae-wishlist';
 const CART_KEY = 'averae-cart';
 const BACK_IN_STOCK_KEY = 'averae-back-in-stock-alerts';
+const LAST_ADDED_CART_ITEM_KEY = 'averae-last-added-cart-item';
 export const CART_UPDATED_EVENT = 'averae-cart-updated';
 export const BACK_IN_STOCK_UPDATED_EVENT = 'averae-back-in-stock-updated';
 
@@ -50,6 +51,19 @@ export function getCart(): CartItem[] {
   });
 }
 
+export function getLastAddedCartItem(): CartItem | null {
+  const raw = read<unknown>(LAST_ADDED_CART_ITEM_KEY, null);
+  if (!raw || typeof raw !== 'object' || !('id' in raw)) return null;
+  const candidate = raw as Partial<CartItem>;
+  if (typeof candidate.id !== 'number' || !Number.isFinite(candidate.id)) return null;
+  return {
+    id: candidate.id,
+    size: typeof candidate.size === 'string' ? candidate.size : '',
+    color: typeof candidate.color === 'string' ? candidate.color : '',
+    quantity: typeof candidate.quantity === 'number' && candidate.quantity > 0 ? Math.floor(candidate.quantity) : 1,
+  };
+}
+
 export function addToCart(id: number, selection: Partial<Pick<CartItem, 'size' | 'color'>> = {}, quantity = 1) {
   const next = getCart();
   const size = selection.size ?? '';
@@ -58,6 +72,8 @@ export function addToCart(id: number, selection: Partial<Pick<CartItem, 'size' |
   const existing = next.find(item => item.id === id && item.size === size && item.color === color);
   if (existing) existing.quantity += safeQuantity;
   else next.push({ id, size, color, quantity: safeQuantity });
+  const addedItem = next.find(item => item.id === id && item.size === size && item.color === color);
+  if (addedItem && typeof window !== 'undefined') window.localStorage.setItem(LAST_ADDED_CART_ITEM_KEY, JSON.stringify(addedItem));
   write(CART_KEY, next);
   return next;
 }

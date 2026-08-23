@@ -1,5 +1,6 @@
 import { Link, useLocation, useRoute } from 'wouter';
 import SiteHeader from '@/components/SiteHeader';
+import BackToTop from '@/components/BackToTop';
 import {
   ArrowLeft,
   ChevronDown,
@@ -282,6 +283,7 @@ export default function ProductDetail() {
         </Carousel>
       </section>
     </main>
+    <BackToTop />
 
     <Dialog open={zoomOpen} onOpenChange={setZoomOpen}>
       <DialogContent className="max-w-4xl border-[#D7C2A7] bg-[#FFFDF8] p-2 sm:p-4">

@@ -83,3 +83,9 @@ The shared SiteHeader now uses normal document flow instead of sticky positionin
 ## Catalog navigation enhancements — August 23, 2026
 
 The Shop, Wishlist, and Cart routes were visually checked at 1280 × 900 and 390 × 844. The shared header remains consistent across routes, the mobile bottom navigation remains fixed and unobstructed, and the Shop catalog has sufficient lower viewport clearance for the compact back-to-top control above the mobile navigation. The Chromium interaction audit confirms that the back-to-top control is hidden and untabbable at the top, becomes visible and keyboard reachable after scrolling, and returns the page to the top. It also confirms live wishlist and bag badges from local storage and shared update events, plus shared right-side drawer slide-in transitions for both Wishlist and Shopping bag with reduced-motion support.
+
+## Long-form navigation and bag feedback — August 24, 2026
+
+The reusable `BackToTop` control is now mounted on Home, Shop, Product Detail, Trends, The Edit, Edit Article, Cart, and Checkout. It is hidden and untabbable near the top, appears after meaningful scroll, and uses reduced-motion-aware scrolling. Desktop and 390px mobile screenshots were reviewed for Shop, Product Detail, The Edit, and the editorial article route.
+
+Wishlist and bag badges now run a subtle scale bounce only when their respective count increases. The bag trigger exposes a keyboard-accessible hover/focus preview for the most recently added product, including name, selected variant, quantity, image, and `aria-describedby` linkage; opening the bag dismisses the preview. The focused Chromium audit and the full 18-file, 47-test suite pass, along with TypeScript validation and the production build.

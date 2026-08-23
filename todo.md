@@ -159,3 +159,7 @@
 - [x] Add a compact accessible back-to-top button that appears while scrolling long catalog pages
 - [x] Add smooth slide-in entrance animation for wishlist and bag drawers
 - [x] Display live wishlist and bag item-count badges on shared header icons
+
+- [x] Add a subtle bounce animation to wishlist and bag badges when item counts increase
+- [x] Extend the reusable back-to-top control to Product Detail and all other long-form content sections
+- [x] Add an accessible hover/focus preview for the most recently added bag item
