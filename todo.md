@@ -163,3 +163,7 @@
 - [x] Add a subtle bounce animation to wishlist and bag badges when item counts increase
 - [x] Extend the reusable back-to-top control to Product Detail and all other long-form content sections
 - [x] Add an accessible hover/focus preview for the most recently added bag item
+
+- [x] Add thumbnail, price, and direct Checkout action to the shopping bag quick preview
+- [x] Add a wishlist quick preview for the most recently favorited item with its image
+- [x] Add friendly empty states to both bag and wishlist quick preview tooltips

@@ -140,7 +140,8 @@ button:active, a:active { transform: scale(.98); }
   transform-origin: center;
 }
 
-.bag-latest-preview {
+.bag-latest-preview,
+.wishlist-latest-preview {
   animation: bagPreviewIn 220ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)) both;
 }
 
@@ -150,7 +151,8 @@ button:active, a:active { transform: scale(.98); }
     transform: none;
   }
   .header-count-badge-bounce,
-  .bag-latest-preview {
+  .bag-latest-preview,
+  .wishlist-latest-preview {
     animation: none;
   }
 }

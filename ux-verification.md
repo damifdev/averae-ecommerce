@@ -89,3 +89,7 @@ The Shop, Wishlist, and Cart routes were visually checked at 1280 × 900 and 390
 The reusable `BackToTop` control is now mounted on Home, Shop, Product Detail, Trends, The Edit, Edit Article, Cart, and Checkout. It is hidden and untabbable near the top, appears after meaningful scroll, and uses reduced-motion-aware scrolling. Desktop and 390px mobile screenshots were reviewed for Shop, Product Detail, The Edit, and the editorial article route.
 
 Wishlist and bag badges now run a subtle scale bounce only when their respective count increases. The bag trigger exposes a keyboard-accessible hover/focus preview for the most recently added product, including name, selected variant, quantity, image, and `aria-describedby` linkage; opening the bag dismisses the preview. The focused Chromium audit and the full 18-file, 47-test suite pass, along with TypeScript validation and the production build.
+
+## Header preview enrichment — August 24, 2026
+
+The bag quick preview now shows the most recently added item’s thumbnail, name, selected variant, quantity, price, and a direct Checkout action. The wishlist quick preview mirrors the same compact presentation with the most recently favorited item and its image. Both previews retain keyboard focus linkage and truthful data sourced from the guest store; they show friendly empty states when no item has been added or favorited. Desktop and mobile responsive checks confirm the header remains uncluttered, while the focused and full regression suites pass with 18 files and 48 tests.

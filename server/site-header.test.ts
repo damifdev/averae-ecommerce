@@ -48,6 +48,20 @@ describe('shared SiteHeader specification contract', () => {
     expect(headerSource).toContain('<nav className="fixed inset-x-0 bottom-0 z-30');
   });
 
+  it('keeps preview cards rich, truthful, and keyboard-addressable', () => {
+    expect(headerSource).toContain('data-testid="bag-latest-preview"');
+    expect(headerSource).toContain('data-testid="wishlist-latest-preview"');
+    expect(headerSource).toContain('Recently added');
+    expect(headerSource).toContain('Recently saved');
+    expect(headerSource).toContain('Shopping bag preview');
+    expect(headerSource).toContain('Wishlist preview');
+    expect(headerSource).toContain('Your bag is waiting.');
+    expect(headerSource).toContain('Keep discovering.');
+    expect(headerSource).toContain('href="/checkout"');
+    expect(headerSource).toContain('Checkout');
+    expect(headerSource).toContain('aria-haspopup="dialog"');
+  });
+
   it('keeps the desktop menu centered and drawers smoothly animated', () => {
     expect(headerSource).toContain('className="flex-1"><Link href="/"');
     expect(headerSource).toContain('hidden flex-1 items-center justify-center gap-5 lg:flex');
