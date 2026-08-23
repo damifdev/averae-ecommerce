@@ -85,7 +85,7 @@ async function runSortAudit(port: number, mobile: boolean) {
 describe('Shop sort pointer flow', () => {
   it('updates selected Sort By state and product ordering on desktop and mobile', async () => {
     for (const [index, mobile] of [false, true].entries()) {
-      const port = 9229 + index;
+      const port = 9233 + index;
       const chrome = spawn('/usr/bin/chromium', [
         '--headless=new',
         '--no-sandbox',

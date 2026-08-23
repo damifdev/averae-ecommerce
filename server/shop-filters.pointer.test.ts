@@ -147,7 +147,7 @@ async function runFilterAudit(port: number, mobile: boolean): Promise<FilterAudi
 describe('Shop metadata filter pointer flow', () => {
   it('applies and clears brand, collection, and truthful rating filters on desktop and mobile', async () => {
     for (const [index, mobile] of [false, true].entries()) {
-      const port = 9227 + index;
+      const port = 9231 + index;
       const chrome = spawn('/usr/bin/chromium', [
         '--headless=new',
         '--no-sandbox',

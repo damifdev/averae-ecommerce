@@ -141,3 +141,11 @@
 - [x] Add explicit keyboard regression coverage for Wishlist MOVE TO BAG and remove controls, including Enter or Space activation
 - [x] Add a real keyboard interaction regression for Product Detail size and colour controls, gallery controls, and keyboard-reachable confirmation links
 - [x] Add a real keyboard interaction regression for Wishlist MOVE TO BAG and remove controls using Enter or Space
+- [x] Add a truthful Product Detail customer reviews section with star-rating rendering for verified data and an honest empty state when no reviews exist
+- [x] Add a responsive You May Also Like recommendation carousel using related catalog products
+- [x] Add shareable wishlist links with clear copy/share feedback and safe handling of an empty wishlist
+- [x] Add opt-in back-in-stock notification controls for unavailable wishlist items with accessible confirmation and persistence
+- [x] Add unit, responsive browser, keyboard, and production regression coverage for reviews, recommendations, wishlist sharing, and back-in-stock consent
+- [x] Make the Chromium-heavy Vitest suite deterministic by preventing parallel browser-audit file contention
+- [x] Add a live responsive browser regression for Product Detail reviews/recommendations and Wishlist share/back-in-stock controls
+- [x] Include one clearly marked fully unavailable demo catalog item so the back-in-stock wishlist flow is testable without fabricating customer data

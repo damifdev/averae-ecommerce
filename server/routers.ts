@@ -2,7 +2,8 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
-import { listProducts, listWishlist } from "./db";
+import { listApprovedProductReviews, listProducts, listWishlist } from "./db";
+import { z } from "zod";
 
 export const appRouter = router({
   system: systemRouter,
@@ -12,5 +13,6 @@ export const appRouter = router({
   }),
   catalog: router({ list: publicProcedure.query(() => listProducts()) }),
   wishlist: router({ list: protectedProcedure.query(({ ctx }) => listWishlist(ctx.user.id)) }),
+  reviews: router({ byProduct: publicProcedure.input(z.object({ productId: z.number().int().positive() })).query(({ input }) => listApprovedProductReviews(input.productId)) }),
 });
 export type AppRouter = typeof appRouter;

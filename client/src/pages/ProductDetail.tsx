@@ -8,6 +8,7 @@ import {
   Heart,
   Minus,
   Plus,
+  Star,
   ZoomIn,
 } from 'lucide-react';
 import {
@@ -19,12 +20,20 @@ import {
 } from '@/lib/brand';
 import { addToCart, getWishlist, toggleWishlist } from '@/lib/store';
 import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
+import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { useEffect, useRef, useState } from 'react';
+import { trpc } from '@/lib/trpc';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 const detailSections = {
   Delivery: 'Complimentary delivery on orders over ₦150,000. Orders are prepared within 1–2 business days and delivered with tracking.',
@@ -35,10 +44,27 @@ const detailSections = {
 
 type DetailSection = keyof typeof detailSections;
 
+type StarsProps = { value: number; label?: string };
+
+function Stars({ value, label }: StarsProps) {
+  const rounded = Math.max(0, Math.min(5, Math.round(value)));
+  return <span className="inline-flex items-center gap-1" aria-label={label ?? `${value.toFixed(1)} out of 5 stars`}>
+    {[1, 2, 3, 4, 5].map(index => <Star key={index} size={14} strokeWidth={1.2} fill={index <= rounded ? '#B7654A' : 'none'} className={index <= rounded ? 'text-[#B7654A]' : 'text-[#D7C2A7]'} />)}
+  </span>;
+}
+
+function recommendationScore(product: (typeof products)[number], current: (typeof products)[number]) {
+  return Number(product.category === current.category) * 3
+    + Number(product.collection === current.collection) * 2
+    + Number(product.audiences.some(audience => current.audiences.includes(audience)));
+}
+
 export default function ProductDetail() {
   const [, params] = useRoute('/product/:id');
   const product = products.find(item => item.id === Number(params?.id)) || products[0];
   const [, navigate] = useLocation();
+  const reviewsQuery = trpc.reviews.byProduct.useQuery({ productId: product.id });
+  const reviews = reviewsQuery.data ?? [];
   const available = availableSizes(product);
   const requiresSize = product.sizes.length > 1;
   const [size, setSize] = useState(() => requiresSize ? '' : available[0] ?? product.sizes[0] ?? '');
@@ -59,6 +85,12 @@ export default function ProductDetail() {
   ];
   const selectedInventory = size ? sizeInventory(product, size) : 0;
   const itemUnavailable = available.length === 0 || product.stock <= 0;
+  const rating = reviews.length ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length : product.rating;
+  const ratingCount = reviews.length || product.ratingCount;
+  const recommendations = useMemo(() => {
+    const candidates = products.filter(item => item.id !== product.id);
+    return [...candidates].sort((a, b) => recommendationScore(b, product) - recommendationScore(a, product)).slice(0, 6);
+  }, [product.id]);
 
   useEffect(() => {
     setSize(requiresSize ? '' : available[0] ?? product.sizes[0] ?? '');
@@ -134,7 +166,7 @@ export default function ProductDetail() {
               touchStartX.current = null;
             }}
           >
-            <img src={gallery[activeImage].src} alt={gallery[activeImage].alt} className="h-full w-full object-cover" />
+            <img data-testid="product-gallery-image" src={gallery[activeImage].src} alt={gallery[activeImage].alt} className="h-full w-full object-cover" />
             <button type="button" aria-label="Open enlarged product image" onClick={() => setZoomOpen(true)} className="focus-ring absolute bottom-4 right-4 flex items-center gap-2 bg-[#FFFDF8]/90 px-3 py-2 text-[10px] uppercase tracking-[.14em]">
               <ZoomIn size={14} /> Zoom
             </button>
@@ -161,7 +193,9 @@ export default function ProductDetail() {
           </div>
           <p className="mt-5 text-xl">{formatPrice(product.price)}</p>
           {product.compareAt && <p className="mt-1 text-sm text-[#866F62] line-through">{formatPrice(product.compareAt)}</p>}
-          <p className="mt-3 text-xs uppercase tracking-[.13em] text-[#B7654A]">{product.rating === null ? 'Not yet rated' : `${product.rating.toFixed(1)} · ${product.ratingCount} ratings`}</p>
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-xs uppercase tracking-[.13em] text-[#B7654A]">
+            {rating !== null ? <><Stars value={rating} /><span>{rating.toFixed(1)} · {ratingCount} {ratingCount === 1 ? 'review' : 'reviews'}</span></> : <span>Not yet rated</span>}
+          </div>
           <p className="mt-6 max-w-md text-sm leading-7 text-[#6f675d]">{product.description} Made in small considered runs with materials chosen for softness, longevity and ease.</p>
 
           <div className="mt-9 border-t border-[#D7C2A7] pt-6">
@@ -188,6 +222,7 @@ export default function ProductDetail() {
               {itemUnavailable && <span className="text-[#B7654A]">Currently unavailable</span>}
             </div>
             {error === 'Please select a size.' && <p role="alert" data-testid="size-error" className="mt-3 text-xs text-[#B7654A]">Please select a size.</p>}
+            {error === 'This item is currently unavailable.' && <p role="alert" className="mt-3 text-xs text-[#B7654A]">This item is currently unavailable.</p>}
           </div>
 
           <div className="mt-7 flex gap-3">
@@ -216,6 +251,36 @@ export default function ProductDetail() {
           </div>
         </section>
       </div>
+
+      <section id="reviews" data-testid="product-reviews" className="mt-20 border-t border-[#D7C2A7] pt-10">
+        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <div><p className="eyebrow text-[#866F62]">Customer notes</p><h2 className="mt-2 font-display text-4xl">Reviews</h2></div>
+          {rating !== null && <div className="flex items-center gap-3"><Stars value={rating} /><span className="text-xs uppercase tracking-[.12em] text-[#866F62]">{rating.toFixed(1)} from {ratingCount} {ratingCount === 1 ? 'review' : 'reviews'}</span></div>}
+        </div>
+        {reviewsQuery.isLoading ? <p className="mt-8 text-sm text-[#866F62]">Loading verified reviews…</p> : reviews.length ? <div className="mt-8 grid gap-4 md:grid-cols-2">
+          {reviews.map(review => <article key={review.id} className="border border-[#D7C2A7] bg-[#FFFDF8] p-5" data-testid="review-card">
+            <div className="flex items-center justify-between gap-4"><Stars value={review.rating} /><span className="text-[10px] uppercase tracking-[.12em] text-[#866F62]">{review.verifiedPurchase ? 'Verified purchase' : 'Approved review'}</span></div>
+            {review.body ? <p className="mt-4 text-sm leading-7 text-[#6f675d]">{review.body}</p> : <p className="mt-4 text-xs uppercase tracking-[.12em] text-[#866F62]">Rating only · no written note</p>}
+            <p className="mt-4 text-[10px] uppercase tracking-[.12em] text-[#866F62]">{new Date(review.createdAt).toLocaleDateString()}</p>
+          </article>)}
+        </div> : <div data-testid="reviews-empty-state" className="mt-8 border border-dashed border-[#D7C2A7] p-6 text-sm text-[#6f675d]"><Stars value={0} label="No reviews yet" /><p className="mt-4 font-display text-2xl text-[#382820]">No reviews yet.</p><p className="mt-2 max-w-xl leading-7">Customer reviews will appear here after verified purchases are approved. Until then, explore the piece details above or browse related work below.</p></div>}
+      </section>
+
+      <section data-testid="recommendations" className="mt-20 border-t border-[#D7C2A7] pt-10">
+        <div className="flex items-end justify-between gap-4"><div><p className="eyebrow text-[#866F62]">Continue exploring</p><h2 className="mt-2 font-display text-4xl">You May Also Like</h2></div><span className="hidden text-[10px] uppercase tracking-[.14em] text-[#866F62] sm:block">Swipe or use the arrows</span></div>
+        <Carousel opts={{ align: 'start', loop: false }} className="mt-8 px-1 sm:px-8">
+          <CarouselContent>
+            {recommendations.map(item => <CarouselItem key={item.id} className="basis-[82%] sm:basis-[48%] lg:basis-[31%]">
+              <Link href={`/product/${item.id}`} className="group block">
+                <div className="relative overflow-hidden bg-[#D7C2A7]"><img src={item.image} alt={item.name} className="aspect-[4/5] w-full object-cover transition duration-300 group-hover:scale-[1.02]" />{item.badge && <span className="absolute left-3 top-3 bg-[#FFFDF8]/90 px-2 py-1 text-[9px] uppercase tracking-[.12em]">{item.badge}</span>}</div>
+                <div className="mt-4 flex items-start justify-between gap-3"><div><p className="text-sm">{item.name}</p><p className="mt-1 text-[10px] uppercase tracking-[.12em] text-[#866F62]">{item.brand} · {item.collection}</p></div><p className="text-sm">{formatPrice(item.price)}</p></div>
+              </Link>
+            </CarouselItem>)}
+          </CarouselContent>
+          <CarouselPrevious aria-label="Previous recommended products" className="left-0 border-[#D7C2A7] bg-[#FFFDF8] text-[#382820] hover:bg-[#F6F0E6]" />
+          <CarouselNext aria-label="Next recommended products" className="right-0 border-[#D7C2A7] bg-[#FFFDF8] text-[#382820] hover:bg-[#F6F0E6]" />
+        </Carousel>
+      </section>
     </main>
 
     <Dialog open={zoomOpen} onOpenChange={setZoomOpen}>

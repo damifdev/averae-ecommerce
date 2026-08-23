@@ -1,6 +1,8 @@
 const WISHLIST_KEY = 'averae-wishlist';
 const CART_KEY = 'averae-cart';
+const BACK_IN_STOCK_KEY = 'averae-back-in-stock-alerts';
 export const CART_UPDATED_EVENT = 'averae-cart-updated';
+export const BACK_IN_STOCK_UPDATED_EVENT = 'averae-back-in-stock-updated';
 
 export type CartItem = {
   id: number;
@@ -18,6 +20,7 @@ function write<T>(key: string, value: T) {
   if (typeof window === 'undefined') return;
   localStorage.setItem(key, JSON.stringify(value));
   if (key === CART_KEY) window.dispatchEvent(new CustomEvent(CART_UPDATED_EVENT));
+  if (key === BACK_IN_STOCK_KEY) window.dispatchEvent(new CustomEvent(BACK_IN_STOCK_UPDATED_EVENT));
 }
 
 export function getWishlist() { return read<number[]>(WISHLIST_KEY, []); }
@@ -76,3 +79,14 @@ export function updateCartQuantity(id: number, quantity: number, size = '', colo
 }
 
 export function cartItemCount(items = getCart()) { return items.reduce((sum, item) => sum + item.quantity, 0); }
+
+export function getBackInStockSubscriptions() {
+  return read<number[]>(BACK_IN_STOCK_KEY, []).filter(id => typeof id === 'number' && Number.isFinite(id));
+}
+
+export function toggleBackInStockSubscription(productId: number) {
+  const current = getBackInStockSubscriptions();
+  const next = current.includes(productId) ? current.filter(id => id !== productId) : [...current, productId];
+  write(BACK_IN_STOCK_KEY, next);
+  return next;
+}

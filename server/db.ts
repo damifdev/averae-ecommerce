@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, products, wishlists, wishlistItems } from "../drizzle/schema";
+import { InsertUser, users, products, wishlists, wishlistItems, reviews } from "../drizzle/schema";
 import { ENV } from './_core/env';
 let _db: ReturnType<typeof drizzle> | null = null;
 export async function getDb() { if (!_db && process.env.DATABASE_URL) { try { _db = drizzle(process.env.DATABASE_URL); } catch (error) { console.warn('[Database] Failed to connect:', error); _db = null; } } return _db; }
@@ -8,3 +8,4 @@ export async function upsertUser(user: InsertUser): Promise<void> { if (!user.op
 export async function getUserByOpenId(openId: string) { const db = await getDb(); if (!db) return undefined; const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1); return result[0]; }
 export async function listProducts() { const db = await getDb(); return db ? db.select().from(products).where(eq(products.status, 'active')) : []; }
 export async function listWishlist(userId: number) { const db = await getDb(); if (!db) return []; const list = await db.select().from(wishlists).where(eq(wishlists.userId, userId)).limit(1); if (!list[0]) return []; return db.select().from(wishlistItems).where(eq(wishlistItems.wishlistId, list[0].id)); }
+export async function listApprovedProductReviews(productId: number) { const db = await getDb(); if (!db) return []; return db.select({ id: reviews.id, rating: reviews.rating, body: reviews.body, verifiedPurchase: reviews.verifiedPurchase, createdAt: reviews.createdAt }).from(reviews).where(and(eq(reviews.productId, productId), eq(reviews.status, 'approved'))).orderBy(desc(reviews.createdAt)); }
