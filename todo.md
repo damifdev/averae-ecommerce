@@ -117,3 +117,9 @@
 - [x] Verify Men, Kids, and Unisex subcategory navigation renders correctly on mobile alongside the already verified Women state
 - [x] Verify touch-device product action labels render with readable text and sufficient contrast, not only a visible background bar
 - [x] Fix mobile product-action text contrast when the rendered button inherits cocoa text instead of the intended ivory label color
+- [x] Populate catalog products with realistic mock brand, rating, and collection metadata without fabricating customer reviews or testimonials
+- [x] Connect brand, rating, and collection metadata to Shop filtering and selected-filter chips
+- [x] Add accessible product-card quick-view modal with size and colour selection
+- [x] Ensure quick-view add-to-bag remains purchase-safe and preserves existing cart behavior
+- [x] Add Vitest and responsive browser regression coverage for metadata filters and quick view
+- [x] Add a Chromium/Vitest responsive browser regression that opens Shop filters, applies Brand, Collection, and Rating selections, verifies filtered results and removable chips, and rechecks CLEAR ALL on mobile and desktop

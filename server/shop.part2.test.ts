@@ -35,9 +35,20 @@ describe('Shop UX Refinement Part 2', () => {
     expect(shopSource).toContain('requiresOptions');
     expect(shopSource).toContain('Select options');
     expect(shopSource).toContain('Quick add');
-    expect(shopSource).toContain('addToCart(p.id)');
+    expect(shopSource).toContain('addToCart(p.id,');
+    expect(shopSource).toContain('Quick view');
     expect(shopSource).toContain('added to bag');
     expect(shopSource).toContain('compareAt');
     expect(shopSource).toContain('trendStatus');
+    expect(shopSource).toContain('options.brands');
+    expect(shopSource).toContain('options.collections');
+    expect(shopSource).toContain("filters.rating === 'Not yet rated'");
+  });
+
+  it('provides realistic product-owned metadata without fabricated customer ratings', () => {
+    expect(new Set(products.map(product => product.brand)).size).toBeGreaterThanOrEqual(5);
+    expect(new Set(products.map(product => product.collection)).size).toBeGreaterThanOrEqual(5);
+    expect(products.every(product => product.brand.length > 2 && product.collection.length > 2)).toBe(true);
+    expect(products.every(product => product.rating === null && product.ratingCount === 0)).toBe(true);
   });
 });

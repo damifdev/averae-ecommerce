@@ -261,7 +261,7 @@ describe('Shop touch product actions', () => {
     try {
       await waitForDevTools(port);
       const action = await shopTouchActionAudit(port);
-      expect(['Quick add', 'Select options']).toContain(action.label);
+      expect(['Quick view', 'Quick add', 'Select options']).toContain(action.label);
       expect(Number(action.opacity)).toBeGreaterThan(0.95);
       expect(action.color).not.toBe(action.background);
       expect(action.width).toBeGreaterThan(100);

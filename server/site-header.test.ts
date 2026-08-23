@@ -11,7 +11,7 @@ const requiredLabels = [
   'Shop by audience', 'Shop by category', 'Shop by discovery',
   'EXPLORE ALL TRENDS', 'EXPLORE THE EDIT', 'VIEW ALL WOMEN', 'VIEW ALL MEN', 'VIEW ALL KIDS',
   'Search products, brands, trends...', 'Recent searches', 'Sign In', 'Create Account', 'Logout',
-  'Quantity · 1', 'Subtotal', 'Continue shopping', 'View bag', 'Checkout',
+  'Quantity ·', 'Subtotal', 'Continue shopping', 'View bag', 'Checkout',
 ];
 
 describe('shared SiteHeader specification contract', () => {

@@ -109,3 +109,7 @@ button:active, a:active { transform: scale(.98); }
 .product-card-action {
   color: #fffdf8 !important;
 }
+
+.product-card-action-light {
+  color: #382820 !important;
+}
