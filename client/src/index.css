@@ -16,7 +16,9 @@ button { cursor: pointer; }
 .nav-link { position: relative; display: inline-flex; padding-block: 4px; transition: color .25s var(--ease-out), transform .25s var(--ease-out); }
 .nav-link::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: #B7654A; transform: scaleX(0); transform-origin: right; transition: transform .3s var(--ease-out); }
 .nav-link:hover, .nav-link:focus-visible { color: #B7654A; transform: translateY(-1px); }
-.nav-link:hover::after, .nav-link:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+.nav-link:hover::after, .nav-link:focus-visible::after, .nav-link-active::after { transform: scaleX(1); transform-origin: left; }
+.nav-link-active { color: #382820; }
+.site-nav-panel { animation: panelIn .24s var(--ease-out) both; }
 .intro-progress-wrap { opacity: .92; }
 .intro-progress-track { height: 1px; overflow: hidden; background: rgba(255,253,248,.25); }
 .intro-progress-bar { display: block; height: 100%; background: #D7C2A7; transition: width .45s var(--ease-out), transform .45s var(--ease-out); }

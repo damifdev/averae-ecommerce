@@ -80,3 +80,20 @@
 - [x] Add a reproducible placeholder-detection check for the current v2 department asset bytes and metadata
 - [x] Add a machine-checkable homepage audit confirming every department card renders its configured current department image URL
 - [x] Align the homepage asset-audit checklist wording with the implemented contract: each department card renders its configured current asset URL, with v2 assets for regenerated departments
+- [x] Implement desktop navbar interaction with clickable full text areas, active states, and keyboard-accessible SHOP, WOMEN, MEN, KIDS, JEWELRY, SHOES, TRENDS, and THE EDIT menus
+- [x] Add compact desktop mega menus for Shop, Women, Men, and Kids with audience, category, discovery, and featured editorial pathways
+- [x] Add interactive Jewelry, Shoes, Trends, and The Edit navigation menus with explicit discovery CTAs
+- [x] Add a proper search overlay/drawer with product, category, trends, The Edit suggestions, and recent-search behavior
+- [x] Add account menu states, wishlist count/empty-state behavior, and a desktop bag drawer with subtotal and shopping actions
+- [x] Add sticky-nav refinement and clear non-color-only active-section indicators
+- [x] Add dedicated mobile navigation with menu accordion, search/wishlist/bag actions, touch-friendly targets, Escape/outside-click dismissal, and bottom navigation
+- [x] Add navbar regression coverage for desktop/mobile navigation journeys, accessibility states, badges, drawers, and search suggestions
+- [x] Verify the navbar specification end to end at desktop, tablet, and mobile breakpoints
+- [x] Replace remaining Trends and The Edit route-specific top bars with the shared SiteHeader so every public storefront route exposes the full navbar
+- [x] Align account logout wording with the specification and strengthen mobile active navigation semantics without changing the approved visual style
+- [x] Correct the navbar regression test to validate mobile audience/category labels from the centralized brand configuration rather than the header source
+- [x] Keep the search overlay interactive by excluding it from the header outside-pointer dismissal handler; let its own backdrop and close control dismiss it
+- [x] Verify the shared navbar specification end to end at a tablet breakpoint, including header layout, active states, menu/drawer behavior, and mobile/desktop transition behavior
+- [x] Verify tablet navbar interactions by opening and closing the mobile menu, search overlay, account menu, and bag drawer at 768px
+- [x] Document tablet active states and desktop-to-mobile breakpoint transition behavior with reproducible evidence
+- [x] Harden the tablet navbar audit selectors for visible desktop controls and aria-expanded interaction states
