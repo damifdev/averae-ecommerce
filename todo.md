@@ -149,3 +149,5 @@
 - [x] Make the Chromium-heavy Vitest suite deterministic by preventing parallel browser-audit file contention
 - [x] Add a live responsive browser regression for Product Detail reviews/recommendations and Wishlist share/back-in-stock controls
 - [x] Include one clearly marked fully unavailable demo catalog item so the back-in-stock wishlist flow is testable without fabricating customer data
+- [x] Fix the blank post-add confirmation action button across every page through the shared reusable control
+- [x] Verify both post-add confirmation actions remain visible, labeled, responsive, and keyboard accessible

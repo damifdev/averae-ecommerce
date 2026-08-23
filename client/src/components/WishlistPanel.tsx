@@ -148,7 +148,7 @@ export function WishlistContent({ products, wishlistIds, onChangeWishlist, onClo
                 </div>
               </>}
               {feedback[product.id] && <p role="status" className="mt-3 text-xs text-[#B7654A]">{feedback[product.id]}</p>}
-              <button type="button" disabled={unavailable} onClick={() => moveToBag(product)} className="pressable mt-5 flex w-full items-center justify-center gap-2 bg-[#382820] py-3 text-[10px] uppercase tracking-[.14em] text-[#FFFDF8] disabled:cursor-not-allowed disabled:opacity-50"><ShoppingBag size={14} /> {unavailable ? 'Currently unavailable' : 'MOVE TO BAG'}</button>
+              <button type="button" disabled={unavailable} onClick={() => moveToBag(product)} className="action-link-light pressable mt-5 flex w-full items-center justify-center gap-2 bg-[#382820] py-3 text-[10px] uppercase tracking-[.14em] text-[#FFFDF8] disabled:cursor-not-allowed disabled:opacity-50"><ShoppingBag size={14} /> {unavailable ? 'Currently unavailable' : 'MOVE TO BAG'}</button>
             </div>
           </div>
         </article>;

@@ -94,7 +94,7 @@ export default function QuickView({ product, open, onOpenChange, onAddToBag }: Q
             </div>
           </div>
           <div className="mt-7">
-            <button data-testid="quick-view-add" type="button" onClick={addSelection} disabled={!selectedSizeAvailable} className="pressable flex w-full items-center justify-center gap-3 bg-[#382820] py-4 text-[10px] uppercase tracking-[.16em] text-[#FFFDF8] hover:bg-[#B7654A] disabled:cursor-not-allowed disabled:opacity-45">{added ? <><Check size={15} /> Added to bag</> : <><ShoppingBag size={15} /> {selectedSizeAvailable ? 'Add selected piece to bag' : 'Select an available size'}</>}</button>
+            <button data-testid="quick-view-add" type="button" onClick={addSelection} disabled={!selectedSizeAvailable} className="action-link-light pressable flex w-full items-center justify-center gap-3 bg-[#382820] py-4 text-[10px] uppercase tracking-[.16em] text-[#FFFDF8] hover:bg-[#B7654A] disabled:cursor-not-allowed disabled:opacity-45">{added ? <><Check size={15} /> Added to bag</> : <><ShoppingBag size={15} /> {selectedSizeAvailable ? 'Add selected piece to bag' : 'Select an available size'}</>}</button>
             <p data-testid="quick-view-size-status" className="mt-3 min-h-5 text-center text-xs text-[#B7654A]" aria-live="polite">{feedback}</p>
           </div>
           <Link href={`/product/${product.id}`} onClick={() => onOpenChange(false)} className="mt-4 block border-b border-[#382820] pb-2 text-center text-[10px] uppercase tracking-[.15em]">View full details</Link>

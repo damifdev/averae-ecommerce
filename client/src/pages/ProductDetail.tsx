@@ -231,15 +231,15 @@ export default function ProductDetail() {
               <span className="w-7 text-center text-sm" aria-label={`${quantity} in bag`}>{quantity}</span>
               <button type="button" aria-label="Increase quantity" disabled={Boolean(selectedInventory) && quantity >= selectedInventory} onClick={() => setQuantity(current => selectedInventory ? Math.min(selectedInventory, current + 1) : current + 1)} className="pressable px-3 disabled:opacity-40"><Plus size={14} /></button>
             </div>
-            <button type="button" data-testid="add-to-bag" onClick={() => addSelection()} disabled={itemUnavailable} className="pressable flex-1 bg-[#382820] py-4 text-[10px] uppercase tracking-[.16em] text-[#FFFDF8] transition hover:bg-[#B7654A] disabled:cursor-not-allowed disabled:opacity-50">ADD TO BAG</button>
+            <button type="button" data-testid="add-to-bag" onClick={() => addSelection()} disabled={itemUnavailable} className="action-link-light pressable flex-1 bg-[#382820] py-4 text-[10px] uppercase tracking-[.16em] text-[#FFFDF8] transition hover:bg-[#B7654A] disabled:cursor-not-allowed disabled:opacity-50">ADD TO BAG</button>
           </div>
           <button type="button" data-testid="buy-now" onClick={() => addSelection('/checkout')} disabled={itemUnavailable} className="pressable mt-3 w-full border border-[#382820] py-4 text-[10px] uppercase tracking-[.16em] disabled:cursor-not-allowed disabled:opacity-50">BUY NOW</button>
 
           {confirmation && <div role="status" data-testid="add-to-bag-confirmation" className="mt-5 border border-[#B7654A] bg-[#B7654A]/10 p-4">
             <p className="text-sm">Added to your bag</p>
             <div className="mt-3 grid grid-cols-2 gap-3">
-              <Link href="/shop" className="border border-[#382820] py-3 text-center text-[10px] uppercase tracking-[.14em]">CONTINUE SHOPPING</Link>
-              <Link href="/cart" className="bg-[#382820] py-3 text-center text-[10px] uppercase tracking-[.14em] text-[#FFFDF8]">VIEW BAG</Link>
+              <Link href="/shop" className="action-link-dark border border-[#382820] py-3 text-center text-[10px] uppercase tracking-[.14em]">CONTINUE SHOPPING</Link>
+              <Link href="/cart" className="action-link-light bg-[#382820] py-3 text-center text-[10px] uppercase tracking-[.14em]">VIEW BAG</Link>
             </div>
           </div>}
 

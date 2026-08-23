@@ -113,3 +113,22 @@ button:active, a:active { transform: scale(.98); }
 .product-card-action-light {
   color: #382820 !important;
 }
+
+/* Filled cocoa links must keep an ivory label even when inherited anchor styles change. */
+.action-link-light {
+  color: #FFFDF8 !important;
+}
+
+.action-link-light:hover,
+.action-link-light:focus-visible {
+  color: #FFFDF8 !important;
+}
+
+.action-link-dark {
+  color: #382820 !important;
+}
+
+.action-link-dark:hover,
+.action-link-dark:focus-visible {
+  color: #B7654A !important;
+}
