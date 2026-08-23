@@ -127,3 +127,7 @@
 - [x] Disable unavailable Quick View sizes with clear visual and accessible states
 - [x] Prevent unavailable size selections from being added to the bag and provide truthful feedback
 - [x] Add unit and responsive browser regression coverage for unavailable-size behavior
+- [x] Re-audit UX Refinement Part 2 against the current Shop, category, and product-card implementation
+- [x] Verify responsive filter drawer, selected states, sorting, removable chips, and CLEAR ALL across desktop and mobile
+- [x] Verify purchase-safe product actions and inventory-aware Quick View remain consistent with the Part 2 specification
+- [x] Add or run responsive regression coverage that changes Sort By on desktop and mobile, verifies the selected sort state, and confirms product ordering updates
