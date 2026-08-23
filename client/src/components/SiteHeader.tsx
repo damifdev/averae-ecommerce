@@ -124,7 +124,7 @@ export default function SiteHeader() {
 
   return <>
     <div className="bg-[#382820] px-5 py-2 text-center text-[10px] tracking-[.16em] text-[#FFFDF8]">{brand.announcement}</div>
-    <header ref={headerRef} className={`sticky top-0 z-50 border-b border-[#D7C2A7] bg-[#FFFDF8]/95 backdrop-blur transition-[box-shadow] duration-200 ${scrolled ? 'shadow-[0_8px_24px_rgba(56,40,32,.08)]' : ''}`}>
+    <header ref={headerRef} className={`relative z-50 border-b border-[#D7C2A7] bg-[#FFFDF8]/95 backdrop-blur transition-[box-shadow] duration-200 ${scrolled ? 'shadow-[0_8px_24px_rgba(56,40,32,.08)]' : ''}`}>
       <div className={`container flex items-center justify-between gap-4 transition-[height] duration-200 ${scrolled ? 'h-16' : 'h-20'}`}>
         <button type="button" aria-label="Open menu" aria-expanded={mobileOpen} onClick={() => { setMobileOpen(!mobileOpen); setSearchOpen(false); }} className="icon-action focus-ring lg:hidden"><Menu size={19} strokeWidth={1.3} /></button>
         <div className="flex-1"><Link href="/" aria-label="Áveraẹ home" className="font-display text-2xl tracking-[.16em]">{brand.name}</Link></div>

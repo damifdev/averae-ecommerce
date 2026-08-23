@@ -42,6 +42,12 @@ describe('shared SiteHeader specification contract', () => {
     expect(brandSource).toContain("label: 'Beauty & Lifestyle'");
   });
 
+  it('keeps the shared header in normal document flow while preserving the fixed mobile navigation', () => {
+    expect(headerSource).toContain('className={`relative z-50 border-b');
+    expect(headerSource).not.toContain('className={`sticky top-0 z-50 border-b');
+    expect(headerSource).toContain('<nav className="fixed inset-x-0 bottom-0 z-30');
+  });
+
   it('keeps the desktop menu centered and drawers smoothly animated', () => {
     expect(headerSource).toContain('className="flex-1"><Link href="/"');
     expect(headerSource).toContain('hidden flex-1 items-center justify-center gap-5 lg:flex');

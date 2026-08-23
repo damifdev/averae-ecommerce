@@ -151,3 +151,7 @@
 - [x] Include one clearly marked fully unavailable demo catalog item so the back-in-stock wishlist flow is testable without fabricating customer data
 - [x] Fix the blank post-add confirmation action button across every page through the shared reusable control
 - [x] Verify both post-add confirmation actions remain visible, labeled, responsive, and keyboard accessible
+
+- [x] Standardize wishlist and bag header controls so their storefront presentation matches the homepage
+- [x] Remove the homepage header’s stationary scroll behavior while preserving the approved navigation layout
+- [x] Add responsive regression coverage proving the shared header scrolls consistently across homepage, wishlist, and bag routes
