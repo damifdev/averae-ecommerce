@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'wouter';
 import SiteHeader from '@/components/SiteHeader';
 import QuickView from '@/components/QuickView';
-import { Filter, Heart, Search, SlidersHorizontal, X } from 'lucide-react';
+import { ArrowUp, Filter, Heart, Search, SlidersHorizontal, X } from 'lucide-react';
 import { audienceCategories, productCategories, products, formatPrice, type Product } from '@/lib/brand';
 import { useEffect, useMemo, useState } from 'react';
 import { addToCart, getWishlist, toggleWishlist } from '@/lib/store';
@@ -75,6 +75,14 @@ export default function Shop() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [filters, setFilters] = useState<FilterState>(filterDefaults);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setShowBackToTop(window.scrollY > 480);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     setCategory(normalizeCategory(params.get('category')));
@@ -132,5 +140,5 @@ export default function Shop() {
     <div className="hidden border-b border-[#D7C2A7] py-5 md:grid md:grid-cols-5 md:gap-5">{filterSelect('brand', 'Brand', options.brands)}{filterSelect('collection', 'Collection', options.collections)}{filterSelect('price', 'Price', ['Under ₦75,000', '₦75,000–₦125,000', 'Over ₦125,000'])}{filterSelect('rating', 'Rating', ratingOptions)}{filterSelect('trend', 'Trend status', ['Trending', 'New', 'Popular', "Editor's Pick"])}</div>
     {filterOpen && <div className="fixed inset-0 z-[80] bg-[#382820]/45 md:hidden" onClick={event => { if (event.target === event.currentTarget) setFilterOpen(false); }}><aside className="ml-auto flex h-full w-[min(90vw,380px)] flex-col bg-[#FFFDF8] p-6 shadow-2xl" role="dialog" aria-modal="true" aria-label="Product filters"><div className="flex items-center justify-between border-b border-[#D7C2A7] pb-5"><div><p className="eyebrow text-[#866F62]">Refine the edit</p><h2 className="mt-2 font-display text-3xl">Filters</h2></div><button type="button" aria-label="Close filters" onClick={() => setFilterOpen(false)} className="focus-ring"><X size={20} /></button></div><div className="flex-1 space-y-5 overflow-y-auto py-6"><label className="block text-[10px] uppercase tracking-[.14em] text-[#866F62]">Audience<select value={audience} onChange={event => { setAudience(event.target.value); setCategory('All'); }} className={selectStyles}><option>All</option>{audienceCategories.map(item => <option key={item.slug}>{item.label}</option>)}</select></label><label className="block text-[10px] uppercase tracking-[.14em] text-[#866F62]">Category<select value={category} onChange={event => setCategory(event.target.value)} className={selectStyles}><option>All</option>{productCategories.map(item => <option key={item.slug}>{item.label}</option>)}</select></label>{filterSelect('size', 'Size', options.sizes)}{filterSelect('colour', 'Colour', options.colours)}{filterSelect('price', 'Price', ['Under ₦75,000', '₦75,000–₦125,000', 'Over ₦125,000'])}{filterSelect('brand', 'Brand', options.brands)}{filterSelect('collection', 'Collection', options.collections)}{filterSelect('availability', 'Availability', ['In stock', 'Low stock', 'Out of stock'])}{filterSelect('rating', 'Rating', ratingOptions)}{filterSelect('trend', 'Trend status', ['Trending', 'New', 'Popular', "Editor's Pick"])}</div><div className="grid grid-cols-2 gap-3 border-t border-[#D7C2A7] pt-5"><button type="button" onClick={clearAll} className="border border-[#382820] py-3 text-[10px] uppercase tracking-[.14em]">Clear all</button><button type="button" onClick={() => setFilterOpen(false)} className="action-link-light bg-[#382820] py-3 text-[10px] uppercase tracking-[.14em] text-[#FFFDF8]">View {shown.length} products</button></div></aside></div>}
     {shown.length === 0 ? <div className="py-24 text-center"><p className="eyebrow text-[#B7654A]">Nothing here yet</p><h2 className="mt-3 font-display text-4xl">Try another expression.</h2><p className="mt-4 text-sm text-[#866F62]">{filters.rating === '4 stars & up' ? 'Verified rating data has not been published for this demo catalog yet.' : 'Clear a filter or explore what’s trending.'}</p><button type="button" onClick={clearAll} className="mt-7 inline-flex border-b border-[#382820] pb-2 text-[10px] uppercase tracking-[.15em]">Clear all filters</button></div> : <div className="mt-8 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">{shown.map(product => <Card key={product.id} p={product} onQuickView={setQuickViewProduct} />)}</div>}
-  </main><QuickView product={quickViewProduct} open={quickViewProduct !== null} onOpenChange={open => { if (!open) setQuickViewProduct(null); }} onAddToBag={(product, size, color) => addToCart(product.id, { size, color })} /></div>;
+  </main><button type="button" data-testid="back-to-top" aria-label="Back to top" aria-hidden={!showBackToTop} tabIndex={showBackToTop ? 0 : -1} onClick={() => window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })} className={`back-to-top-button focus-ring fixed bottom-24 right-5 z-40 inline-flex h-11 w-11 items-center justify-center bg-[#382820] text-[#FFFDF8] shadow-[0_12px_28px_rgba(56,40,32,.18)] md:bottom-6 ${showBackToTop ? 'back-to-top-button-visible pointer-events-auto' : 'pointer-events-none'}`}><ArrowUp size={17} strokeWidth={1.4} /><span className="sr-only">Back to top</span></button><QuickView product={quickViewProduct} open={quickViewProduct !== null} onOpenChange={open => { if (!open) setQuickViewProduct(null); }} onAddToBag={(product, size, color) => addToCart(product.id, { size, color })} /></div>;
 }

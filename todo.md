@@ -155,3 +155,7 @@
 - [x] Standardize wishlist and bag header controls so their storefront presentation matches the homepage
 - [x] Remove the homepage header’s stationary scroll behavior while preserving the approved navigation layout
 - [x] Add responsive regression coverage proving the shared header scrolls consistently across homepage, wishlist, and bag routes
+
+- [x] Add a compact accessible back-to-top button that appears while scrolling long catalog pages
+- [x] Add smooth slide-in entrance animation for wishlist and bag drawers
+- [x] Display live wishlist and bag item-count badges on shared header icons
