@@ -57,3 +57,37 @@ button:active, a:active { transform: scale(.98); }
 .focus-ring:focus-visible { outline: 2px solid #B7654A; outline-offset: 3px; }
 @media (max-width: 640px) { .intro-wordmark { font-size: clamp(3rem, 16vw, 5rem); letter-spacing: .12em; } .intro-image { opacity: .28; } .homepage-content-visible { animation-delay: .15s; } .icon-tooltip { right: 0; transform: translate(0, -4px); } .icon-action:hover .icon-tooltip, .icon-action:focus-visible .icon-tooltip { transform: translate(0, 0); } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } .reveal-on-scroll { opacity: 1; transform: none; } }
+
+/* Commerce drawer motion: the panel stays mounted long enough to animate out cleanly. */
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgb(56 40 32 / 0.25);
+  opacity: 0;
+  transition: opacity 320ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1));
+}
+
+.drawer-backdrop-open {
+  opacity: 1;
+}
+
+.drawer-panel {
+  opacity: 0;
+  transform: translateX(1.25rem);
+  transition:
+    opacity 240ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)),
+    transform 320ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1));
+  will-change: opacity, transform;
+}
+
+.drawer-panel-open {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer-backdrop,
+  .drawer-panel {
+    transition-duration: 1ms;
+  }
+}

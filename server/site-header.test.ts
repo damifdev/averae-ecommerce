@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const headerSource = readFileSync(fileURLToPath(new URL('../client/src/components/SiteHeader.tsx', import.meta.url)), 'utf8');
 const brandSource = readFileSync(fileURLToPath(new URL('../client/src/lib/brand.ts', import.meta.url)), 'utf8');
+const cssSource = readFileSync(fileURLToPath(new URL('../client/src/index.css', import.meta.url)), 'utf8');
 
 const requiredLabels = [
   'Shop', 'Women', 'Men', 'Kids', 'Jewelry', 'Shoes', 'Trends', 'The Edit',
@@ -39,5 +40,21 @@ describe('shared SiteHeader specification contract', () => {
     expect(headerSource).toContain('>Bag</span>');
     expect(brandSource).toContain("label: 'Unisex'");
     expect(brandSource).toContain("label: 'Beauty & Lifestyle'");
+  });
+
+  it('keeps the desktop menu centered and drawers smoothly animated', () => {
+    expect(headerSource).toContain('className="flex-1"><Link href="/"');
+    expect(headerSource).toContain('hidden flex-1 items-center justify-center gap-5 lg:flex');
+    expect(headerSource).toContain("type DrawerKey = 'wishlist' | 'bag'");
+    expect(headerSource).toContain('drawerCloseTimerRef');
+    expect(headerSource).toContain("window.setTimeout(() => {");
+    expect(headerSource).toContain("drawer === 'wishlist'");
+    expect(headerSource).toContain("drawer === 'bag'");
+    expect(headerSource).toContain('drawer-panel-right');
+    expect(headerSource).toContain("drawerVisible ? 'drawer-panel-open' : ''");
+    expect(cssSource).toContain('.drawer-backdrop');
+    expect(cssSource).toContain('.drawer-panel');
+    expect(cssSource).toContain('.drawer-panel-open');
+    expect(cssSource).toContain('prefers-reduced-motion: reduce');
   });
 });

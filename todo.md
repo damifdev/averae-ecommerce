@@ -97,3 +97,7 @@
 - [x] Verify tablet navbar interactions by opening and closing the mobile menu, search overlay, account menu, and bag drawer at 768px
 - [x] Document tablet active states and desktop-to-mobile breakpoint transition behavior with reproducible evidence
 - [x] Harden the tablet navbar audit selectors for visible desktop controls and aria-expanded interaction states
+- [x] Center the desktop primary menu in the navbar while keeping the Áveraẹ logo positioned to the side
+- [x] Add smooth animated open and close transitions for wishlist and bag drawers, including reduced-motion behavior
+- [x] Add regression coverage and responsive verification for the centered navbar and drawer transitions
+- [x] Remove the duplicate Shop-page mobile bottom navigation so the shared SiteHeader is the only public storefront navigation source
