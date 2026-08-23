@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { audienceCategories, brand, editorialEntries, featuredLook, formatPrice, heroContent, productCategories, products, trendItems } from '../client/src/lib/brand';
 
@@ -37,5 +38,12 @@ describe('AVERAE catalog foundation', () => {
     const departmentLabels = productCategories.map(category => category.label);
     expect(departmentLabels.every(label => products.some(product => product.category === label || (label === 'Clothing' && product.category === 'Ready to Wear')))).toBe(true);
     expect(products.some(product => product.audiences.includes('Kids'))).toBe(true);
+  });
+
+  it('keeps homepage hero and product hover affordances readable', () => {
+    const homeSource = readFileSync(new URL('../client/src/pages/Home.tsx', import.meta.url), 'utf8');
+    expect(homeSource).toContain('object-cover object-top');
+    expect(homeSource).toContain('hover:bg-[#382820] hover:text-[#FFFDF8]');
+    expect(homeSource).toContain('>View product</Link>');
   });
 });

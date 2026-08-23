@@ -67,3 +67,6 @@
 - [x] Verify the actual shop search interaction flow on desktop and mobile, including typing, filtering, and discovery hint behavior
 - [x] Verify editorial inspiration journeys end-to-end on both desktop and mobile, including The Edit to article navigation
 - [x] Verify typed shop-search filtering on desktop and mobile by asserting visible result counts and product-card updates for matching and non-matching queries
+- [x] Fix homepage hero crop so the woman’s face remains visible on desktop and mobile
+- [x] Change the SHOP NOW hover color so its text remains readable
+- [x] Restore VIEW PRODUCT hover overlays for New Arrivals and The Editor’s Picks product images

@@ -27,3 +27,7 @@ The same audit opened `/edit` from the homepage, then followed the first editori
 ## Search filtering assertions
 
 The same real-input audit typed `linen` into Shop and observed one visible product card on both 1280×900 and 390×844. It then loaded a fresh Shop state, typed `zzzz`, and observed zero visible product cards on both viewports. This confirms that typed search changes the product result set, not only the query field and discovery hint.
+
+## Homepage issue fixes
+
+The homepage visual pass at 1280×900 and 390×844 confirms the hero now frames the woman’s face within the visible composition. The SHOP NOW CTA now transitions from terracotta to cocoa while retaining ivory text for contrast. The shared ProductCard used by both New arrivals and The Editor’s Picks now exposes a z-indexed, focusable `VIEW PRODUCT` hover overlay matching the Trending now treatment. TypeScript and Vitest both pass after the changes.
