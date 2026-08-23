@@ -1,0 +1,43 @@
+import { readFileSync } from 'node:fs';
+import { describe, expect, it } from 'vitest';
+import { audienceCategories, productCategories, products } from '../client/src/lib/brand';
+
+const shopSource = readFileSync(new URL('../client/src/pages/Shop.tsx', import.meta.url), 'utf8');
+
+describe('Shop UX Refinement Part 2', () => {
+  it('exposes the required browse hierarchy and result-count copy', () => {
+    expect(shopSource).toContain('Shop all');
+    expect(shopSource).toContain('Explore fashion, accessories and lifestyle products');
+    expect(shopSource).toContain("{shown.length === 1 ? 'product' : 'products'}");
+    expect(audienceCategories.map(item => item.label)).toEqual(['Women', 'Men', 'Kids', 'Unisex']);
+    expect(productCategories.map(item => item.label)).toContain('Watches');
+  });
+
+  it('contains every requested filter and sort vocabulary', () => {
+    for (const label of ['Audience', 'Category', 'Size', 'Colour', 'Price', 'Brand', 'Collection', 'Availability', 'Rating', 'Trend status']) {
+      expect(shopSource).toContain(label);
+    }
+    for (const label of ['Recommended', 'Newest', 'Trending', 'Best Selling', 'Price: Low to High', 'Price: High to Low']) {
+      expect(shopSource).toContain(label);
+    }
+    expect(shopSource).toContain('Clear all');
+    expect(shopSource).toContain('aria-pressed');
+  });
+
+  it('defines logical audience subcategories without introducing empty product contracts', () => {
+    for (const label of ['Dresses', 'Tops', 'Trousers', 'Outerwear', 'Shirts', 'Sets']) {
+      expect(shopSource).toContain(label);
+    }
+    expect(products.every(product => product.sizes.length > 0 && product.colors.length > 0)).toBe(true);
+  });
+
+  it('keeps product actions safe for variant-required and no-variant products', () => {
+    expect(shopSource).toContain('requiresOptions');
+    expect(shopSource).toContain('Select options');
+    expect(shopSource).toContain('Quick add');
+    expect(shopSource).toContain('addToCart(p.id)');
+    expect(shopSource).toContain('added to bag');
+    expect(shopSource).toContain('compareAt');
+    expect(shopSource).toContain('trendStatus');
+  });
+});

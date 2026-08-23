@@ -101,3 +101,19 @@
 - [x] Add smooth animated open and close transitions for wishlist and bag drawers, including reduced-motion behavior
 - [x] Add regression coverage and responsive verification for the centered navbar and drawer transitions
 - [x] Remove the duplicate Shop-page mobile bottom navigation so the shared SiteHeader is the only public storefront navigation source
+- [x] Add SHOP ALL heading and explanatory copy with clear All, audience, and department navigation
+- [x] Add complete filter controls for audience, category, size, colour, price, brand, collection, availability, rating, and trend status
+- [x] Add mobile FILTER drawer/panel with applied state, removable filter chips, CLEAR ALL, and product count
+- [x] Add Recommended, Newest, Trending, Best Selling, and price sorting with visible selected state
+- [x] Improve Women, Men, Kids, and Unisex category subnavigation with logical subcategories
+- [x] Ensure every product card shows required product metadata, badge, wishlist, and purchase-safe QUICK ADD or SELECT OPTIONS action
+- [x] Add UX Refinement Part 2 regression coverage and verify Shop/category/listing flows responsively
+- [x] Fix Shop filter implementation imports and ES5-compatible option derivation so the Part 2 page compiles cleanly
+- [x] Make QUICK ADD add a no-variant product to the existing cart, while SELECT OPTIONS links to the product page for variant-required products
+- [x] Use the active audience or department as the filtered Shop page heading while retaining SHOP ALL for the unfiltered route
+- [x] Keep QUICK ADD or SELECT OPTIONS visible on touch devices where hover overlays cannot be triggered
+- [x] Update the homepage pointer regression to account for intentional always-visible product actions on touch-capable contexts while preserving hover validation on pointer-capable contexts
+- [x] Expose Audience and Category as explicit desktop filter controls in addition to the existing category navigation
+- [x] Verify Men, Kids, and Unisex subcategory navigation renders correctly on mobile alongside the already verified Women state
+- [x] Verify touch-device product action labels render with readable text and sufficient contrast, not only a visible background bar
+- [x] Fix mobile product-action text contrast when the rendered button inherits cocoa text instead of the intended ivory label color

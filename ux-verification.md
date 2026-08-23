@@ -67,3 +67,7 @@ The remaining implementation hardening includes explicit Explore All Trends and 
 ## Navbar tablet interaction audit — August 23, 2026
 
 The reproducible Chromium audit passed at 768 × 1024: the mobile menu opened and closed, the search overlay accepted typed input and dismissed through its close control, the account popover opened and dismissed after an outside pointer interaction, and the bag drawer opened with subtotal content and closed correctly. At 1024 × 800, the desktop navigation was visible, the mobile menu trigger was hidden, Trends carried its active indicator, and the Trends mega menu opened and closed correctly. This confirms the shared navbar transition and interaction behavior at the tablet boundary.
+
+## UX Refinement Part 2 — Shop and product listing — August 23, 2026
+
+The Shop page now provides a clear SHOP ALL hierarchy with explanatory copy, audience and department navigation, logical Women, Men, Kids, and Unisex subcategories, complete filter vocabulary, removable applied chips, CLEAR ALL, selected sorting, and product counts. Product cards show image, name, price, discount when applicable, category, colour, trend status, wishlist, and purchase-safe QUICK ADD or SELECT OPTIONS actions. Filtered states use the active audience or category as the heading. The mobile pass confirms the touch-friendly FILTER entry point and persistent product actions on narrow viewports. TypeScript and Vitest pass with 18 tests across five files.

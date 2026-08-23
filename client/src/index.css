@@ -91,3 +91,21 @@ button:active, a:active { transform: scale(.98); }
     transition-duration: 1ms;
   }
 }
+
+@media (hover: none), (pointer: coarse) {
+  .product-card-overlay {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 767px) {
+  .product-card-overlay {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.product-card-action {
+  color: #fffdf8 !important;
+}
