@@ -1,6 +1,6 @@
 import { Link } from 'wouter';
 import { Check, ShoppingBag } from 'lucide-react';
-import { formatPrice, type Product } from '@/lib/brand';
+import { availableSizes, formatPrice, isSizeAvailable, sizeInventory, type Product } from '@/lib/brand';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useEffect, useState } from 'react';
 
@@ -31,19 +31,28 @@ export default function QuickView({ product, open, onOpenChange, onAddToBag }: Q
   const [size, setSize] = useState('');
   const [color, setColor] = useState('');
   const [added, setAdded] = useState(false);
+  const [feedback, setFeedback] = useState('');
 
   useEffect(() => {
     if (!product) return;
-    setSize(product.sizes[0] ?? 'One size');
+    setSize(availableSizes(product)[0] ?? '');
     setColor(product.color || product.colors[0] || '');
     setAdded(false);
+    setFeedback('');
   }, [product, open]);
 
   if (!product) return null;
 
+  const selectedSizeAvailable = Boolean(size) && isSizeAvailable(product, size);
   const addSelection = () => {
+    if (!selectedSizeAvailable) {
+      setAdded(false);
+      setFeedback('Please choose an available size before adding this piece to your bag.');
+      return;
+    }
     onAddToBag(product, size, color);
     setAdded(true);
+    setFeedback(`${product.name} · ${color} · ${size} added to your bag.`);
   };
 
   return <Dialog open={open} onOpenChange={onOpenChange}>
@@ -73,16 +82,20 @@ export default function QuickView({ product, open, onOpenChange, onAddToBag }: Q
           </div>
           <div className="mt-6">
             <div className="flex items-center justify-between">
-              <p className="text-[10px] uppercase tracking-[.15em]">Size <span className="text-[#866F62]">· {size}</span></p>
-              <button type="button" className="text-[10px] uppercase tracking-[.12em] underline underline-offset-4">Size guide</button>
+              <p className="text-[10px] uppercase tracking-[.15em]">Size <span className="text-[#866F62]">· {size || 'Unavailable'}</span></p>
+              <span className="text-[10px] uppercase tracking-[.12em] text-[#866F62]">{availableSizes(product).length} of {product.sizes.length} available</span>
             </div>
             <div className="mt-3 grid grid-cols-4 gap-2" role="group" aria-label="Size options">
-              {product.sizes.map(option => <button key={option} type="button" aria-pressed={size === option} onClick={() => setSize(option)} className={`focus-ring border py-3 text-xs ${size === option ? 'border-[#382820] bg-[#382820] text-[#FFFDF8]' : 'border-[#D7C2A7]'}`}>{option}</button>)}
+              {product.sizes.map(option => {
+                const available = isSizeAvailable(product, option);
+                const quantity = sizeInventory(product, option);
+                return <button key={option} type="button" aria-pressed={size === option} aria-disabled={!available} disabled={!available} aria-label={available ? `Select size ${option}, ${quantity} available` : `Size ${option}, out of stock`} onClick={() => setSize(option)} className={`focus-ring border py-3 text-xs transition ${size === option ? 'border-[#382820] bg-[#382820] text-[#FFFDF8]' : available ? 'border-[#D7C2A7]' : 'cursor-not-allowed border-[#D7C2A7] text-[#866F62]/55 line-through opacity-60'}`}>{option}{!available && <span className="sr-only">, out of stock</span>}</button>;
+              })}
             </div>
           </div>
           <div className="mt-7">
-            <button data-testid="quick-view-add" type="button" onClick={addSelection} className="pressable flex w-full items-center justify-center gap-3 bg-[#382820] py-4 text-[10px] uppercase tracking-[.16em] text-[#FFFDF8] hover:bg-[#B7654A]">{added ? <><Check size={15} /> Added to bag</> : <><ShoppingBag size={15} /> Add selected piece to bag</>}</button>
-            <p className="mt-3 min-h-5 text-center text-xs text-[#B7654A]" aria-live="polite">{added ? `${product.name} · ${color} · ${size} added to your bag.` : ''}</p>
+            <button data-testid="quick-view-add" type="button" onClick={addSelection} disabled={!selectedSizeAvailable} className="pressable flex w-full items-center justify-center gap-3 bg-[#382820] py-4 text-[10px] uppercase tracking-[.16em] text-[#FFFDF8] hover:bg-[#B7654A] disabled:cursor-not-allowed disabled:opacity-45">{added ? <><Check size={15} /> Added to bag</> : <><ShoppingBag size={15} /> {selectedSizeAvailable ? 'Add selected piece to bag' : 'Select an available size'}</>}</button>
+            <p data-testid="quick-view-size-status" className="mt-3 min-h-5 text-center text-xs text-[#B7654A]" aria-live="polite">{feedback}</p>
           </div>
           <Link href={`/product/${product.id}`} onClick={() => onOpenChange(false)} className="mt-4 block border-b border-[#382820] pb-2 text-center text-[10px] uppercase tracking-[.15em]">View full details</Link>
         </div>

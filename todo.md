@@ -123,3 +123,7 @@
 - [x] Ensure quick-view add-to-bag remains purchase-safe and preserves existing cart behavior
 - [x] Add Vitest and responsive browser regression coverage for metadata filters and quick view
 - [x] Add a Chromium/Vitest responsive browser regression that opens Shop filters, applies Brand, Collection, and Rating selections, verifies filtered results and removable chips, and rechecks CLEAR ALL on mobile and desktop
+- [x] Add inventory-aware per-size availability data to catalog products without fabricating customer-generated content
+- [x] Disable unavailable Quick View sizes with clear visual and accessible states
+- [x] Prevent unavailable size selections from being added to the bag and provide truthful feedback
+- [x] Add unit and responsive browser regression coverage for unavailable-size behavior

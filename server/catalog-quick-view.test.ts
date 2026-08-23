@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { products } from '../client/src/lib/brand';
+import { availableSizes, isSizeAvailable, products, sizeInventory } from '../client/src/lib/brand';
 import { addToCart, cartItemCount, getCart } from '../client/src/lib/store';
 
 const quickViewSource = readFileSync(new URL('../client/src/components/QuickView.tsx', import.meta.url), 'utf8');
@@ -28,6 +28,19 @@ describe('catalog metadata and quick view', () => {
     expect(quickViewSource).toContain('aria-pressed={size === option}');
     expect(quickViewSource).toContain('onAddToBag(product, size, color)');
     expect(quickViewSource).toContain('View full details');
+  });
+
+  it('tracks inventory by size and disables unavailable Quick View selections', () => {
+    expect(products.every(product => product.sizes.every(size => size in product.inventoryBySize))).toBe(true);
+    expect(products.every(product => Object.values(product.inventoryBySize).reduce((total, quantity) => total + quantity, 0) === product.stock)).toBe(true);
+    const columnDress = products.find(product => product.id === 3);
+    expect(columnDress).toBeDefined();
+    expect(sizeInventory(columnDress!, 'M')).toBe(0);
+    expect(isSizeAvailable(columnDress!, 'M')).toBe(false);
+    expect(availableSizes(columnDress!)).not.toContain('M');
+    expect(quickViewSource).toContain('disabled={!available}');
+    expect(quickViewSource).toContain('aria-label={available ? `Select size ${option}, ${quantity} available` : `Size ${option}, out of stock`}');
+    expect(quickViewSource).toContain('if (!selectedSizeAvailable)');
   });
 
   it('stores size and colour as part of a cart line and merges only identical variants', () => {
