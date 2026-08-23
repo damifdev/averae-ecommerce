@@ -34,6 +34,7 @@ export type Product = {
   colors: string[];
   sizes: string[];
   badge?: "New" | "Best Seller" | "Limited" | "Sale";
+  audiences: ("Women" | "Men" | "Kids" | "Unisex")[];
   description: string;
   image: string;
   secondaryImage: string;
@@ -41,29 +42,44 @@ export type Product = {
 };
 
 export const products: Product[] = [
-  { id: 1, name: "Signature Linen Shirt", category: "Ready to Wear", collection: "The Essentials", price: 68000, color: "Ivory", colors: ["Ivory", "Obsidian"], sizes: ["XS", "S", "M", "L", "XL"], badge: "Best Seller", description: "A softly structured linen shirt with an effortless drape and considered proportions.", image: "/manus-storage/averae-product-linen_48e45a38.jpg", secondaryImage: "/manus-storage/averae-editorial_41cdaa8e.jpg", stock: 18 },
-  { id: 2, name: "Sculpted Shoulder Bag", category: "Accessories", collection: "Objects of Ease", price: 124000, color: "Obsidian", colors: ["Obsidian", "Cognac"], sizes: ["One size"], badge: "Limited", description: "A clean-lined leather shoulder bag designed to move from day to evening.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 7 },
-  { id: 3, name: "Column Dress", category: "Ready to Wear", collection: "Quiet Form", price: 148000, color: "Sand", colors: ["Sand", "Black"], sizes: ["XS", "S", "M", "L"], badge: "New", description: "A fluid column silhouette cut from a tactile crepe with a low-key luminosity.", image: "/manus-storage/averae-editorial_41cdaa8e.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 12 },
-  { id: 4, name: "Everyday Tailored Trouser", category: "Ready to Wear", collection: "The Essentials", price: 92000, compareAt: 110000, color: "Taupe", colors: ["Taupe", "Obsidian"], sizes: ["XS", "S", "M", "L", "XL"], badge: "Sale", description: "An elevated everyday trouser with a relaxed waist and full-length line.", image: "/manus-storage/averae-editorial_41cdaa8e.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 4 },
-  { id: 5, name: "Soft Frame Sunglasses", category: "Accessories", collection: "Objects of Ease", price: 54000, color: "Tortoise", colors: ["Tortoise", "Black"], sizes: ["One size"], badge: "New", description: "A softly squared frame with a warm acetate finish and hand-balanced proportions.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-editorial_41cdaa8e.jpg", stock: 23 },
-  { id: 6, name: "Daylight Knit", category: "Ready to Wear", collection: "Quiet Form", price: 76000, color: "Oat", colors: ["Oat", "Ivory"], sizes: ["XS", "S", "M", "L"], description: "A featherweight knit for the in-between hours.", image: "/manus-storage/averae-product-linen_48e45a38.jpg", secondaryImage: "/manus-storage/averae-product-bag_c6fe5185.jpg", stock: 9 },
+  { id: 1, name: "Signature Linen Shirt", category: "Ready to Wear", collection: "The Essentials", price: 68000, color: "Ivory", colors: ["Ivory", "Obsidian"], sizes: ["XS", "S", "M", "L", "XL"], badge: "Best Seller", audiences: ["Women", "Men", "Unisex"], description: "A softly structured linen shirt with an effortless drape and considered proportions.", image: "/manus-storage/averae-product-linen_48e45a38.jpg", secondaryImage: "/manus-storage/averae-editorial_41cdaa8e.jpg", stock: 18 },
+  { id: 2, name: "Sculpted Shoulder Bag", category: "Accessories", collection: "Objects of Ease", price: 124000, color: "Obsidian", colors: ["Obsidian", "Cognac"], sizes: ["One size"], badge: "Limited", audiences: ["Women", "Men", "Unisex"], description: "A clean-lined leather shoulder bag designed to move from day to evening.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 7 },
+  { id: 3, name: "Column Dress", category: "Ready to Wear", collection: "Quiet Form", price: 148000, color: "Sand", colors: ["Sand", "Black"], sizes: ["XS", "S", "M", "L"], badge: "New", audiences: ["Women", "Unisex"], description: "A fluid column silhouette cut from a tactile crepe with a low-key luminosity.", image: "/manus-storage/averae-editorial_41cdaa8e.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 12 },
+  { id: 4, name: "Everyday Tailored Trouser", category: "Ready to Wear", collection: "The Essentials", price: 92000, compareAt: 110000, color: "Taupe", colors: ["Taupe", "Obsidian"], sizes: ["XS", "S", "M", "L", "XL"], badge: "Sale", audiences: ["Women", "Men", "Unisex"], description: "An elevated everyday trouser with a relaxed waist and full-length line.", image: "/manus-storage/averae-editorial_41cdaa8e.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 4 },
+  { id: 5, name: "Soft Frame Sunglasses", category: "Accessories", collection: "Objects of Ease", price: 54000, color: "Tortoise", colors: ["Tortoise", "Black"], sizes: ["One size"], badge: "New", audiences: ["Women", "Men", "Unisex"], description: "A softly squared frame with a warm acetate finish and hand-balanced proportions.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-editorial_41cdaa8e.jpg", stock: 23 },
+  { id: 6, name: "Daylight Knit", category: "Ready to Wear", collection: "Quiet Form", price: 76000, color: "Oat", colors: ["Oat", "Ivory"], sizes: ["XS", "S", "M", "L"], audiences: ["Women", "Men", "Unisex"], description: "A featherweight knit for the in-between hours.", image: "/manus-storage/averae-product-linen_48e45a38.jpg", secondaryImage: "/manus-storage/averae-product-bag_c6fe5185.jpg", stock: 9 },
+  { id: 7, name: "Grounded Leather Sandal", category: "Shoes", collection: "Grounded Forms", price: 62000, color: "Cocoa", colors: ["Cocoa", "Obsidian"], sizes: ["36", "37", "38", "39", "40", "41", "42"], badge: "New", audiences: ["Women", "Men", "Unisex"], description: "A considered leather sandal with a sculpted footbed and an easy everyday line.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 16 },
+  { id: 8, name: "Sculptural Beaded Collar", category: "Jewelry", collection: "Objects of Ease", price: 88000, color: "Amber", colors: ["Amber", "Obsidian"], sizes: ["One size"], badge: "Limited", audiences: ["Women", "Men", "Unisex"], description: "A hand-finished collar that brings graphic rhythm and warmth to a simple silhouette.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-editorial_41cdaa8e.jpg", stock: 5 },
+  { id: 9, name: "Soft Carryall Tote", category: "Bags", collection: "Objects of Ease", price: 136000, color: "Cognac", colors: ["Cognac", "Obsidian"], sizes: ["One size"], badge: "Best Seller", audiences: ["Women", "Men", "Unisex"], description: "A generous carryall with softened structure for long days and light travel.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-marketplace-hero_ccb2d39f.jpg", stock: 11 },
+  { id: 10, name: "Quiet Hours Watch", category: "Watches", collection: "The Essentials", price: 156000, color: "Obsidian", colors: ["Obsidian", "Cognac"], sizes: ["One size"], badge: "Limited", audiences: ["Women", "Men", "Unisex"], description: "A minimal timepiece with a tactile strap and a calm, architectural face.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 6 },
+  { id: 11, name: "Kora Body Ritual Set", category: "Beauty & Lifestyle", collection: "Daily Rituals", price: 48000, color: "Oat", colors: ["Oat", "Amber"], sizes: ["One size"], badge: "New", audiences: ["Women", "Men", "Unisex"], description: "A considered body-care ritual for slower mornings and softer evenings.", image: "/manus-storage/averae-editorial_41cdaa8e.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 20 },
+  { id: 12, name: "Daybreak Cotton Set", category: "Ready to Wear", collection: "Little Essentials", price: 55000, color: "Ivory", colors: ["Ivory", "Oat"], sizes: ["2Y", "4Y", "6Y", "8Y", "10Y"], badge: "New", audiences: ["Kids"], description: "A soft cotton set designed for movement, comfort and everyday expression.", image: "/manus-storage/averae-marketplace-hero_ccb2d39f.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 14 },
 ];
 
-export const marketplaceCategories = [
+export const audienceCategories = [
   { slug: 'women', label: 'Women', description: 'Fashion, shoes, bags, accessories and more.', image: '/manus-storage/averae-editorial_41cdaa8e.jpg' },
   { slug: 'men', label: 'Men', description: 'Clothing, footwear, watches, accessories and more.', image: '/manus-storage/averae-product-linen_48e45a38.jpg' },
   { slug: 'kids', label: 'Kids', description: 'Clothing, footwear and accessories.', image: '/manus-storage/averae-product-bag_c6fe5185.jpg' },
-  { slug: 'jewelry', label: 'Jewelry', description: 'Necklaces, bracelets, rings, earrings and more.', image: '/manus-storage/averae-product-bag_c6fe5185.jpg' },
+  { slug: 'unisex', label: 'Unisex', description: 'Considered pieces made for every expression.', image: '/manus-storage/averae-marketplace-hero_ccb2d39f.jpg' },
+] as const;
+
+export const productCategories = [
+  { slug: 'clothing', label: 'Clothing', description: 'Fluid layers, tailoring and everyday essentials.', image: '/manus-storage/averae-product-linen_48e45a38.jpg' },
   { slug: 'shoes', label: 'Shoes', description: 'Sneakers, heels, sandals, boots and more.', image: '/manus-storage/averae-product-linen_48e45a38.jpg' },
   { slug: 'bags', label: 'Bags', description: 'Handbags, backpacks, crossbody bags and more.', image: '/manus-storage/averae-product-bag_c6fe5185.jpg' },
-  { slug: 'accessories', label: 'Accessories', description: 'Watches, sunglasses, belts, hats and more.', image: '/manus-storage/averae-editorial_41cdaa8e.jpg' },
+  { slug: 'jewelry', label: 'Jewelry', description: 'Necklaces, bracelets, rings, earrings and more.', image: '/manus-storage/averae-product-bag_c6fe5185.jpg' },
+  { slug: 'accessories', label: 'Accessories', description: 'Sunglasses, belts, hats and finishing touches.', image: '/manus-storage/averae-editorial_41cdaa8e.jpg' },
+  { slug: 'watches', label: 'Watches', description: 'Timepieces with a quiet point of view.', image: '/manus-storage/averae-product-bag_c6fe5185.jpg' },
   { slug: 'beauty-lifestyle', label: 'Beauty & Lifestyle', description: 'Objects and rituals for everyday expression.', image: '/manus-storage/averae-product-linen_48e45a38.jpg' },
 ] as const;
 
+export const marketplaceCategories = [...audienceCategories, ...productCategories] as const;
+
 export const trendItems = [
   { label: 'Trending', title: 'The new uniform', description: 'Relaxed tailoring, tactile layers and considered ease.', productId: 1 },
-  { label: "Editor's Pick", title: 'Soft structure', description: 'Pieces that move between work, weekend and everywhere after.', productId: 3 },
-  { label: 'Just In', title: 'Objects of ease', description: 'Accessories that finish the look without overstatement.', productId: 2 },
+  { label: 'New', title: 'Soft structure', description: 'Pieces that move between work, weekend and everywhere after.', productId: 3 },
+  { label: "Editor's Pick", title: 'Objects of ease', description: 'Accessories that finish the look without overstatement.', productId: 2 },
+  { label: 'Popular', title: 'The finishing touch', description: 'Small details that make the everyday feel intentional.', productId: 5 },
 ] as const;
 
 export const editorialEntries = [
@@ -83,8 +99,8 @@ export const heroContent = {
   eyebrow: 'Discover · Explore · Express · Shop',
   title: 'Discover what’s next.',
   description: 'Fashion, culture and style curated for everyone.',
-  primaryCta: 'Shop the latest',
-  secondaryCta: 'Explore trends',
+  primaryCta: 'SHOP NOW',
+  secondaryCta: 'EXPLORE TRENDS',
 } as const;
 
 export const formatPrice = (value: number) => `${brand.currency}${value.toLocaleString("en-NG")}`;

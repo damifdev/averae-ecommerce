@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { brand, featuredLook, formatPrice, marketplaceCategories, products } from '../client/src/lib/brand';
+import { audienceCategories, brand, editorialEntries, featuredLook, formatPrice, heroContent, productCategories, products, trendItems } from '../client/src/lib/brand';
 
 describe('AVERAE catalog foundation', () => {
   it('uses the configured Nigerian currency formatter', () => {
@@ -12,10 +12,30 @@ describe('AVERAE catalog foundation', () => {
     expect(products.every(product => product.sizes.length > 0 && product.colors.length > 0)).toBe(true);
   });
 
-  it('defines the inclusive marketplace pathways and linked Shop the Look products', () => {
-    expect(marketplaceCategories.map(category => category.label)).toEqual([
-      'Women', 'Men', 'Kids', 'Jewelry', 'Shoes', 'Bags', 'Accessories', 'Beauty & Lifestyle',
+  it('defines separate audience and product-category pathways with linked Shop the Look products', () => {
+    expect(audienceCategories.map(category => category.label)).toEqual(['Women', 'Men', 'Kids', 'Unisex']);
+    expect(audienceCategories.map(category => category.slug)).toEqual(['women', 'men', 'kids', 'unisex']);
+    expect(productCategories.map(category => category.label)).toEqual([
+      'Clothing', 'Shoes', 'Bags', 'Jewelry', 'Accessories', 'Watches', 'Beauty & Lifestyle',
+    ]);
+    expect(productCategories.map(category => category.slug)).toEqual([
+      'clothing', 'shoes', 'bags', 'jewelry', 'accessories', 'watches', 'beauty-lifestyle',
     ]);
     expect(featuredLook.productIds.every(id => products.some(product => product.id === id))).toBe(true);
+  });
+
+  it('exposes distinct homepage discovery journeys and actionable trend/editorial links', () => {
+    expect(heroContent.primaryCta).toBe('SHOP NOW');
+    expect(heroContent.secondaryCta).toBe('EXPLORE TRENDS');
+    expect(trendItems).toHaveLength(4);
+    expect(trendItems.every(item => ['Trending', 'New', "Editor's Pick", 'Popular'].includes(item.label))).toBe(true);
+    expect(trendItems.every(item => products.some(product => product.id === item.productId))).toBe(true);
+    expect(editorialEntries.every(entry => entry.slug.length > 0)).toBe(true);
+  });
+
+  it('keeps every marketplace department browseable in the demo catalog', () => {
+    const departmentLabels = productCategories.map(category => category.label);
+    expect(departmentLabels.every(label => products.some(product => product.category === label || (label === 'Clothing' && product.category === 'Ready to Wear')))).toBe(true);
+    expect(products.some(product => product.audiences.includes('Kids'))).toBe(true);
   });
 });

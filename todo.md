@@ -47,3 +47,23 @@
 - [x] Add truthful progressbar semantics with accessible progress values and status text
 - [x] Replace arbitrary intro progress percentages with truthful indeterminate loading and 100% completion states
 - [x] Re-verify progressbar accessibility values and matching status text
+- [x] UX Part 1: Make the homepage a clear discovery hub with distinct SHOP NOW and EXPLORE TRENDS journeys
+- [x] UX Part 1: Separate Shop by Audience (Women, Men, Kids, Unisex) from Shop by Category (Clothing, Shoes, Bags, Jewelry, Accessories, Watches, Beauty & Lifestyle)
+- [x] UX Part 1: Make all category cards fully clickable and route to the correct browse experience
+- [x] UX Part 1: Add actionable Trending Now product badges, product links, and VIEW ALL TRENDS
+- [x] UX Part 1: Add VIEW ALL NEW ARRIVALS and strengthen discovery hierarchy
+- [x] UX Part 1: Make Shop the Look interactive with product view and add-to-bag actions
+- [x] UX Part 1: Distinguish The Áveraẹ Edit editorial content with READ ARTICLE or EXPLORE THE EDIT actions
+- [x] UX Part 1: Verify Shop, Trends, Search, Categories, Inspiration, and responsive click journeys
+- [x] Fix marketplace brand test expectations for the separate audience and product category arrays
+- [x] Fix audience query routing so Women, Men, Kids, and Unisex cards show the intended filtered shop results
+- [x] Normalize homepage category query slugs in Shop.tsx so all category cards, including Beauty & Lifestyle, map to the intended visible filter state and browse experience
+- [x] Verify and document the remaining UX Part 1 journeys: search flow, all category-card routes, and editorial article/inspiration routes across desktop and mobile
+
+- [x] Expand the demo catalog so the Kids audience and Shoes, Bags, Jewelry, Watches, and Beauty & Lifestyle departments have browseable products
+- [x] Show the active audience or category in the Shop page heading and use correct singular/plural result-count copy
+- [x] Surface the Trends/The Edit discovery hint for generic search terms such as trend, editorial, inspiration, and story
+- [x] Verify every homepage category-card destination on both desktop and mobile, and record the results
+- [x] Verify the actual shop search interaction flow on desktop and mobile, including typing, filtering, and discovery hint behavior
+- [x] Verify editorial inspiration journeys end-to-end on both desktop and mobile, including The Edit to article navigation
+- [x] Verify typed shop-search filtering on desktop and mobile by asserting visible result counts and product-card updates for matching and non-matching queries
