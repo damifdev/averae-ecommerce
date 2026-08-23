@@ -131,3 +131,13 @@
 - [x] Verify responsive filter drawer, selected states, sorting, removable chips, and CLEAR ALL across desktop and mobile
 - [x] Verify purchase-safe product actions and inventory-aware Quick View remain consistent with the Part 2 specification
 - [x] Add or run responsive regression coverage that changes Sort By on desktop and mobile, verifies the selected sort state, and confirms product ordering updates
+- [x] Re-audit Product Detail hierarchy, variant validation, size guide, gallery, actions, supporting information, and post-add confirmation against UX Refinement Part 3
+- [x] Re-audit Wishlist saved-product, availability, variant selection, move-to-bag, removal, price, and empty-state journeys against UX Refinement Part 3
+- [x] Implement and verify Product Detail and Wishlist Part 3 improvements responsively with keyboard and touch accessibility
+- [x] Add regression coverage for Product Detail BUY NOW, CONTINUE SHOPPING, VIEW BAG, and mobile gallery swipe behavior
+- [x] Add keyboard-accessibility verification for Product Detail and Wishlist controls, including variants, size guide, gallery, confirmation, MOVE TO BAG, and remove actions
+- [x] Add or document verifiable wishlist price-state coverage, including supported price-change behavior or an explicit demo-data limitation
+- [x] Add explicit keyboard regression coverage for Product Detail variant selectors, gallery next/previous/thumbnail controls, and confirmation links/actions
+- [x] Add explicit keyboard regression coverage for Wishlist MOVE TO BAG and remove controls, including Enter or Space activation
+- [x] Add a real keyboard interaction regression for Product Detail size and colour controls, gallery controls, and keyboard-reachable confirmation links
+- [x] Add a real keyboard interaction regression for Wishlist MOVE TO BAG and remove controls using Enter or Space

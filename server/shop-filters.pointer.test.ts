@@ -99,7 +99,7 @@ async function runFilterAudit(port: number, mobile: boolean): Promise<FilterAudi
     await command('Page.enable');
     await command('Emulation.setDeviceMetricsOverride', { width: mobile ? 390 : 1280, height: mobile ? 844 : 900, deviceScaleFactor: 1, mobile });
     await command('Page.navigate', { url: `${baseUrl}/shop` });
-    await sleep(1000);
+    await sleep(1800);
 
     let mobileFilterOpened = false;
     if (mobile) {
