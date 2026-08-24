@@ -244,3 +244,10 @@
 - [x] Add a You may also like recommendation section to the editorial mini-cart
 - [x] Trap focus inside the mini-cart and return focus to the originating View Cart button on close
 - [x] Add regression coverage for hotspot mapping and mini-cart enhancements
+- [x] Complete UX Refinement Part 6: standardize Cart/Cart-like language to Bag across storefront commerce UI
+- [x] Refine Bag page product details, variants, quantity, price, remove, save for later, summary, and actions
+- [x] Improve empty Bag state with Shop New Arrivals and Explore Trends actions
+- [x] Refine Checkout with Contact, Delivery, Payment, and Review progress plus edit and step-specific actions
+- [x] Improve order confirmation with order details, delivery information, payment status, and next actions
+- [x] Add Part 6 regression coverage for terminology, bag, checkout, and order confirmation flows
+- [x] Fix mobile checkout step labels so the four-step progress indicator remains readable without overlap

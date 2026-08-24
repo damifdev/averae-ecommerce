@@ -15,8 +15,14 @@ describe('Shop naming and bag clearing', () => {
 
   it('exposes individual removal, undo, and confirmation-backed clear actions on the cart page', () => {
     expect(cartSource).toContain('restoreCartItem');
-    expect(cartSource).toContain("action: {\n        label: 'Undo'");
+    expect(cartSource).toContain("label: 'Undo'");
     expect(cartSource).toContain('data-testid="clear-bag"');
+    expect(cartSource).toContain('Your bag');
+    expect(cartSource).toContain('Your bag is empty.');
+    expect(cartSource).toContain('SHOP NEW ARRIVALS');
+    expect(cartSource).toContain('EXPLORE TRENDS');
+    expect(cartSource).toContain('Save for later');
+    expect(cartSource).toContain('CHECKOUT');
     expect(cartSource).toContain('setClearDialogOpen(true)');
     expect(cartSource).toContain('<ClearBagDialog');
     expect(cartSource).toContain("toast.success('Bag cleared'");

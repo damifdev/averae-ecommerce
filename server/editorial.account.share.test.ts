@@ -31,8 +31,9 @@ describe('editorial account and sharing enhancements', () => {
     expect(discoverySource).toContain('openHotspotId');
     expect(discoverySource).toContain('onPointerDown');
     expect(discoverySource).toContain("event.pointerType === 'touch'");
-    expect(discoverySource).toContain('data-testid="shop-look-view-cart"');
+    expect(discoverySource).toContain('data-testid="shop-look-view-bag"');
     expect(discoverySource).toContain('EditorialMiniCart');
+    expect(discoverySource).toContain('VIEW BAG');
     expect(brandSource).toContain("productId: 7, x: 57, y: 57");
     expect(brandSource).toContain("productId: 2, x: 76, y: 72");
     expect(discoverySource).toContain('setMiniCartOpen(true)');

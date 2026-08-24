@@ -90,7 +90,7 @@ async function auditCartClear(port: number) {
     await evaluate(`document.querySelector('[data-testid="clear-bag-confirm"]')?.click()`);
     await sleep(240);
     const cleared = await evaluate<{ emptyState: boolean; clearVisible: boolean; toastVisible: boolean; persistedCart: string | null; latestItem: string | null }>(`(() => ({
-      emptyState: document.body.textContent?.includes('Your bag is waiting.') ?? false,
+      emptyState: document.body.textContent?.includes('Your bag is empty.') ?? false,
       clearVisible: Boolean(document.querySelector('[data-testid="clear-bag"]')),
       toastVisible: Array.from(document.querySelectorAll('[data-sonner-toast]')).some(toast => toast.textContent?.includes('Bag cleared')),
       persistedCart: localStorage.getItem('averae-cart'),
