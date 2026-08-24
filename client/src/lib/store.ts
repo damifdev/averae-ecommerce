@@ -95,6 +95,10 @@ export function clearCart() {
   return [];
 }
 
+export function restoreCartItem(item: CartItem) {
+  return addToCart(item.id, { size: item.size, color: item.color }, item.quantity);
+}
+
 export function updateCartQuantity(id: number, quantity: number, size = '', color = '') {
   const safeQuantity = Math.floor(quantity);
   const next = getCart().flatMap(item => {

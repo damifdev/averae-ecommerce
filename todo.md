@@ -198,3 +198,7 @@
 - [x] Rename the Shop page heading from SHOP ALL to Discover Áveraẹ
 - [x] Add accessible controls to remove bag selections individually and clear the full bag
 - [x] Add regression coverage for the heading and bag-clearing behavior across responsive layouts
+- [x] Add a temporary Undo action after individual bag item removal
+- [x] Add an accessible confirmation popup before clearing the entire bag
+- [x] Add a smooth bottom success toast after the bag is cleared
+- [x] Extend cart regression coverage for undo, confirmation, toast, and reduced-motion behavior

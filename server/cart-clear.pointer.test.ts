@@ -60,16 +60,45 @@ async function auditCartClear(port: number) {
     expect(seeded.itemText).toBe('Signature Linen Shirt');
     expect(seeded.removeVisible).toBe(true);
 
-    await evaluate(`document.querySelector('[data-testid="clear-bag"]')?.click()`);
+    await evaluate(`document.querySelector('[data-testid^="remove-bag-item-"]')?.click()`);
     await sleep(180);
-    const cleared = await evaluate<{ emptyState: boolean; clearVisible: boolean; persistedCart: string | null; latestItem: string | null }>(`(() => ({
+    const removed = await evaluate<{ undoVisible: boolean; persistedCart: string | null }>(`(() => ({
+      undoVisible: Array.from(document.querySelectorAll('[data-sonner-toast] button')).some(button => button.textContent?.trim() === 'Undo'),
+      persistedCart: localStorage.getItem('averae-cart'),
+    }))()`);
+    expect(removed.undoVisible).toBe(true);
+    expect(removed.persistedCart).toBe('[]');
+
+    await evaluate(`Array.from(document.querySelectorAll('[data-sonner-toast] button')).find(button => button.textContent?.trim() === 'Undo')?.click()`);
+    await sleep(180);
+    const restored = await evaluate<{ itemVisible: boolean; persistedCart: string | null }>(`(() => ({
+      itemVisible: document.body.textContent?.includes('Signature Linen Shirt') ?? false,
+      persistedCart: localStorage.getItem('averae-cart'),
+    }))()`);
+    expect(restored.itemVisible).toBe(true);
+    expect(restored.persistedCart).toContain('"id":1');
+
+    await evaluate(`document.querySelector('[data-testid="clear-bag"]')?.click()`);
+    await sleep(120);
+    const confirmation = await evaluate<{ dialogVisible: boolean; persistedCart: string | null }>(`(() => ({
+      dialogVisible: Boolean(document.querySelector('[data-testid="clear-bag-dialog"]')),
+      persistedCart: localStorage.getItem('averae-cart'),
+    }))()`);
+    expect(confirmation.dialogVisible).toBe(true);
+    expect(confirmation.persistedCart).not.toBe('[]');
+
+    await evaluate(`document.querySelector('[data-testid="clear-bag-confirm"]')?.click()`);
+    await sleep(240);
+    const cleared = await evaluate<{ emptyState: boolean; clearVisible: boolean; toastVisible: boolean; persistedCart: string | null; latestItem: string | null }>(`(() => ({
       emptyState: document.body.textContent?.includes('Your bag is waiting.') ?? false,
       clearVisible: Boolean(document.querySelector('[data-testid="clear-bag"]')),
+      toastVisible: Array.from(document.querySelectorAll('[data-sonner-toast]')).some(toast => toast.textContent?.includes('Bag cleared')),
       persistedCart: localStorage.getItem('averae-cart'),
       latestItem: localStorage.getItem('averae-last-added-cart-item'),
     }))()`);
     expect(cleared.emptyState).toBe(true);
     expect(cleared.clearVisible).toBe(false);
+    expect(cleared.toastVisible).toBe(true);
     expect(cleared.persistedCart).toBe('[]');
     expect(cleared.latestItem).toBeNull();
   } finally {
