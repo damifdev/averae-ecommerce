@@ -14,6 +14,7 @@ export type SavedAddress = {
   city: string;
   region: string;
   phone: string;
+  primary?: boolean;
 };
 
 export type PaymentMethod = {
@@ -22,6 +23,7 @@ export type PaymentMethod = {
   type: 'card' | 'bank';
   last4: string;
   expiry?: string;
+  primary?: boolean;
 };
 
 export const ACCOUNT_STORAGE_KEYS = {

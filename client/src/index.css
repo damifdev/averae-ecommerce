@@ -235,3 +235,16 @@ button:active, a:active { transform: scale(.98); }
 @media (prefers-reduced-motion: reduce) {
   .mini-cart-panel { animation: none; }
 }
+
+@keyframes averae-mobile-drawer-up {
+  from { opacity: 0; transform: translateY(1.5rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mobile-drawer-panel { animation: averae-mobile-drawer-up 260ms cubic-bezier(.23, 1, .32, 1) both; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-drawer-panel { animation: none; transform: none; }
+}

@@ -7,6 +7,7 @@ const account = readFileSync(resolve(root, 'client/src/pages/Account.tsx'), 'utf
 const analytics = readFileSync(resolve(root, 'client/src/lib/analytics.ts'), 'utf8');
 const header = readFileSync(resolve(root, 'client/src/components/SiteHeader.tsx'), 'utf8');
 const home = readFileSync(resolve(root, 'client/src/pages/Home.tsx'), 'utf8');
+const styles = readFileSync(resolve(root, 'client/src/index.css'), 'utf8');
 
 describe('account editing and engagement analytics contracts', () => {
   it('provides dedicated address, payment, and preference editing flows', () => {
@@ -19,6 +20,23 @@ describe('account editing and engagement analytics contracts', () => {
     expect(account).toContain('writeStoredJson(ACCOUNT_STORAGE_KEYS.addresses');
     expect(account).toContain('writeStoredJson(ACCOUNT_STORAGE_KEYS.payments');
     expect(account).toContain('writeStoredJson(ACCOUNT_STORAGE_KEYS.preferences');
+  });
+
+  it('protects destructive account actions and exposes primary controls', () => {
+    expect(account).toContain('AlertDialog');
+    expect(account).toContain('Remove {pendingRemoval?.type');
+    expect(account).toContain('setPendingRemoval({ type: \'address\'');
+    expect(account).toContain('setPendingRemoval({ type: \'payment\'');
+    expect(account).toContain('setPrimaryAddress');
+    expect(account).toContain('setPrimaryPayment');
+    expect(analytics).toContain('primary?: boolean');
+  });
+
+  it('keeps mobile navigation animated and auto-closing after link selection', () => {
+    expect(header).toContain('mobile-drawer-panel');
+    expect(header).toContain('onNavigate={closeAll}');
+    expect(styles).toContain('.mobile-drawer-panel');
+    expect(styles).toContain('prefers-reduced-motion: reduce');
   });
 
   it('keeps analytics events non-identifying and covers mobile navigation and footer links', () => {

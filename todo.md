@@ -266,3 +266,7 @@
 - [x] Track mobile navigation engagement events
 - [x] Track footer link click engagement events
 - [x] Add regression coverage for account editing persistence and engagement analytics
+- [x] Add confirmation modals before deleting saved addresses or payment methods
+- [x] Add visible Primary badges and controls for saved addresses and payment methods
+- [x] Add reduced-motion-aware slide-up animation to the mobile navigation drawer and close it after link selection
+- [x] Add regression coverage for delete confirmations, primary controls, and mobile drawer lifecycle
