@@ -13,6 +13,7 @@ import SavedItems from './pages/SavedItems';
 import Admin from './pages/Admin';
 import Checkout from './pages/Checkout';
 import { Edit, EditArticle, Trends } from './pages/Discovery';
+import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 
 function Router() {
@@ -29,6 +30,7 @@ function Router() {
     <Route path="/trends" component={Trends} />
     <Route path="/edit" component={Edit} />
     <Route path="/edit/:slug" component={EditArticle} />
+    <Route path="/contact" component={Contact} />
     <Route component={NotFound} />
   </Switch>;
 }

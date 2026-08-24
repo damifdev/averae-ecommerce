@@ -313,3 +313,11 @@
 - [x] Add regression coverage for search quick view, View Bag confirmation, and analytics events
 - [x] Run TypeScript, Vitest, production build, and responsive visual verification
 - [x] Save the verified search quick-view checkpoint
+
+- [x] Create dedicated responsive Contact Áveraẹ page with approved shared storefront styling
+- [x] Add contact information, contact reasons, FAQ shortcut, and order-support pathway
+- [x] Add validated contact form with required fields, email format, character limits, and SEND MESSAGE feedback
+- [x] Route the footer Contact link to the dedicated Contact page
+- [x] Add Contact page regression coverage for routing, validation, submission feedback, and support links
+- [x] Run TypeScript, Vitest, production build, and responsive visual verification for Contact
+- [x] Save the verified Contact page checkpoint
