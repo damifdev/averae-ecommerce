@@ -306,3 +306,10 @@
 - [x] Add regression coverage for discovery-page quick view on desktop and mobile
 - [x] Run TypeScript, Vitest, production build, and responsive visual verification for discovery quick view
 - [x] Save the verified discovery quick-view checkpoint
+
+- [x] Add purchase-safe quick-view actions to search result product cards
+- [x] Add a direct VIEW BAG action to quick-view add-success confirmation
+- [x] Track quick-view opens, variant selections, and add-to-bag conversions with privacy-conscious analytics
+- [x] Add regression coverage for search quick view, View Bag confirmation, and analytics events
+- [x] Run TypeScript, Vitest, production build, and responsive visual verification
+- [x] Save the verified search quick-view checkpoint

@@ -27,8 +27,11 @@ describe('Final UX audit contracts', () => {
     expect(discovery).toContain('setActiveCategory(matched ?? \'All\')');
   });
 
-  it('exposes purchase-safe quick view on discovery product surfaces', () => {
+  it('exposes purchase-safe quick view on discovery and search product surfaces', () => {
     const discovery = read('pages/Discovery.tsx');
+    const shop = read('pages/Shop.tsx');
+    const quickView = read('components/QuickView.tsx');
+    const analytics = read('lib/analytics.ts');
     expect(discovery).toContain('data-testid={`discovery-quick-view-${product.id}`}');
     expect(discovery).toContain('QUICK VIEW');
     expect(discovery).toContain('<QuickView product={product}');
@@ -36,6 +39,13 @@ describe('Final UX audit contracts', () => {
     expect(discovery).toContain('setQuickViewProduct(product)');
     expect(discovery).toContain('<QuickView product={quickViewProduct}');
     expect(discovery).toContain('addToCart(product.id, { size, color })');
+    expect(shop).toContain("surface={query.trim() ? 'search_results' : 'shop'}");
+    expect(shop).toContain('onQuickView={setQuickViewProduct}');
+    expect(quickView).toContain('data-testid="quick-view-view-bag"');
+    expect(quickView).toContain('href="/cart"');
+    expect(analytics).toContain("'quick_view_open'");
+    expect(analytics).toContain("'quick_view_variant_select'");
+    expect(analytics).toContain("'quick_view_add_to_bag'");
   });
 
   it('provides useful recovery states without fabricated customer content', () => {

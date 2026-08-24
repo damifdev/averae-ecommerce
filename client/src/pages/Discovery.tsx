@@ -61,7 +61,7 @@ function ProductTile({ product, badge }: { product: Product; badge?: string }) {
     </div>
     <Link href={`/product/${product.id}`} aria-label={`View details for ${product.name}`} className="mt-4 flex justify-between gap-3 text-sm"><span className="min-w-0 truncate">{product.name}</span><span className="shrink-0">{formatPrice(product.price)}</span></Link>
     <p className="mt-1 text-xs text-[#866F62]">{product.brand} · {product.color}</p>
-    <QuickView product={product} open={quickViewOpen} onOpenChange={setQuickViewOpen} onAddToBag={handleAddToBag} />
+    <QuickView product={product} open={quickViewOpen} surface="discovery" onOpenChange={setQuickViewOpen} onAddToBag={handleAddToBag} />
   </article>;
 }
 
@@ -119,7 +119,7 @@ function ShopTheLook({ productIds, image, title, description, audience, hotspots
         <div className="mt-3 flex min-h-10 flex-wrap items-center gap-3" aria-live="polite"><p className="text-xs text-[#866F62]">{status}</p>{addedProduct && <button ref={viewCartRef} type="button" data-testid="shop-look-view-bag" onClick={() => setMiniCartOpen(true)} className="action-link-dark inline-flex items-center gap-2 border-b border-[#382820] pb-1 text-[10px] uppercase tracking-[.14em]">VIEW BAG <ArrowRight size={13} /></button>}</div>
       </div>
     </div>
-  </section><EditorialMiniCart open={miniCartOpen} onOpenChange={setMiniCartOpen} returnFocusRef={viewCartRef} /><QuickView product={quickViewProduct} open={Boolean(quickViewProduct)} onOpenChange={open => { if (!open) setQuickViewProduct(null); }} onAddToBag={(product, size, color) => { addToCart(product.id, { size, color }); setStatus(`${product.name} added to your bag.`); toast.success('Added to your bag', { description: product.name, duration: 2500, position: 'bottom-center' }); }} /></>;
+  </section><EditorialMiniCart open={miniCartOpen} onOpenChange={setMiniCartOpen} returnFocusRef={viewCartRef} /><QuickView product={quickViewProduct} open={Boolean(quickViewProduct)} surface="shop_the_look" onOpenChange={open => { if (!open) setQuickViewProduct(null); }} onAddToBag={(product, size, color) => { addToCart(product.id, { size, color }); setStatus(`${product.name} added to your bag.`); toast.success('Added to your bag', { description: product.name, duration: 2500, position: 'bottom-center' }); }} /></>;
 }
 
 function ShopTheLookWithCart(props: React.ComponentProps<typeof ShopTheLook>) {

@@ -1,4 +1,4 @@
-export type EngagementEvent = 'mobile_nav_click' | 'mobile_drawer_open' | 'footer_link_click' | 'account_section_save';
+export type EngagementEvent = 'mobile_nav_click' | 'mobile_drawer_open' | 'footer_link_click' | 'account_section_save' | 'quick_view_open' | 'quick_view_variant_select' | 'quick_view_add_to_bag';
 
 export type AccountPreference = {
   style: 'minimal' | 'expressive' | 'heritage';
