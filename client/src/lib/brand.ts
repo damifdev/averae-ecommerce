@@ -99,11 +99,37 @@ export const trendCollections = [
   { slug: 'editors-picks', label: "Editor's Picks", title: 'The considered edit', description: 'A focused selection chosen for texture, proportion and everyday relevance.', keywords: 'editors picks considered edit', productIds: [1, 2, 3, 11], shopHref: '/shop?sort=popular' },
 ] as const;
 
-export const editorialEntries = [
-  { slug: 'styles-defining-this-season', label: 'The Áveraẹ Edit', title: '5 styles defining this season', description: 'A visual guide to the pieces and proportions shaping what comes next.', image: '/manus-storage/averae-editorial_41cdaa8e.jpg' },
-  { slug: 'rooted-here-worn-everywhere', label: 'Cultural spotlight', title: 'Rooted here. Worn everywhere.', description: 'Contemporary African fashion, creators and a global point of view.', image: '/manus-storage/averae-marketplace-hero_ccb2d39f.jpg' },
-  { slug: 'how-to-style-linen', label: 'Style guide', title: 'How to style linen this season', description: 'Five pieces, endless combinations and a softer way to dress.', image: '/manus-storage/averae-product-linen_48e45a38.jpg' },
+export const editorialTaxonomy = [
+  'Trends', 'Style Guides', 'Fashion', 'Culture', 'African Fashion', 'Accessories', 'Inspiration', 'Shopping Guides',
 ] as const;
+
+export type EditorialEntry = {
+  slug: string;
+  label: string;
+  category: typeof editorialTaxonomy[number];
+  title: string;
+  description: string;
+  image: string;
+  date: string;
+  readingTime: string;
+  author: string;
+  content: string[];
+  relatedProductIds: number[];
+  relatedArticleSlugs: string[];
+  lookProductIds: number[];
+  audience: 'Women' | 'Men' | 'Kids' | 'Unisex';
+};
+
+export const editorialEntries: EditorialEntry[] = [
+  { slug: 'styles-defining-this-season', label: 'The Áveraẹ Edit', category: 'Trends', title: '5 styles defining this season', description: 'A visual guide to the pieces and proportions shaping what comes next.', image: '/manus-storage/averae-editorial_41cdaa8e.jpg', date: '22 August 2026', readingTime: '6 min read', author: 'The Áveraẹ Editors', content: ['Style is a conversation between where we are and where we are going. This edit brings together pieces, proportions and perspectives that feel relevant now, while leaving room for personal expression.', 'Look for softened tailoring, tactile neutrals and accessories that add rhythm without asking for attention. The result is a wardrobe with movement, clarity and room to make each piece your own.'], relatedProductIds: [1, 3, 4], relatedArticleSlugs: ['how-to-style-linen', 'the-accessories-that-finish-a-look'], lookProductIds: [1, 4, 7], audience: 'Unisex' },
+  { slug: 'rooted-here-worn-everywhere', label: 'Cultural spotlight', category: 'African Fashion', title: 'Rooted here. Worn everywhere.', description: 'Contemporary African fashion, creators and a global point of view.', image: '/manus-storage/averae-marketplace-hero_ccb2d39f.jpg', date: '15 August 2026', readingTime: '8 min read', author: 'The Áveraẹ Editors', content: ['African fashion has always carried a conversation between place, memory and possibility. Today, designers are translating those references into silhouettes that travel without losing their sense of origin.', 'The pieces in this story value material, proportion and process. They invite a slower kind of looking, then offer an easy way into everyday dressing.'], relatedProductIds: [2, 7, 8], relatedArticleSlugs: ['styles-defining-this-season', 'a-guide-to-considered-gifting'], lookProductIds: [2, 7, 8], audience: 'Unisex' },
+  { slug: 'how-to-style-linen', label: 'Style guide', category: 'Style Guides', title: 'How to style linen this season', description: 'Five pieces, endless combinations and a softer way to dress.', image: '/manus-storage/averae-product-linen_48e45a38.jpg', date: '08 August 2026', readingTime: '5 min read', author: 'Nia Okafor', content: ['Linen works best when it is allowed to breathe. Pair a softly structured shirt with a full-length trouser, then let texture do the work of creating contrast.', 'For a more considered finish, introduce one sculptural accessory and keep the palette close to ivory, oat, cocoa and obsidian. The look is relaxed, but never accidental.'], relatedProductIds: [1, 4, 6], relatedArticleSlugs: ['styles-defining-this-season', 'the-accessories-that-finish-a-look'], lookProductIds: [1, 4, 2], audience: 'Women' },
+  { slug: 'the-accessories-that-finish-a-look', label: 'Objects of ease', category: 'Accessories', title: 'The accessories that finish a look', description: 'Quietly graphic pieces that bring intention to everyday dressing.', image: '/manus-storage/averae-product-bag_c6fe5185.jpg', date: '31 July 2026', readingTime: '4 min read', author: 'The Áveraẹ Editors', content: ['The right accessory does not compete with a look; it gives the eye somewhere to land. Think softened leather, warm metal and frames with a little architectural tension.', 'Build from one anchor piece, then add only what helps the silhouette feel complete. Ease is the point.'], relatedProductIds: [2, 5, 9], relatedArticleSlugs: ['styles-defining-this-season', 'rooted-here-worn-everywhere'], lookProductIds: [2, 5, 9], audience: 'Unisex' },
+  { slug: 'dressing-for-the-in-between', label: 'Everyday dressing', category: 'Fashion', title: 'Dressing for the in-between', description: 'A practical edit for days that refuse to stay in one category.', image: '/manus-storage/averae-editorial_41cdaa8e.jpg', date: '24 July 2026', readingTime: '7 min read', author: 'Nia Okafor', content: ['Some of the best looks begin with an uncertain plan. A breathable base, a tailored layer and one useful object can move comfortably between work, weekends and everywhere after.', 'Choose pieces that layer without bulk and colours that carry across the day. The most versatile wardrobe is not the largest one; it is the one that keeps offering new combinations.'], relatedProductIds: [1, 4, 6], relatedArticleSlugs: ['how-to-style-linen', 'a-guide-to-considered-gifting'], lookProductIds: [1, 6, 10], audience: 'Men' },
+  { slug: 'a-guide-to-considered-gifting', label: 'The considered edit', category: 'Shopping Guides', title: 'A guide to considered gifting', description: 'Useful objects and small rituals chosen with another person in mind.', image: '/manus-storage/averae-marketplace-hero_ccb2d39f.jpg', date: '18 July 2026', readingTime: '5 min read', author: 'The Áveraẹ Editors', content: ['A thoughtful gift begins with attention. Look for objects that meet a real ritual, then choose the detail that makes it feel personal: a warm colour, an easy shape or a material with presence.', 'This selection is designed to be useful, beautiful and easy to live with long after the wrapping is gone.'], relatedProductIds: [2, 10, 11], relatedArticleSlugs: ['the-accessories-that-finish-a-look', 'rooted-here-worn-everywhere'], lookProductIds: [2, 10, 11], audience: 'Unisex' },
+  { slug: 'small-rituals-big-inspiration', label: 'The daily edit', category: 'Inspiration', title: 'Small rituals, big inspiration', description: 'The everyday details that make personal style feel like your own.', image: '/manus-storage/averae-product-linen_48e45a38.jpg', date: '10 July 2026', readingTime: '3 min read', author: 'Nia Okafor', content: ['Personal style is often built in small decisions: the texture you reach for, the object you carry, the colour that changes your posture. These details make a look feel lived in.', 'Start with one familiar piece, then introduce one new point of view. Inspiration is more useful when it can become part of the day.'], relatedProductIds: [5, 6, 11], relatedArticleSlugs: ['dressing-for-the-in-between', 'the-accessories-that-finish-a-look'], lookProductIds: [5, 6, 11], audience: 'Kids' },
+  { slug: 'the-new-everyday', label: 'The wardrobe note', category: 'Culture', title: 'The new everyday', description: 'Why ease, utility and expression are finding a new balance.', image: '/manus-storage/averae-editorial_41cdaa8e.jpg', date: '02 July 2026', readingTime: '6 min read', author: 'The Áveraẹ Editors', content: ['The new everyday is not a uniform. It is a way of choosing: fewer compromises, more useful beauty and silhouettes that make space for real movement.', 'Across fashion and culture, the most compelling ideas connect utility with feeling. That is where a wardrobe starts to sound like its wearer.'], relatedProductIds: [1, 2, 10], relatedArticleSlugs: ['styles-defining-this-season', 'small-rituals-big-inspiration'], lookProductIds: [1, 2, 10], audience: 'Unisex' },
+];
 
 export const featuredLook = {
   title: 'The everyday statement',
@@ -111,6 +137,13 @@ export const featuredLook = {
   image: '/manus-storage/averae-marketplace-hero_ccb2d39f.jpg',
   productIds: [1, 2, 4],
 } as const;
+
+export const lookCollections = [
+  { slug: 'womens-look', audience: 'Women' as const, title: 'A softer point of view', description: 'Fluid layers and warm accessories for an easy, expressive day.', image: '/manus-storage/averae-editorial_41cdaa8e.jpg', productIds: [1, 3, 2] },
+  { slug: 'mens-look', audience: 'Men' as const, title: 'The relaxed uniform', description: 'Tactile essentials with enough structure for every direction.', image: '/manus-storage/averae-product-linen_48e45a38.jpg', productIds: [1, 4, 10] },
+  { slug: 'kids-look', audience: 'Kids' as const, title: 'Made for movement', description: 'Soft cotton and everyday pieces designed to keep up.', image: '/manus-storage/averae-marketplace-hero_ccb2d39f.jpg', productIds: [12, 11, 5] },
+  { slug: 'unisex-look', audience: 'Unisex' as const, title: 'Open expression', description: 'A considered mix of texture, proportion and useful objects.', image: '/manus-storage/averae-product-bag_c6fe5185.jpg', productIds: [1, 2, 7] },
+] as const;
 
 export const heroContent = {
   eyebrow: 'Discover · Explore · Express · Shop',

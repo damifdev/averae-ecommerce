@@ -202,3 +202,21 @@
 - [x] Add an accessible confirmation popup before clearing the entire bag
 - [x] Add a smooth bottom success toast after the bag is cleared
 - [x] Extend cart regression coverage for undo, confirmation, toast, and reduced-motion behavior
+- [x] Add Áveraẹ Edit taxonomy navigation for Trends, Style Guides, Fashion, Culture, African Fashion, Accessories, Inspiration, and Shopping Guides
+- [x] Enrich article cards with image, category, title, description, reading time, date, and READ ARTICLE CTA
+- [x] Upgrade article pages with breadcrumbs, editorial metadata, content structure, related products, and related articles
+- [x] Add contextual SHOP THIS LOOK and SHOP RELATED PRODUCTS pathways
+- [x] Build audience-aware Shop the Look product identification with individual ADD TO BAG and ADD ALL TO BAG actions for men, women, kids, and unisex looks
+- [x] Add Part 5 editorial regression tests and responsive verification
+- [x] Add The Áveraẹ Edit taxonomy navigation for Trends, Style Guides, Fashion, Culture, African Fashion, Accessories, Inspiration, and Shopping Guides
+- [x] Enrich article cards with image, category, title, description, reading time, date, and READ ARTICLE CTA
+- [x] Upgrade article pages with breadcrumbs, editorial metadata, content structure, related products, and related articles
+- [x] Add contextual SHOP THIS LOOK and SHOP RELATED PRODUCTS pathways
+- [x] Build audience-aware Shop the Look product identification with individual ADD TO BAG and ADD ALL TO BAG actions for men, women, kids, and unisex looks
+- [x] Add Part 5 editorial regression tests and responsive verification
+- [x] Add The Áveraẹ Edit taxonomy navigation for Trends, Style Guides, Fashion, Culture, African Fashion, Accessories, Inspiration, and Shopping Guides
+- [x] Enrich article cards with image, category, title, description, reading time, date, and READ ARTICLE CTA
+- [x] Upgrade article pages with breadcrumbs, editorial metadata, content structure, related products, and related articles
+- [x] Add contextual SHOP THIS LOOK and SHOP RELATED PRODUCTS pathways
+- [x] Build audience-aware Shop the Look product identification with individual ADD TO BAG and ADD ALL TO BAG actions for men, women, kids, and unisex looks
+- [x] Add Part 5 editorial regression tests and responsive verification
