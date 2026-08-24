@@ -380,3 +380,9 @@
 - [x] Add regression coverage for FAQ deep links, helpfulness feedback, Size Guide content, and routing
 - [x] Run TypeScript, Vitest, production build, and responsive visual verification
 - [x] Save the verified FAQ and Size Guide checkpoint
+
+- [x] Show a brief accessible “Thank you for your feedback” toast after FAQ thumbs-up or thumbs-down selection
+- [x] Preserve existing FAQ helpfulness analytics when showing the toast
+- [x] Add regression coverage for the feedback toast on both feedback choices
+- [x] Run TypeScript, Vitest, production build, and verification
+- [x] Save the verified FAQ feedback toast checkpoint

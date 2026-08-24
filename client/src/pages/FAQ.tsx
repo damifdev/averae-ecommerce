@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight, Check, Copy, Search, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { Link } from 'wouter';
+import { toast } from 'sonner';
 import SiteHeader from '@/components/SiteHeader';
 import BackToTop from '@/components/BackToTop';
 import { trackEngagement } from '@/lib/analytics';
@@ -80,6 +81,7 @@ export default function FAQ() {
   const chooseFeedback = (id: string, value: Helpfulness) => {
     setFeedback(current => ({ ...current, [id]: value }));
     trackEngagement('faq_helpfulness', { question_id: id, value });
+    toast.success('Thank you for your feedback', { duration: 2200 });
   };
 
   return <div className="min-h-screen bg-[#F6F0E6] text-[#382820]"><SiteHeader /><main>
