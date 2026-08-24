@@ -3,6 +3,7 @@ import SiteHeader from '@/components/SiteHeader';
 import BackToTop from '@/components/BackToTop';
 import MeasurementAssistant from '@/components/MeasurementAssistant';
 import ProductSizeChart from '@/components/ProductSizeChart';
+import SupportLinks from '@/components/SupportLinks';
 import {
   ArrowLeft,
   ChevronDown,
@@ -231,6 +232,7 @@ export default function ProductDetail() {
           </div>
 
           {product.sizeChart && <div className="mt-7"><ProductSizeChart chart={product.sizeChart} compact /></div>}
+          <SupportLinks className="mt-5" includeSizeGuide label="More about your order" />
 
           <div className="mt-7 flex gap-3">
             <div className="flex items-center border border-[#D7C2A7]" aria-label="Quantity selector">

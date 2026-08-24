@@ -37,7 +37,7 @@ describe('Returns page contracts', () => {
     expect(returns).toContain('CONTACT SUPPORT');
     expect(returns).toContain('CONTACT US');
     expect(returns).toContain('VIEW FAQs');
-    expect(returns).toContain('href="/contact#faqs"');
+    expect(returns).toContain('href="/faq"');
     expect((returns.match(/<details/g) || []).length).toBeGreaterThanOrEqual(3);
   });
 });

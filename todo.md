@@ -410,3 +410,15 @@
 - [x] Add regression coverage for metadata charts, assistant persistence, conversions, and product-page integration
 - [x] Run TypeScript, Vitest, production build, and responsive visual verification
 - [x] Save the verified sizing-system checkpoint
+
+- [x] Audit the support UX specification against current routes, CTAs, and terminology
+- [x] Add contextual Delivery and Returns links to Product Detail, Bag, and Checkout flows
+- [x] Add Track Order, View Order, Delivery, and Contact Support links to order confirmation
+- [x] Add Track Order, Delivery Information, and Contact Support links to Account order details
+- [x] Verify and complete Contact, Delivery, Returns, Size Guide, and FAQ contextual shortcuts
+- [x] Audit footer and navigation links for dead ends and placeholder destinations
+- [x] Normalize support terminology to Bag, Delivery, Returns & Refunds, Size Guide, FAQs, and Contact
+- [x] Add link-audit and specified journey regression coverage for desktop and mobile behavior
+- [x] Verify responsive support flows and preserve shopping/checkout context on back navigation
+- [x] Run TypeScript, Vitest, production build, and responsive verification
+- [x] Save the verified support UX integration checkpoint
