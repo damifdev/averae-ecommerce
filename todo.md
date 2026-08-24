@@ -386,3 +386,9 @@
 - [x] Add regression coverage for the feedback toast on both feedback choices
 - [x] Run TypeScript, Vitest, production build, and verification
 - [x] Save the verified FAQ feedback toast checkpoint
+
+- [x] Show an optional “How can we improve this answer?” field after FAQ thumbs-down selection
+- [x] Preserve the thumbs-down toast and analytics while allowing the optional note to be submitted
+- [x] Add regression coverage for the thumbs-down improvement-note interaction
+- [x] Run TypeScript, Vitest, production build, and responsive verification
+- [x] Save the verified FAQ improvement-note checkpoint

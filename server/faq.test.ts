@@ -34,6 +34,10 @@ describe('FAQ page', () => {
     expect(page).toContain('Was this helpful?');
     expect(page).toContain("trackEngagement('faq_helpfulness'");
     expect(page).toContain("toast.success('Thank you for your feedback'");
+    expect(page).toContain("selected === 'down'");
+    expect(page).toContain('How can we improve this answer?');
+    expect(page).toContain('Tell us what was missing or unclear...');
+    expect(page).toContain('maxLength={240}');
     expect(page).toContain("trackEngagement('faq_question_share'");
     expect(page).toContain('id={id}');
   });
