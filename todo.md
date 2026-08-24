@@ -270,3 +270,7 @@
 - [x] Add visible Primary badges and controls for saved addresses and payment methods
 - [x] Add reduced-motion-aware slide-up animation to the mobile navigation drawer and close it after link selection
 - [x] Add regression coverage for delete confirmations, primary controls, and mobile drawer lifecycle
+- [x] Add an Undo toast immediately after deleting an address or payment method
+- [x] Add server-backed persistence for the primary address and payment method settings
+- [x] Track mobile navigation drawer opens and specific link clicks with analytics
+- [x] Add regression coverage for deletion recovery, server-backed primary settings, and drawer analytics

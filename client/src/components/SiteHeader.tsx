@@ -110,6 +110,7 @@ export default function SiteHeader() {
   };
 
   const showDrawer = (key: DrawerKey) => {
+    trackEngagement('mobile_drawer_open', { drawer: key });
     if (drawerCloseTimerRef.current !== null) window.clearTimeout(drawerCloseTimerRef.current);
     closePreview();
     setOpenMenu(null);
