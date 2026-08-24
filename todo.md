@@ -352,3 +352,12 @@
 - [x] Add regression coverage for button label visibility and intentional light-hover exceptions
 - [x] Run TypeScript, Vitest, production build, and responsive visual verification for the contrast fix
 - [x] Save the verified button-contrast checkpoint
+
+- [x] Audit accent-filled buttons for hover-state contrast issues across all storefront routes
+- [x] Add consistent visible focus rings for keyboard navigation on interactive controls
+- [x] Add loading spinner and disabled feedback to Contact form submission
+- [x] Add loading spinner and disabled feedback to Returns form submission
+- [x] Add smooth hover transition to the quick-view VIEW BAG button
+- [x] Add regression coverage for accent contrast, focus rings, loading states, and View Bag hover behavior
+- [x] Run TypeScript, Vitest, production build, and responsive visual verification
+- [x] Save the verified interaction-polish checkpoint

@@ -261,3 +261,22 @@ button[class~="bg-[#382820]"]:not([class~="hover:text-[#382820]"]):hover,
 button[class~="bg-[#382820]"]:not([class~="hover:text-[#382820]"]):focus-visible {
   color: #FFFDF8 !important;
 }
+
+/* Keyboard users receive one consistent, high-contrast focus treatment across every route. */
+:where(button, a, input, select, textarea, summary):focus-visible {
+  outline: 2px solid #B7654A;
+  outline-offset: 3px;
+}
+
+/* Accent-filled controls keep ivory labels unless they explicitly switch to an ivory surface on hover. */
+a[class~="bg-[#B7654A]"]:not([class~="hover:text-[#382820]"]),
+button[class~="bg-[#B7654A]"]:not([class~="hover:text-[#382820]"]) {
+  color: #FFFDF8 !important;
+}
+
+a[class~="bg-[#B7654A]"]:not([class~="hover:text-[#382820]"]):hover,
+a[class~="bg-[#B7654A]"]:not([class~="hover:text-[#382820]"]):focus-visible,
+button[class~="bg-[#B7654A]"]:not([class~="hover:text-[#382820]"]):hover,
+button[class~="bg-[#B7654A]"]:not([class~="hover:text-[#382820]"]):focus-visible {
+  color: #FFFDF8 !important;
+}
