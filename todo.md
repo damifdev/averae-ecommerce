@@ -361,3 +361,13 @@
 - [x] Add regression coverage for accent contrast, focus rings, loading states, and View Bag hover behavior
 - [x] Run TypeScript, Vitest, production build, and responsive visual verification
 - [x] Save the verified interaction-polish checkpoint
+
+- [x] Create dedicated responsive Frequently Asked Questions page with approved shared storefront styling
+- [x] Add searchable FAQ data grouped into Orders, Payment, Delivery, Returns & Refunds, Products & Sizing, and Account
+- [x] Add expandable/collapsible accordion interactions with keyboard and mobile support
+- [x] Add no-results recovery copy and CONTACT US CTA
+- [x] Add Delivery Information, Returns Policy, and Size Guide shortcuts
+- [x] Route the footer FAQ link to the dedicated FAQ page
+- [x] Add FAQ page regression coverage for search, accordions, no-results, shortcuts, and routing
+- [x] Run TypeScript, Vitest, production build, and responsive visual verification for FAQ
+- [x] Save the verified FAQ page checkpoint

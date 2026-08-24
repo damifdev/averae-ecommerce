@@ -1,4 +1,4 @@
-export type EngagementEvent = 'mobile_nav_click' | 'mobile_drawer_open' | 'footer_link_click' | 'account_section_save' | 'quick_view_open' | 'quick_view_variant_select' | 'quick_view_add_to_bag' | 'contact_form_submit' | 'contact_faq_click' | 'contact_track_order_click' | 'return_request_submitted';
+export type EngagementEvent = 'mobile_nav_click' | 'mobile_drawer_open' | 'footer_link_click' | 'account_section_save' | 'quick_view_open' | 'quick_view_variant_select' | 'quick_view_add_to_bag' | 'contact_form_submit' | 'contact_faq_click' | 'contact_track_order_click' | 'return_request_submitted' | 'faq_search_focus';
 
 export type AccountPreference = {
   style: 'minimal' | 'expressive' | 'heritage';

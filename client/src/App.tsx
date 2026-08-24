@@ -16,6 +16,7 @@ import { Edit, EditArticle, Trends } from './pages/Discovery';
 import Contact from './pages/Contact';
 import Delivery from './pages/Delivery';
 import Returns from './pages/Returns';
+import FAQ from './pages/FAQ';
 import NotFound from './pages/NotFound';
 
 function Router() {
@@ -35,6 +36,7 @@ function Router() {
     <Route path="/contact" component={Contact} />
     <Route path="/delivery" component={Delivery} />
     <Route path="/returns" component={Returns} />
+    <Route path="/faq" component={FAQ} />
     <Route component={NotFound} />
   </Switch>;
 }
