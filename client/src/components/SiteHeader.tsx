@@ -19,6 +19,7 @@ const discoveryLinks = [
   { label: 'New Arrivals', href: '/shop?sort=new' },
   { label: 'Trending Now', href: '/trends' },
   { label: 'Best Sellers', href: '/shop?sort=popular' },
+  { label: 'The Áveraẹ Edit', href: '/edit' },
   { label: "Editor's Picks", href: '/edit' },
   { label: 'Sale', href: '/shop?sale=true' },
 ];

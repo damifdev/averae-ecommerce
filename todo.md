@@ -255,3 +255,8 @@
 - [x] Create a dedicated Saved Items page for save-for-later products with move-to-bag actions
 - [x] Add a guest Create Account action on the order confirmation page
 - [x] Add regression coverage for checkout validation, Saved Items routing/actions, and guest account creation
+- [x] Complete UX Refinement Part 7: refine the customer account dashboard and profile navigation
+- [x] Add order statuses, order summaries, and expandable full order details
+- [x] Refine deliberate one-hand mobile navigation with requested destinations and touch-friendly interactions
+- [x] Organize footer links into Shop, Categories, Discover, Help, Account, and Social groups
+- [x] Add regression coverage and responsive verification for Account, mobile navigation, footer, and order flows
