@@ -23,6 +23,20 @@ export const brand = {
   },
 } as const;
 
+export type SizeMarket = 'NG' | 'UK' | 'US' | 'EU';
+export type SizeChartRow = {
+  size: string;
+  measurements: Record<string, string>;
+  conversions?: Partial<Record<SizeMarket, string>>;
+};
+export type ProductSizeChart = {
+  title: string;
+  unit: 'cm' | 'EU/UK/US';
+  columns: string[];
+  rows: SizeChartRow[];
+  note: string;
+};
+
 export type Product = {
   id: number;
   name: string;
@@ -45,23 +59,73 @@ export type Product = {
   /** Customer rating data is intentionally null until it comes from verified reviews. */
   rating: number | null;
   ratingCount: number;
+  /** Product-specific fit data shown in the product detail and quick-view sizing surfaces. */
+  sizeChart?: ProductSizeChart;
+};
+
+const apparelChart = (title: string, rows: SizeChartRow[], note = 'Measurements are a guide. Compare with your own measurements and consider the fit note.') => ({ title, unit: 'cm' as const, columns: ['Size', 'Chest / bust', 'Waist', 'Hips'], rows, note });
+const footwearChart = (title: string, rows: SizeChartRow[], note = 'Measure both feet at the end of the day and use the longer foot.') => ({ title, unit: 'EU/UK/US' as const, columns: ['EU', 'UK', 'US', 'Foot length'], rows, note });
+const oneSizeChart = (title: string, note: string) => ({ title, unit: 'cm' as const, columns: ['Size', 'Fit'], rows: [{ size: 'One size', measurements: { Fit: 'Adjustable / considered fit' }, conversions: { NG: 'One size', UK: 'One size', US: 'One size', EU: 'One size' } }], note });
+
+const shirtChart = apparelChart('Signature shirt fit', [
+  { size: 'XS', measurements: { 'Chest / bust': '82–86', Waist: '64–68', Hips: '88–92' }, conversions: { NG: 'XS', UK: '6', US: '2', EU: '34' } },
+  { size: 'S', measurements: { 'Chest / bust': '86–90', Waist: '68–72', Hips: '92–96' }, conversions: { NG: 'S', UK: '8', US: '4', EU: '36' } },
+  { size: 'M', measurements: { 'Chest / bust': '90–96', Waist: '72–78', Hips: '96–102' }, conversions: { NG: 'M', UK: '10–12', US: '6–8', EU: '38–40' } },
+  { size: 'L', measurements: { 'Chest / bust': '96–102', Waist: '78–84', Hips: '102–108' }, conversions: { NG: 'L', UK: '14–16', US: '10–12', EU: '42–44' } },
+  { size: 'XL', measurements: { 'Chest / bust': '102–108', Waist: '84–90', Hips: '108–114' }, conversions: { NG: 'XL', UK: '18', US: '14', EU: '46' } },
+], 'A relaxed silhouette. If you prefer a closer fit, choose the smaller of two sizes.');
+const dressChart = apparelChart('Column dress fit', [
+  { size: 'XS', measurements: { 'Chest / bust': '82–86', Waist: '64–68', Hips: '88–92' }, conversions: { NG: 'XS', UK: '6', US: '2', EU: '34' } },
+  { size: 'S', measurements: { 'Chest / bust': '86–90', Waist: '68–72', Hips: '92–96' }, conversions: { NG: 'S', UK: '8', US: '4', EU: '36' } },
+  { size: 'M', measurements: { 'Chest / bust': '90–96', Waist: '72–78', Hips: '96–102' }, conversions: { NG: 'M', UK: '10–12', US: '6–8', EU: '38–40' } },
+  { size: 'L', measurements: { 'Chest / bust': '96–102', Waist: '78–84', Hips: '102–108' }, conversions: { NG: 'L', UK: '14–16', US: '10–12', EU: '42–44' } },
+], 'A fluid column shape with room through the body. Use your hip measurement as the deciding point.');
+const trouserChart = apparelChart('Everyday trouser fit', [
+  { size: 'XS', measurements: { 'Chest / bust': '82–86', Waist: '64–68', Hips: '88–92' }, conversions: { NG: 'XS', UK: '6', US: '2', EU: '34' } },
+  { size: 'S', measurements: { 'Chest / bust': '86–90', Waist: '68–72', Hips: '92–96' }, conversions: { NG: 'S', UK: '8', US: '4', EU: '36' } },
+  { size: 'M', measurements: { 'Chest / bust': '90–96', Waist: '72–78', Hips: '96–102' }, conversions: { NG: 'M', UK: '10–12', US: '6–8', EU: '38–40' } },
+  { size: 'L', measurements: { 'Chest / bust': '96–102', Waist: '78–84', Hips: '102–108' }, conversions: { NG: 'L', UK: '14–16', US: '10–12', EU: '42–44' } },
+  { size: 'XL', measurements: { 'Chest / bust': '102–108', Waist: '84–90', Hips: '108–114' }, conversions: { NG: 'XL', UK: '18', US: '14', EU: '46' } },
+], 'A relaxed waist and full-length line. When between sizes, choose the larger size.');
+const shoeChart = footwearChart('Grounded sandal conversion', [
+  { size: '36', measurements: { UK: '3', US: '5', 'Foot length': '23.0' }, conversions: { NG: '36', UK: '3', US: '5', EU: '36' } },
+  { size: '37', measurements: { UK: '4', US: '6', 'Foot length': '23.7' }, conversions: { NG: '37', UK: '4', US: '6', EU: '37' } },
+  { size: '38', measurements: { UK: '5', US: '7', 'Foot length': '24.3' }, conversions: { NG: '38', UK: '5', US: '7', EU: '38' } },
+  { size: '39', measurements: { UK: '6', US: '8', 'Foot length': '25.0' }, conversions: { NG: '39', UK: '6', US: '8', EU: '39' } },
+  { size: '40', measurements: { UK: '7', US: '9', 'Foot length': '25.7' }, conversions: { NG: '40', UK: '7', US: '9', EU: '40' } },
+  { size: '41', measurements: { UK: '8', US: '10', 'Foot length': '26.3' }, conversions: { NG: '41', UK: '8', US: '10', EU: '41' } },
+  { size: '42', measurements: { UK: '9', US: '11', 'Foot length': '27.0' }, conversions: { NG: '42', UK: '9', US: '11', EU: '42' } },
+]);
+const kidsChart = { title: 'Daybreak kids fit', unit: 'cm' as const, columns: ['Size', 'Height', 'Waist'], rows: [
+  { size: '2Y', measurements: { Height: '92–98', Waist: '52–54' }, conversions: { NG: '2Y', UK: '2Y', US: '2T', EU: '92–98' } },
+  { size: '4Y', measurements: { Height: '104–110', Waist: '54–56' }, conversions: { NG: '4Y', UK: '4Y', US: '4T', EU: '104–110' } },
+  { size: '6Y', measurements: { Height: '116–122', Waist: '56–58' }, conversions: { NG: '6Y', UK: '6Y', US: '6', EU: '116–122' } },
+  { size: '8Y', measurements: { Height: '128–134', Waist: '58–61' }, conversions: { NG: '8Y', UK: '8Y', US: '8', EU: '128–134' } },
+  { size: '10Y', measurements: { Height: '140–146', Waist: '61–64' }, conversions: { NG: '10Y', UK: '10Y', US: '10', EU: '140–146' } },
+], note: 'Use height and waist as a guide. When between sizes, choose the larger size.' } satisfies ProductSizeChart;
+
+export const localizedSizeConversions: Record<SizeMarket, { label: string; apparel: Record<string, string>; footwear: Record<string, string> }> = {
+  NG: { label: 'Nigeria', apparel: { XS: 'XS', S: 'S', M: 'M', L: 'L', XL: 'XL', XXL: 'XXL' }, footwear: { '36': '36', '37': '37', '38': '38', '39': '39', '40': '40', '41': '41', '42': '42' } },
+  UK: { label: 'United Kingdom', apparel: { XS: '6', S: '8', M: '10–12', L: '14–16', XL: '18', XXL: '20' }, footwear: { '36': '3', '37': '4', '38': '5', '39': '6', '40': '7', '41': '8', '42': '9' } },
+  US: { label: 'United States', apparel: { XS: '2', S: '4', M: '6–8', L: '10–12', XL: '14', XXL: '16' }, footwear: { '36': '5', '37': '6', '38': '7', '39': '8', '40': '9', '41': '10', '42': '11' } },
+  EU: { label: 'European Union', apparel: { XS: '34', S: '36', M: '38–40', L: '42–44', XL: '46', XXL: '48' }, footwear: { '36': '36', '37': '37', '38': '38', '39': '39', '40': '40', '41': '41', '42': '42' } },
 };
 
 const unrated = { rating: null, ratingCount: 0 } as const;
 
 export const products: Product[] = [
-  { id: 1, name: "Signature Linen Shirt", brand: "Áveraẹ", category: "Ready to Wear", collection: "The Essentials", price: 68000, color: "Ivory", colors: ["Ivory", "Obsidian"], sizes: ["XS", "S", "M", "L", "XL"], inventoryBySize: { XS: 2, S: 4, M: 5, L: 4, XL: 3 }, badge: "Best Seller", audiences: ["Women", "Men", "Unisex"], description: "A softly structured linen shirt with an effortless drape and considered proportions.", image: "/manus-storage/averae-product-linen_48e45a38.jpg", secondaryImage: "/manus-storage/averae-editorial_41cdaa8e.jpg", stock: 18, ...unrated },
-  { id: 2, name: "Sculpted Shoulder Bag", brand: "Nuru House", category: "Accessories", collection: "Objects of Ease", price: 124000, color: "Obsidian", colors: ["Obsidian", "Cognac"], sizes: ["One size"], inventoryBySize: { "One size": 7 }, badge: "Limited", audiences: ["Women", "Men", "Unisex"], description: "A clean-lined leather shoulder bag designed to move from day to evening.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 7, ...unrated },
-  { id: 3, name: "Column Dress", brand: "Ona Atelier", category: "Ready to Wear", collection: "Quiet Form", price: 148000, color: "Sand", colors: ["Sand", "Black"], sizes: ["XS", "S", "M", "L"], inventoryBySize: { XS: 3, S: 5, M: 0, L: 4 }, badge: "New", audiences: ["Women", "Unisex"], description: "A fluid column silhouette cut from a tactile crepe with a low-key luminosity.", image: "/manus-storage/averae-editorial_41cdaa8e.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 12, ...unrated },
-  { id: 4, name: "Everyday Tailored Trouser", brand: "Áveraẹ", category: "Ready to Wear", collection: "The Essentials", price: 92000, compareAt: 110000, color: "Taupe", colors: ["Taupe", "Obsidian"], sizes: ["XS", "S", "M", "L", "XL"], inventoryBySize: { XS: 0, S: 1, M: 1, L: 2, XL: 0 }, badge: "Sale", audiences: ["Women", "Men", "Unisex"], description: "An elevated everyday trouser with a relaxed waist and full-length line.", image: "/manus-storage/averae-editorial_41cdaa8e.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 4, ...unrated },
-  { id: 5, name: "Soft Frame Sunglasses", brand: "Kijani Objects", category: "Accessories", collection: "Objects of Ease", price: 54000, color: "Tortoise", colors: ["Tortoise", "Black"], sizes: ["One size"], inventoryBySize: { "One size": 23 }, badge: "New", audiences: ["Women", "Men", "Unisex"], description: "A softly squared frame with a warm acetate finish and hand-balanced proportions.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-editorial_41cdaa8e.jpg", stock: 23, ...unrated },
-  { id: 6, name: "Daylight Knit", brand: "Ona Atelier", category: "Ready to Wear", collection: "Quiet Form", price: 76000, color: "Oat", colors: ["Oat", "Ivory"], sizes: ["XS", "S", "M", "L"], inventoryBySize: { XS: 2, S: 0, M: 4, L: 3 }, audiences: ["Women", "Men", "Unisex"], description: "A featherweight knit for the in-between hours.", image: "/manus-storage/averae-product-linen_48e45a38.jpg", secondaryImage: "/manus-storage/averae-product-bag_c6fe5185.jpg", stock: 9, ...unrated },
-  { id: 7, name: "Grounded Leather Sandal", brand: "Maji Form", category: "Shoes", collection: "Grounded Forms", price: 62000, color: "Cocoa", colors: ["Cocoa", "Obsidian"], sizes: ["36", "37", "38", "39", "40", "41", "42"], inventoryBySize: { "36": 0, "37": 2, "38": 4, "39": 5, "40": 3, "41": 2, "42": 0 }, badge: "New", audiences: ["Women", "Men", "Unisex"], description: "A considered leather sandal with a sculpted footbed and an easy everyday line.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 16, ...unrated },
-  { id: 8, name: "Sculptural Beaded Collar", brand: "Kijani Objects", category: "Jewelry", collection: "Objects of Ease", price: 88000, color: "Amber", colors: ["Amber", "Obsidian"], sizes: ["One size"], inventoryBySize: { "One size": 0 }, badge: "Currently unavailable", audiences: ["Women", "Men", "Unisex"], description: "A hand-finished collar that brings graphic rhythm and warmth to a simple silhouette.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-editorial_41cdaa8e.jpg", stock: 0, ...unrated },
-  { id: 9, name: "Soft Carryall Tote", brand: "Nuru House", category: "Bags", collection: "Objects of Ease", price: 136000, color: "Cognac", colors: ["Cognac", "Obsidian"], sizes: ["One size"], inventoryBySize: { "One size": 11 }, badge: "Best Seller", audiences: ["Women", "Men", "Unisex"], description: "A generous carryall with softened structure for long days and light travel.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-marketplace-hero_ccb2d39f.jpg", stock: 11, ...unrated },
-  { id: 10, name: "Quiet Hours Watch", brand: "Sabi Time", category: "Watches", collection: "The Essentials", price: 156000, color: "Obsidian", colors: ["Obsidian", "Cognac"], sizes: ["One size"], inventoryBySize: { "One size": 6 }, badge: "Limited", audiences: ["Women", "Men", "Unisex"], description: "A minimal timepiece with a tactile strap and a calm, architectural face.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 6, ...unrated },
-  { id: 11, name: "Kora Body Ritual Set", brand: "Kora Rituals", category: "Beauty & Lifestyle", collection: "Daily Rituals", price: 48000, color: "Oat", colors: ["Oat", "Amber"], sizes: ["One size"], inventoryBySize: { "One size": 20 }, badge: "New", audiences: ["Women", "Men", "Unisex"], description: "A considered body-care ritual for slower mornings and softer evenings.", image: "/manus-storage/averae-editorial_41cdaa8e.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 20, ...unrated },
-  { id: 12, name: "Daybreak Cotton Set", brand: "Áveraẹ", category: "Ready to Wear", collection: "Little Essentials", price: 55000, color: "Ivory", colors: ["Ivory", "Oat"], sizes: ["2Y", "4Y", "6Y", "8Y", "10Y"], inventoryBySize: { "2Y": 0, "4Y": 3, "6Y": 4, "8Y": 4, "10Y": 3 }, badge: "New", audiences: ["Kids"], description: "A soft cotton set designed for movement, comfort and everyday expression.", image: "/manus-storage/averae-marketplace-hero_ccb2d39f.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 14, ...unrated },
+  { id: 1, name: "Signature Linen Shirt", brand: "Áveraẹ", category: "Ready to Wear", collection: "The Essentials", price: 68000, color: "Ivory", colors: ["Ivory", "Obsidian"], sizes: ["XS", "S", "M", "L", "XL"], inventoryBySize: { XS: 2, S: 4, M: 5, L: 4, XL: 3 }, badge: "Best Seller", audiences: ["Women", "Men", "Unisex"], description: "A softly structured linen shirt with an effortless drape and considered proportions.", image: "/manus-storage/averae-product-linen_48e45a38.jpg", secondaryImage: "/manus-storage/averae-editorial_41cdaa8e.jpg", stock: 18, ...unrated, sizeChart: shirtChart },
+  { id: 2, name: "Sculpted Shoulder Bag", brand: "Nuru House", category: "Accessories", collection: "Objects of Ease", price: 124000, color: "Obsidian", colors: ["Obsidian", "Cognac"], sizes: ["One size"], inventoryBySize: { "One size": 7 }, badge: "Limited", audiences: ["Women", "Men", "Unisex"], description: "A clean-lined leather shoulder bag designed to move from day to evening.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 7, ...unrated, sizeChart: oneSizeChart('Sculpted shoulder bag fit', 'One size with an adjustable strap. Use the product dimensions as your reference.') },
+  { id: 3, name: "Column Dress", brand: "Ona Atelier", category: "Ready to Wear", collection: "Quiet Form", price: 148000, color: "Sand", colors: ["Sand", "Black"], sizes: ["XS", "S", "M", "L"], inventoryBySize: { XS: 3, S: 5, M: 0, L: 4 }, badge: "New", audiences: ["Women", "Unisex"], description: "A fluid column silhouette cut from a tactile crepe with a low-key luminosity.", image: "/manus-storage/averae-editorial_41cdaa8e.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 12, ...unrated, sizeChart: dressChart },
+  { id: 4, name: "Everyday Tailored Trouser", brand: "Áveraẹ", category: "Ready to Wear", collection: "The Essentials", price: 92000, compareAt: 110000, color: "Taupe", colors: ["Taupe", "Obsidian"], sizes: ["XS", "S", "M", "L", "XL"], inventoryBySize: { XS: 0, S: 1, M: 1, L: 2, XL: 0 }, badge: "Sale", audiences: ["Women", "Men", "Unisex"], description: "An elevated everyday trouser with a relaxed waist and full-length line.", image: "/manus-storage/averae-editorial_41cdaa8e.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 4, ...unrated, sizeChart: trouserChart },
+  { id: 5, name: "Soft Frame Sunglasses", brand: "Kijani Objects", category: "Accessories", collection: "Objects of Ease", price: 54000, color: "Tortoise", colors: ["Tortoise", "Black"], sizes: ["One size"], inventoryBySize: { "One size": 23 }, badge: "New", audiences: ["Women", "Men", "Unisex"], description: "A softly squared frame with a warm acetate finish and hand-balanced proportions.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-editorial_41cdaa8e.jpg", stock: 23, ...unrated, sizeChart: oneSizeChart('Soft frame fit', 'One size with a considered frame proportion.') },
+  { id: 6, name: "Daylight Knit", brand: "Ona Atelier", category: "Ready to Wear", collection: "Quiet Form", price: 76000, color: "Oat", colors: ["Oat", "Ivory"], sizes: ["XS", "S", "M", "L"], inventoryBySize: { XS: 2, S: 0, M: 4, L: 3 }, audiences: ["Women", "Men", "Unisex"], description: "A featherweight knit for the in-between hours.", image: "/manus-storage/averae-product-linen_48e45a38.jpg", secondaryImage: "/manus-storage/averae-product-bag_c6fe5185.jpg", stock: 9, ...unrated, sizeChart: shirtChart },
+  { id: 7, name: "Grounded Leather Sandal", brand: "Maji Form", category: "Shoes", collection: "Grounded Forms", price: 62000, color: "Cocoa", colors: ["Cocoa", "Obsidian"], sizes: ["36", "37", "38", "39", "40", "41", "42"], inventoryBySize: { "36": 0, "37": 2, "38": 4, "39": 5, "40": 3, "41": 2, "42": 0 }, badge: "New", audiences: ["Women", "Men", "Unisex"], description: "A considered leather sandal with a sculpted footbed and an easy everyday line.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 16, ...unrated, sizeChart: shoeChart },
+  { id: 8, name: "Sculptural Beaded Collar", brand: "Kijani Objects", category: "Jewelry", collection: "Objects of Ease", price: 88000, color: "Amber", colors: ["Amber", "Obsidian"], sizes: ["One size"], inventoryBySize: { "One size": 0 }, badge: "Currently unavailable", audiences: ["Women", "Men", "Unisex"], description: "A hand-finished collar that brings graphic rhythm and warmth to a simple silhouette.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-editorial_41cdaa8e.jpg", stock: 0, ...unrated, sizeChart: oneSizeChart('Beaded collar fit', 'One size. Contact us if you would like help comparing the piece with your measurements.') },
+  { id: 9, name: "Soft Carryall Tote", brand: "Nuru House", category: "Bags", collection: "Objects of Ease", price: 136000, color: "Cognac", colors: ["Cognac", "Obsidian"], sizes: ["One size"], inventoryBySize: { "One size": 11 }, badge: "Best Seller", audiences: ["Women", "Men", "Unisex"], description: "A generous carryall with softened structure for long days and light travel.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-marketplace-hero_ccb2d39f.jpg", stock: 11, ...unrated, sizeChart: oneSizeChart('Carryall proportion', 'One size with generous capacity and softened structure.') },
+  { id: 10, name: "Quiet Hours Watch", brand: "Sabi Time", category: "Watches", collection: "The Essentials", price: 156000, color: "Obsidian", colors: ["Obsidian", "Cognac"], sizes: ["One size"], inventoryBySize: { "One size": 6 }, badge: "Limited", audiences: ["Women", "Men", "Unisex"], description: "A minimal timepiece with a tactile strap and a calm, architectural face.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 6, ...unrated, sizeChart: oneSizeChart('Watch strap fit', 'One size with an adjustable strap.') },
+  { id: 11, name: "Kora Body Ritual Set", brand: "Kora Rituals", category: "Beauty & Lifestyle", collection: "Daily Rituals", price: 48000, color: "Oat", colors: ["Oat", "Amber"], sizes: ["One size"], inventoryBySize: { "One size": 20 }, badge: "New", audiences: ["Women", "Men", "Unisex"], description: "A considered body-care ritual for slower mornings and softer evenings.", image: "/manus-storage/averae-editorial_41cdaa8e.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 20, ...unrated, sizeChart: oneSizeChart('Ritual set fit', 'One size. Each item is designed for an easy everyday ritual.') },
+  { id: 12, name: "Daybreak Cotton Set", brand: "Áveraẹ", category: "Ready to Wear", collection: "Little Essentials", price: 55000, color: "Ivory", colors: ["Ivory", "Oat"], sizes: ["2Y", "4Y", "6Y", "8Y", "10Y"], inventoryBySize: { "2Y": 0, "4Y": 3, "6Y": 4, "8Y": 4, "10Y": 3 }, badge: "New", audiences: ["Kids"], description: "A soft cotton set designed for movement, comfort and everyday expression.", image: "/manus-storage/averae-marketplace-hero_ccb2d39f.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 14, ...unrated, sizeChart: kidsChart },
 ];
 
 export const audienceCategories = [

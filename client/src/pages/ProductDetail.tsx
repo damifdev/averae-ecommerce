@@ -1,6 +1,8 @@
 import { Link, useLocation, useRoute } from 'wouter';
 import SiteHeader from '@/components/SiteHeader';
 import BackToTop from '@/components/BackToTop';
+import MeasurementAssistant from '@/components/MeasurementAssistant';
+import ProductSizeChart from '@/components/ProductSizeChart';
 import {
   ArrowLeft,
   ChevronDown,
@@ -211,7 +213,7 @@ export default function ProductDetail() {
           <div className="mt-7 border-t border-[#D7C2A7] pt-6">
             <div className="flex items-center justify-between text-[10px] uppercase tracking-[.15em]">
               <span>Size</span>
-              <button type="button" data-testid="size-guide" onClick={() => setSizeGuideOpen(true)} className="focus-ring underline underline-offset-4">Size guide</button>
+              <div className="flex items-center gap-4"><MeasurementAssistant product={product} label="Find my size" /><button type="button" data-testid="size-guide" onClick={() => setSizeGuideOpen(true)} className="focus-ring underline underline-offset-4">Size guide</button></div>
             </div>
             <div className="mt-4 grid grid-cols-5 gap-2" role="group" aria-label="Size options">
               {product.sizes.map(option => {
@@ -227,6 +229,8 @@ export default function ProductDetail() {
             {error === 'Please select a size.' && <p role="alert" data-testid="size-error" className="mt-3 text-xs text-[#B7654A]">Please select a size.</p>}
             {error === 'This item is currently unavailable.' && <p role="alert" className="mt-3 text-xs text-[#B7654A]">This item is currently unavailable.</p>}
           </div>
+
+          {product.sizeChart && <div className="mt-7"><ProductSizeChart chart={product.sizeChart} compact /></div>}
 
           <div className="mt-7 flex gap-3">
             <div className="flex items-center border border-[#D7C2A7]" aria-label="Quantity selector">
@@ -298,14 +302,9 @@ export default function ProductDetail() {
     <Dialog open={sizeGuideOpen} onOpenChange={setSizeGuideOpen}>
       <DialogContent className="max-w-xl border-[#D7C2A7] bg-[#FFFDF8]">
         <DialogTitle className="font-display text-3xl">Size guide</DialogTitle>
-        <DialogDescription className="text-[#6f675d]">Use your usual size as a starting point. If you prefer a more relaxed fit, choose the next size up.</DialogDescription>
-        <div className="mt-3 overflow-x-auto border-y border-[#D7C2A7]">
-          <div className="grid min-w-[420px] grid-cols-4 text-xs">
-            <div className="border-b border-[#D7C2A7] py-3 font-medium">Size</div><div className="border-b border-[#D7C2A7] py-3">Bust / chest</div><div className="border-b border-[#D7C2A7] py-3">Waist</div><div className="border-b border-[#D7C2A7] py-3">Hip</div>
-            {['XS', 'S', 'M', 'L', 'XL'].map((label, index) => <div key={label} className="contents"><div className="border-b border-[#D7C2A7]/70 py-3">{label}</div><div className="border-b border-[#D7C2A7]/70 py-3">{[82, 87, 92, 97, 102][index]} cm</div><div className="border-b border-[#D7C2A7]/70 py-3">{[64, 69, 74, 79, 84][index]} cm</div><div className="border-b border-[#D7C2A7]/70 py-3">{[90, 95, 100, 105, 110][index]} cm</div></div>)}
-          </div>
-        </div>
-        <p className="text-xs leading-5 text-[#866F62]">For shoes and children’s pieces, use the size listed on the product page and contact us if you need help choosing.</p>
+        <DialogDescription className="text-[#6f675d]">Use the product-specific chart and localized conversion below. If you are between sizes, review the fit note or use the assistant.</DialogDescription>
+        {product.sizeChart ? <ProductSizeChart chart={product.sizeChart} /> : <p className="mt-5 text-sm leading-6 text-[#866F62]">This piece uses the general Size Guide. Contact us if you need help choosing.</p>}
+        <div className="mt-5"><MeasurementAssistant product={product} label="Use the measurement assistant" /></div>
       </DialogContent>
     </Dialog>
   </div>;

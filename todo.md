@@ -402,3 +402,11 @@
 - [x] Add regression coverage for Size Guide content, tables, responsive sections, and routing
 - [x] Run TypeScript, Vitest, production build, and responsive visual verification
 - [x] Save the verified Size Guide checkpoint
+
+- [x] Add catalog-driven product-specific size-chart metadata for supported product categories
+- [x] Render product-specific size charts from catalog metadata on product detail pages
+- [x] Add interactive measurement assistant with saved user preferences and clear privacy-safe local persistence
+- [x] Add localized size conversions for additional markets with explicit locale selection
+- [x] Add regression coverage for metadata charts, assistant persistence, conversions, and product-page integration
+- [x] Run TypeScript, Vitest, production build, and responsive visual verification
+- [x] Save the verified sizing-system checkpoint
