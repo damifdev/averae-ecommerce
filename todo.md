@@ -224,3 +224,8 @@
 - [x] Add Save Article persistence and social share buttons to editorial article pages
 - [x] Add reduced-motion-aware smooth scrolling from Shop This Look CTAs to product sections
 - [x] Add regression coverage for hotspots, saved articles, sharing, and anchored scrolling
+- [x] Fix unreadable editorial ADD TO BAG and ADD ALL TO BAG labels shown on light backgrounds
+- [x] Add a dedicated Saved Articles section to the user account profile
+- [x] Add hotspot hover cards with product name and price
+- [x] Add WhatsApp, Pinterest, and Instagram article share buttons with accessible fallbacks
+- [x] Add regression coverage for account saved articles, hotspot hover cards, share actions, and action-label contrast

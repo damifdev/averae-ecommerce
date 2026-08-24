@@ -188,6 +188,10 @@ button:active, a:active { transform: scale(.98); }
     transition-duration: 1ms;
     transform: none;
   }
+  [data-slot="hover-card-content"] {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 .action-link-light:hover,
