@@ -371,3 +371,12 @@
 - [x] Add FAQ page regression coverage for search, accordions, no-results, shortcuts, and routing
 - [x] Run TypeScript, Vitest, production build, and responsive visual verification for FAQ
 - [x] Save the verified FAQ page checkpoint
+
+- [x] Add shareable URL deep links and copyable anchors for individual FAQ answers
+- [x] Add accessible Was this helpful? thumbs up/down controls to every FAQ answer
+- [x] Track FAQ helpfulness selections with privacy-conscious analytics feedback
+- [x] Create dedicated responsive Size Guide page with clear measurement and fit guidance
+- [x] Route FAQ and footer Size Guide shortcuts to the dedicated Size Guide page
+- [x] Add regression coverage for FAQ deep links, helpfulness feedback, Size Guide content, and routing
+- [x] Run TypeScript, Vitest, production build, and responsive visual verification
+- [x] Save the verified FAQ and Size Guide checkpoint

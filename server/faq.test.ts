@@ -29,5 +29,11 @@ describe('FAQ page', () => {
     expect(page).toContain('href="/delivery"');
     expect(page).toContain('href="/returns"');
     expect(page).toContain('SIZE GUIDE');
+    expect(page).toContain('questionId');
+    expect(page).toContain('SHARE ANSWER');
+    expect(page).toContain('Was this helpful?');
+    expect(page).toContain("trackEngagement('faq_helpfulness'");
+    expect(page).toContain("trackEngagement('faq_question_share'");
+    expect(page).toContain('id={id}');
   });
 });

@@ -17,6 +17,7 @@ import Contact from './pages/Contact';
 import Delivery from './pages/Delivery';
 import Returns from './pages/Returns';
 import FAQ from './pages/FAQ';
+import SizeGuide from './pages/SizeGuide';
 import NotFound from './pages/NotFound';
 
 function Router() {
@@ -37,6 +38,7 @@ function Router() {
     <Route path="/delivery" component={Delivery} />
     <Route path="/returns" component={Returns} />
     <Route path="/faq" component={FAQ} />
+    <Route path="/size-guide" component={SizeGuide} />
     <Route component={NotFound} />
   </Switch>;
 }
