@@ -229,3 +229,6 @@
 - [x] Add hotspot hover cards with product name and price
 - [x] Add WhatsApp, Pinterest, and Instagram article share buttons with accessible fallbacks
 - [x] Add regression coverage for account saved articles, hotspot hover cards, share actions, and action-label contrast
+- [x] Add quick Add to Cart and Save Product actions inside Shop the Look hotspot hover cards
+- [x] Add an accessible, reduced-motion-aware skeleton loading state for editorial article pages before article and sharing content renders
+- [x] Add regression coverage for hotspot quick actions and article skeleton loading behavior

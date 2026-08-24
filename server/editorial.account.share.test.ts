@@ -14,13 +14,29 @@ describe('editorial account and sharing enhancements', () => {
     expect(accountSource).toContain('READ THE EDIT');
   });
 
-  it('renders product-aware accessible hotspot hover cards', () => {
+  it('renders product-aware accessible hotspot hover cards with quick actions', () => {
     expect(discoverySource).toContain('HoverCard');
     expect(discoverySource).toContain('HoverCardTrigger');
     expect(discoverySource).toContain('HoverCardContent');
     expect(discoverySource).toContain('hotspotProduct?.name');
     expect(discoverySource).toContain('formatPrice(hotspotProduct.price)');
     expect(discoverySource).toContain('data-testid={`look-hotspot-card-');
+    expect(discoverySource).toContain('data-testid={`look-hotspot-add-');
+    expect(discoverySource).toContain('ADD TO CART');
+    expect(discoverySource).toContain('data-testid={`look-hotspot-save-');
+    expect(discoverySource).toContain('SAVE PRODUCT');
+    expect(discoverySource).toContain('toggleWishlist');
+  });
+
+  it('provides an article skeleton before content and sharing controls render', () => {
+    expect(discoverySource).toContain('function ArticleSkeleton()');
+    expect(discoverySource).toContain('data-testid="article-skeleton"');
+    expect(discoverySource).toContain('aria-busy="true"');
+    expect(discoverySource).toContain('setIsLoading(false)');
+    expect(discoverySource).toContain('if (isLoading) return <ArticleSkeleton />');
+    expect(cssSource).toContain('.skeleton-block');
+    expect(cssSource).toContain('@media (prefers-reduced-motion: no-preference)');
+    expect(cssSource).toContain('skeleton-shimmer');
   });
 
   it('exposes dedicated social sharing controls', () => {
