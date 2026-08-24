@@ -260,3 +260,9 @@
 - [x] Refine deliberate one-hand mobile navigation with requested destinations and touch-friendly interactions
 - [x] Organize footer links into Shop, Categories, Discover, Help, Account, and Social groups
 - [x] Add regression coverage and responsive verification for Account, mobile navigation, footer, and order flows
+- [x] Add dedicated saved-address editing flow in the account dashboard
+- [x] Add dedicated payment-method editing flow in the account dashboard
+- [x] Add dedicated user-preferences editing flow in the account dashboard
+- [x] Track mobile navigation engagement events
+- [x] Track footer link click engagement events
+- [x] Add regression coverage for account editing persistence and engagement analytics
