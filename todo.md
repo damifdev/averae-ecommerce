@@ -472,3 +472,10 @@
 - [x] Add route and dead-end regression coverage for the complete support-accessibility journey
 - [x] Verify desktop/mobile support journeys, TypeScript, tests, production build, and responsive behavior
 - [x] Save the verified support-accessibility checkpoint
+
+- [x] Audit existing support links, checkout state, drawer primitives, and app-shell placement
+- [x] Add lightweight floating FAQ help widget with accessible quick access
+- [x] Add persistent checkout-help drawer that preserves entered checkout progress
+- [x] Add regression coverage for widget, drawer, keyboard behavior, and checkout preservation
+- [x] Verify TypeScript, Vitest, production build, and responsive behavior
+- [x] Save the verified support-widget checkpoint
