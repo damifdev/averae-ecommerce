@@ -15,6 +15,7 @@ import Checkout from './pages/Checkout';
 import { Edit, EditArticle, Trends } from './pages/Discovery';
 import Contact from './pages/Contact';
 import Delivery from './pages/Delivery';
+import Returns from './pages/Returns';
 import NotFound from './pages/NotFound';
 
 function Router() {
@@ -33,6 +34,7 @@ function Router() {
     <Route path="/edit/:slug" component={EditArticle} />
     <Route path="/contact" component={Contact} />
     <Route path="/delivery" component={Delivery} />
+    <Route path="/returns" component={Returns} />
     <Route component={NotFound} />
   </Switch>;
 }

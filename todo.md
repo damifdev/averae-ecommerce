@@ -330,3 +330,12 @@
 - [x] Add Delivery page regression coverage for routing, content, accordions, and CTAs
 - [x] Run TypeScript, Vitest, production build, and responsive visual verification for Delivery
 - [x] Save the verified Delivery page checkpoint
+
+- [x] Create dedicated responsive Returns & Refunds page with approved shared storefront styling
+- [x] Add return policy, eligibility conditions, non-returnable items, refund, exchange, and damaged-item guidance
+- [x] Add clear five-step return instructions with CONTACT SUPPORT fallback
+- [x] Add FAQ shortcut and CONTACT US support pathways with scan-friendly accordions
+- [x] Route the footer Returns link to the dedicated Returns & Refunds page
+- [x] Add Returns page regression coverage for routing, content, steps, accordions, and CTAs
+- [x] Run TypeScript, Vitest, production build, and responsive visual verification for Returns
+- [x] Save the verified Returns page checkpoint
