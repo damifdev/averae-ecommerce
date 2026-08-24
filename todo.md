@@ -347,3 +347,8 @@
 - [x] Add regression coverage for modal opening, validation, uploads, submission, and timeline states
 - [x] Run TypeScript, Vitest, production build, and responsive visual verification
 - [x] Save the verified Request Return checkpoint
+
+- [x] Fix invisible labels on filled action buttons across all storefront pages with a shared contrast safeguard
+- [x] Add regression coverage for button label visibility and intentional light-hover exceptions
+- [x] Run TypeScript, Vitest, production build, and responsive visual verification for the contrast fix
+- [x] Save the verified button-contrast checkpoint

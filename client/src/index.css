@@ -248,3 +248,16 @@ button:active, a:active { transform: scale(.98); }
 @media (prefers-reduced-motion: reduce) {
   .mobile-drawer-panel { animation: none; transform: none; }
 }
+
+/* Filled cocoa action controls keep their labels readable across every route. The exception preserves CTAs that intentionally switch to an ivory surface on hover. */
+a[class~="bg-[#382820]"]:not([class~="hover:text-[#382820]"]),
+button[class~="bg-[#382820]"]:not([class~="hover:text-[#382820]"]) {
+  color: #FFFDF8 !important;
+}
+
+a[class~="bg-[#382820]"]:not([class~="hover:text-[#382820]"]):hover,
+a[class~="bg-[#382820]"]:not([class~="hover:text-[#382820]"]):focus-visible,
+button[class~="bg-[#382820]"]:not([class~="hover:text-[#382820]"]):hover,
+button[class~="bg-[#382820]"]:not([class~="hover:text-[#382820]"]):focus-visible {
+  color: #FFFDF8 !important;
+}
