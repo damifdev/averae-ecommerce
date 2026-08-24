@@ -64,6 +64,7 @@ export default function ProductDetail() {
   const [, params] = useRoute('/product/:id');
   const product = products.find(item => item.id === Number(params?.id)) || products[0];
   const [, navigate] = useLocation();
+  const returnHref = typeof window === 'undefined' ? '/shop' : window.sessionStorage.getItem('averae-last-shop-url') || '/shop';
   const reviewsQuery = trpc.reviews.byProduct.useQuery({ productId: product.id });
   const reviews = reviewsQuery.data ?? [];
   const available = availableSizes(product);
@@ -152,7 +153,8 @@ export default function ProductDetail() {
   return <div>
     <SiteHeader />
     <main className="container py-8 md:py-14">
-      <Link href="/shop" className="mb-8 flex items-center gap-2 text-[10px] uppercase tracking-[.14em] text-[#866F62]">
+      <nav aria-label="Breadcrumb" className="mb-5 text-[10px] uppercase tracking-[.13em] text-[#866F62]"><Link href="/" className="hover:text-[#B7654A]">Home</Link><span className="mx-2">/</span><Link href={returnHref} className="hover:text-[#B7654A]">{product.audiences[0] ?? 'Shop'}</Link><span className="mx-2">/</span><Link href={`${returnHref.split('?')[0]}?category=${product.category === 'Ready to Wear' ? 'clothing' : product.category.toLowerCase()}`} className="hover:text-[#B7654A]">{product.category}</Link><span className="mx-2">/</span><span className="text-[#382820]">{product.name}</span></nav>
+      <Link href={returnHref} className="mb-8 flex items-center gap-2 text-[10px] uppercase tracking-[.14em] text-[#866F62]">
         <ArrowLeft size={14} /> Back to shop
       </Link>
       <div className="grid gap-10 md:grid-cols-[1.15fr_.85fr] md:gap-16">

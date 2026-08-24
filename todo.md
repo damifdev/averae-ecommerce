@@ -274,3 +274,29 @@
 - [x] Add server-backed persistence for the primary address and payment method settings
 - [x] Track mobile navigation drawer opens and specific link clicks with analytics
 - [x] Add regression coverage for deletion recovery, server-backed primary settings, and drawer analytics
+- [x] Complete final UX audit of all requested storefront systems without changing the approved Áveraẹ visual identity
+- [x] Normalize primary, secondary, tertiary, and destructive button hierarchy and action labels
+- [x] Improve all requested empty, error, and branded loading states with useful recovery CTAs
+- [x] Add or refine useful breadcrumbs and preserve filters, sorting, and scroll position on back navigation
+- [x] Strengthen discovery pathways for African designers, contemporary African fashion, local brands, and fashion stories
+- [x] Verify and fix the eight requested desktop and mobile end-to-end user journeys
+- [x] Remove dead ends, confusing actions, and placeholder buttons across routes and interactions
+- [x] Add comprehensive Part 8 regression and browser flow coverage
+
+- [x] Final audit: make shared navigation discovery links resolve to real Shop and Edit filters, including African fashion and sale pathways
+- [x] Final audit: add breadcrumbs to Trends and The Áveraẹ Edit listing pages while preserving the approved visual identity
+- [x] Final audit: add useful empty-state CTAs to the shared header bag preview
+- [x] Final audit: add a truthful No Orders empty state in Account without fabricating customer orders
+- [x] Final audit: align empty-bag new-arrivals CTA with the Shop sort query contract
+- [x] Final audit: make the homepage Shop the Look footer anchor target explicit and functional
+- [x] Final audit: execute desktop and mobile flow regression checks and update tests
+- [x] Final audit: run the full Vitest suite, typecheck, production build, and responsive visual verification
+- [x] Final audit: save the verified published checkpoint
+
+## Final UX Audit Findings
+- [x] Header navigation currently contains discovery query links that are not fully consumed by their destination pages.
+- [x] The shared bag preview needs a recovery path when no items are present.
+- [x] Account order rendering must support a genuinely empty order state without seeded customer-generated content.
+- [x] Editorial listing pages need contextual breadcrumbs for easier orientation.
+- [x] Footer Shop the Look needs a concrete anchor target on the homepage.
+- [x] Empty bag CTA query must match the Shop page parser.

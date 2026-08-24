@@ -25,9 +25,9 @@ describe('shared filled action-link contrast', () => {
   });
 
   it('covers every filled cocoa action surface with the shared readable class', () => {
-    expect(cart).toContain('action-link-light pressable mt-8 inline-flex bg-[#382820]');
+    expect(cart).toContain('action-link-light pressable bg-[#382820]');
     expect(cart).toContain('action-link-light pressable flex items-center justify-center gap-3 bg-[#382820]');
-    expect(checkout).toContain('action-link-light pressable w-full bg-[#382820]');
+    expect(checkout).toContain('action-link-light bg-[#382820]');
     expect(home).toContain('action-link-light focus-ring product-card-overlay');
     expect(quickView).toContain('action-link-light pressable flex w-full items-center');
     expect(wishlistPanel).toContain('action-link-light pressable mt-5 flex w-full');

@@ -96,7 +96,8 @@ export default function Shop() {
   const params = useMemo(() => new URLSearchParams(searchString), [location, searchString]);
   const [category, setCategory] = useState(normalizeCategory(params.get('category')));
   const [audience, setAudience] = useState(normalizeAudience(params.get('audience')));
-  const [sort, setSort] = useState<typeof sortOptions[number]>(params.get('sort') === 'new' ? 'Newest' : params.get('sort') === 'popular' ? 'Best Selling' : params.get('sort') === 'trending' ? 'Trending' : 'Recommended');
+  const [saleOnly, setSaleOnly] = useState(params.get('sale') === 'true');
+  const [sort, setSort] = useState<typeof sortOptions[number]>(params.get('sort') === 'new' || params.get('sort') === 'newest' ? 'Newest' : params.get('sort') === 'popular' ? 'Best Selling' : params.get('sort') === 'trending' ? 'Trending' : 'Recommended');
   const [query, setQuery] = useState(params.get('search') ?? params.get('q') ?? '');
   const [filterOpen, setFilterOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
@@ -104,8 +105,10 @@ export default function Shop() {
   useEffect(() => {
     setCategory(normalizeCategory(params.get('category')));
     setAudience(normalizeAudience(params.get('audience')));
-    setSort(params.get('sort') === 'new' ? 'Newest' : params.get('sort') === 'popular' ? 'Best Selling' : params.get('sort') === 'trending' ? 'Trending' : 'Recommended');
+    setSaleOnly(params.get('sale') === 'true');
+    setSort(params.get('sort') === 'new' || params.get('sort') === 'newest' ? 'Newest' : params.get('sort') === 'popular' ? 'Best Selling' : params.get('sort') === 'trending' ? 'Trending' : 'Recommended');
     setQuery(params.get('search') ?? params.get('q') ?? '');
+    if (typeof window !== 'undefined') window.sessionStorage.setItem('averae-last-shop-url', `${window.location.pathname}${window.location.search}`);
   }, [params]);
 
   const options = useMemo(() => ({
@@ -119,6 +122,7 @@ export default function Shop() {
     const normalizedCategory = category.toLowerCase() === 'clothing' ? 'ready to wear' : category.toLowerCase();
     let list = category === 'All' ? [...products] : products.filter(product => product.category.toLowerCase() === normalizedCategory || product.collection.toLowerCase() === normalizedCategory);
     list = list.filter(product => audience === 'All' || product.audiences.includes(audience as 'Women' | 'Men' | 'Kids' | 'Unisex'));
+    list = list.filter(product => !saleOnly || Boolean(product.compareAt) || product.badge === 'Sale');
     list = list.filter(product => !query.trim() || `${product.name} ${product.brand} ${product.category} ${product.collection} ${product.color} ${product.badge ?? ''}`.toLowerCase().includes(query.toLowerCase()));
     if (filters.size !== 'All sizes') list = list.filter(product => product.sizes.includes(filters.size));
     if (filters.colour !== 'All colours') list = list.filter(product => product.colors.includes(filters.colour));
@@ -135,16 +139,17 @@ export default function Shop() {
     if (sort === 'Price: Low to High') list.sort((a, b) => a.price - b.price);
     if (sort === 'Price: High to Low') list.sort((a, b) => b.price - a.price);
     return list;
-  }, [audience, category, filters, query, sort]);
+  }, [audience, category, filters, query, saleOnly, sort]);
 
   const activeChips = [
     ...(audience !== 'All' ? [{ key: 'audience', label: audience }] : []),
     ...(category !== 'All' ? [{ key: 'category', label: category }] : []),
     ...Object.entries(filters).filter(([, value]) => !value.startsWith('All ')).map(([key, value]) => ({ key, label: value })),
+    ...(saleOnly ? [{ key: 'sale', label: 'Sale' }] : []),
     ...(query ? [{ key: 'query', label: `“${query}”` }] : []),
   ];
-  const clearAll = () => { setCategory('All'); setAudience('All'); setQuery(''); setFilters(filterDefaults); setSort('Recommended'); };
-  const removeChip = (key: string) => { if (key === 'audience') setAudience('All'); else if (key === 'category') setCategory('All'); else if (key === 'query') setQuery(''); else if (key in filterDefaults) setFilters(current => ({ ...current, [key]: filterDefaults[key as FilterKey] })); };
+  const clearAll = () => { setCategory('All'); setAudience('All'); setSaleOnly(false); setQuery(''); setFilters(filterDefaults); setSort('Recommended'); };
+  const removeChip = (key: string) => { if (key === 'audience') setAudience('All'); else if (key === 'category') setCategory('All'); else if (key === 'sale') setSaleOnly(false); else if (key === 'query') setQuery(''); else if (key in filterDefaults) setFilters(current => ({ ...current, [key]: filterDefaults[key as FilterKey] })); };
   const setFilter = (key: FilterKey, value: string) => setFilters(current => ({ ...current, [key]: value }));
   const filterSelect = (key: FilterKey, label: string, values: string[]) => <label data-testid={`filter-${key}`} className="block text-[10px] uppercase tracking-[.14em] text-[#866F62]">{label}<select value={filters[key]} onChange={event => setFilter(key, event.target.value)} className={selectStyles}><option>{filterDefaults[key]}</option>{values.map(value => <option key={value}>{value}</option>)}</select></label>;
 
