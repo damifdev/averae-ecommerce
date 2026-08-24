@@ -450,3 +450,13 @@
 - [x] Add regression tests for hover metadata, subscription management, and sharing behavior
 - [x] Verify TypeScript, Vitest, production build, and responsive behavior
 - [x] Save the verified product-discovery checkpoint
+
+- [x] Audit current navbar structure, menu data, mobile drawer, routes, and tests against pasted_content_2.txt
+- [x] Simplify desktop main navigation to SHOP, TRENDS, and THE EDIT with centered logo and right-side utility icons
+- [x] Keep all marketplace categories, Hair subcategories, Thrift Wear subcategories, and discovery links accessible through the SHOP menu
+- [x] Add exact Trends and The Edit menu contents and destination CTAs
+- [x] Preserve click, hover preview, outside-click, Escape, active-state, and keyboard behavior
+- [x] Update mobile menu with expandable SHOP, TRENDS, and THE EDIT sections and all specified child links
+- [x] Add regression coverage for every menu item, subcategory, route, and accessibility behavior
+- [x] Verify desktop/mobile navbar journeys, TypeScript, tests, production build, and responsive behavior
+- [x] Save the verified simplified-navbar checkpoint
