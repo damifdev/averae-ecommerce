@@ -479,3 +479,10 @@
 - [x] Add regression coverage for widget, drawer, keyboard behavior, and checkout preservation
 - [x] Verify TypeScript, Vitest, production build, and responsive behavior
 - [x] Save the verified support-widget checkpoint
+
+- [x] Audit checkout help drawer, FAQ data, analytics events, and completion flow
+- [x] Add searchable FAQ answers and no-results recovery inside the checkout drawer
+- [x] Instrument help-widget opens, support-link selections, and assisted-checkout completion
+- [x] Add regression coverage for drawer search, analytics contracts, and checkout assistance
+- [x] Verify TypeScript, Vitest, production build, and responsive behavior
+- [x] Save the verified checkout-help analytics checkpoint

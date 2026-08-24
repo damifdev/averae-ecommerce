@@ -1,4 +1,4 @@
-export type EngagementEvent = 'mobile_nav_click' | 'mobile_drawer_open' | 'footer_link_click' | 'account_section_save' | 'quick_view_open' | 'quick_view_variant_select' | 'quick_view_add_to_bag' | 'contact_form_submit' | 'contact_faq_click' | 'contact_track_order_click' | 'return_request_submitted' | 'faq_search_focus' | 'faq_helpfulness' | 'faq_question_share' | 'size_assistant_open' | 'size_assistant_save' | 'size_assistant_recommendation';
+export type EngagementEvent = 'mobile_nav_click' | 'mobile_drawer_open' | 'footer_link_click' | 'account_section_save' | 'quick_view_open' | 'quick_view_variant_select' | 'quick_view_add_to_bag' | 'contact_form_submit' | 'contact_faq_click' | 'contact_track_order_click' | 'return_request_submitted' | 'faq_search_focus' | 'faq_helpfulness' | 'faq_question_share' | 'size_assistant_open' | 'size_assistant_save' | 'size_assistant_recommendation' | 'help_widget_open' | 'support_link_select' | 'checkout_complete_after_help';
 
 export type AccountPreference = {
   style: 'minimal' | 'expressive' | 'heritage';

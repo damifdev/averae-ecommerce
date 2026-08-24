@@ -20,6 +20,7 @@ import FAQ from './pages/FAQ';
 import SizeGuide from './pages/SizeGuide';
 import CategoryLanding from './pages/CategoryLanding';
 import NotFound from './pages/NotFound';
+import { FloatingFAQHelp } from './components/CheckoutHelpDrawer';
 
 function Router() {
   return <Switch>
@@ -47,5 +48,5 @@ function Router() {
 }
 
 export default function App() {
-  return <ErrorBoundary><ThemeProvider defaultTheme="light"><TooltipProvider><Toaster /><Router /></TooltipProvider></ThemeProvider></ErrorBoundary>;
+  return <ErrorBoundary><ThemeProvider defaultTheme="light"><TooltipProvider><Toaster /><Router /><FloatingFAQHelp /></TooltipProvider></ThemeProvider></ErrorBoundary>;
 }

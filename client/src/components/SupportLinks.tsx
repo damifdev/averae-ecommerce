@@ -1,4 +1,5 @@
 import { Link } from 'wouter';
+import { trackEngagement } from '@/lib/analytics';
 
 type SupportLinksProps = {
   className?: string;
@@ -7,19 +8,21 @@ type SupportLinksProps = {
   includeSizeGuide?: boolean;
   label?: string;
   newTab?: boolean;
+  onSupportInteraction?: (label: string) => void;
 };
 
 const linkClass = 'text-[10px] uppercase tracking-[.13em] underline underline-offset-4 transition hover:text-[#B7654A] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#382820]';
 
-export default function SupportLinks({ className = '', includeContact = false, includeFaq = false, includeSizeGuide = false, label = 'Need help?', newTab = false }: SupportLinksProps) {
+export default function SupportLinks({ className = '', includeContact = false, includeFaq = false, includeSizeGuide = false, label = 'Need help?', newTab = false, onSupportInteraction }: SupportLinksProps) {
   const externalProps = newTab ? { target: '_blank', rel: 'noreferrer' } : {};
+  const handleSupportClick = (label: string) => { onSupportInteraction?.(label); trackEngagement('support_link_select', { source: 'support_links', label }); };
   return <nav aria-label="Customer support" className={`flex flex-wrap items-center gap-x-4 gap-y-3 ${className}`}>
     <span className="text-[10px] uppercase tracking-[.13em] text-[#866F62]">{label}</span>
-    <Link href="/delivery" className={linkClass} {...externalProps}>Delivery Information</Link>
-    <Link href="/returns" className={linkClass} {...externalProps}>Returns &amp; Refunds</Link>
-    {includeSizeGuide && <Link href="/size-guide" className={linkClass} {...externalProps}>Size Guide</Link>}
-    {includeFaq && <Link href="/faq" className={linkClass} {...externalProps}>FAQs</Link>}
-    {includeContact && <Link href="/contact" className={linkClass} {...externalProps}>Contact Support</Link>}
+    <Link href="/delivery" onClick={() => handleSupportClick('delivery')} className={linkClass} {...externalProps}>Delivery Information</Link>
+    <Link href="/returns" onClick={() => handleSupportClick('returns')} className={linkClass} {...externalProps}>Returns &amp; Refunds</Link>
+    {includeSizeGuide && <Link href="/size-guide" onClick={() => handleSupportClick('size_guide')} className={linkClass} {...externalProps}>Size Guide</Link>}
+    {includeFaq && <Link href="/faq" onClick={() => handleSupportClick('faq')} className={linkClass} {...externalProps}>FAQs</Link>}
+    {includeContact && <Link href="/contact" onClick={() => handleSupportClick('contact')} className={linkClass} {...externalProps}>Contact Support</Link>}
   </nav>;
 }
 
