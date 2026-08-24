@@ -15,7 +15,7 @@ type DrawerKey = 'wishlist' | 'bag';
 const menuLabels: Record<MenuKey, string> = { shop: 'Shop', women: 'Women', men: 'Men', kids: 'Kids', jewelry: 'Jewelry', shoes: 'Shoes', hair: 'Hair', thrift: 'Thrift Wear', trends: 'Trends', edit: 'The Edit' };
 
 const audienceLinks = audienceCategories.map(item => ({ label: item.label, href: `/shop?audience=${item.slug}` }));
-const categoryLinks = productCategories.map(item => ({ label: item.label, href: `/shop?category=${item.slug}` }));
+const categoryLinks = productCategories.map(item => ({ label: item.label, href: item.slug === 'hair' || item.slug === 'thrift-wear' ? `/${item.slug}` : `/shop?category=${item.slug}` }));
 const discoveryLinks = [
   { label: 'New Arrivals', href: '/shop?sort=new' },
   { label: 'Trending Now', href: '/trends' },

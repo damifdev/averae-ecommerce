@@ -6,6 +6,8 @@ import ProductSizeChart from '@/components/ProductSizeChart';
 import SupportLinks from '@/components/SupportLinks';
 import {
   ArrowLeft,
+  Bell,
+  Check,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -22,7 +24,7 @@ import {
   products,
   sizeInventory,
 } from '@/lib/brand';
-import { addToCart, getWishlist, toggleWishlist } from '@/lib/store';
+import { addToCart, getBackInStockSubscriptions, getWishlist, toggleBackInStockSubscription, toggleWishlist } from '@/lib/store';
 import {
   Carousel,
   CarouselContent,
@@ -38,6 +40,7 @@ import {
 } from '@/components/ui/dialog';
 import { trpc } from '@/lib/trpc';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 const detailSections = {
   Delivery: 'Complimentary delivery on orders over ₦150,000. Orders are prepared within 1–2 business days and delivered with tracking.',
@@ -77,6 +80,7 @@ export default function ProductDetail() {
   const [quantity, setQuantity] = useState(1);
   const [tab, setTab] = useState<DetailSection | null>('Delivery');
   const [liked, setLiked] = useState(() => getWishlist().includes(product.id));
+  const [notifySubscribed, setNotifySubscribed] = useState(() => getBackInStockSubscriptions().includes(product.id));
   const [error, setError] = useState('');
   const [confirmation, setConfirmation] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
@@ -106,6 +110,7 @@ export default function ProductDetail() {
     setConfirmation(false);
     setActiveImage(0);
     setLiked(getWishlist().includes(product.id));
+    setNotifySubscribed(getBackInStockSubscriptions().includes(product.id));
   }, [product.id]);
 
   useEffect(() => {
@@ -233,6 +238,8 @@ export default function ProductDetail() {
 
           {product.sizeChart && <div className="mt-7"><ProductSizeChart chart={product.sizeChart} compact /></div>}
           <SupportLinks className="mt-5" includeSizeGuide label="More about your order" />
+
+          {product.category === 'Thrift Wear' && itemUnavailable && <div className="mt-7 border border-[#D7C2A7] bg-[#F6F0E6] p-4"><div className="flex items-start gap-3"><Bell size={16} className="mt-0.5 text-[#B7654A]" /><div><p className="text-sm">This one-of-a-kind piece has sold out.</p><p className="mt-1 text-xs leading-5 text-[#866F62]">Sign up to hear when a similar archive find arrives. We never recreate stock that does not exist.</p><button type="button" onClick={() => { const next = toggleBackInStockSubscription(product.id); setNotifySubscribed(next.includes(product.id)); toast.success(next.includes(product.id) ? 'We’ll let you know when similar pieces arrive.' : 'Notification removed.'); }} className="focus-ring mt-3 inline-flex items-center gap-2 border border-[#382820] px-3 py-2 text-[10px] uppercase tracking-[.14em] hover:border-[#B7654A] hover:text-[#B7654A]" aria-pressed={notifySubscribed}>{notifySubscribed ? <Check size={13} /> : <Bell size={13} />}{notifySubscribed ? 'NOTIFIED' : 'NOTIFY ME'}</button></div></div></div>}
 
           <div className="mt-7 flex gap-3">
             <div className="flex items-center border border-[#D7C2A7]" aria-label="Quantity selector">

@@ -18,12 +18,15 @@ import Delivery from './pages/Delivery';
 import Returns from './pages/Returns';
 import FAQ from './pages/FAQ';
 import SizeGuide from './pages/SizeGuide';
+import CategoryLanding from './pages/CategoryLanding';
 import NotFound from './pages/NotFound';
 
 function Router() {
   return <Switch>
     <Route path="/" component={Home} />
     <Route path="/shop" component={Shop} />
+    <Route path="/hair" component={() => <CategoryLanding slug="hair" />} />
+    <Route path="/thrift-wear" component={() => <CategoryLanding slug="thrift-wear" />} />
     <Route path="/product/:id" component={ProductDetail} />
     <Route path="/cart" component={Cart} />
     <Route path="/account" component={Account} />

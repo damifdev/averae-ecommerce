@@ -130,6 +130,12 @@ export const products: Product[] = [
   { id: 9, name: "Soft Carryall Tote", brand: "Nuru House", category: "Bags", collection: "Objects of Ease", price: 136000, color: "Cognac", colors: ["Cognac", "Obsidian"], sizes: ["One size"], inventoryBySize: { "One size": 11 }, badge: "Best Seller", audiences: ["Women", "Men", "Unisex"], description: "A generous carryall with softened structure for long days and light travel.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-marketplace-hero_ccb2d39f.jpg", stock: 11, ...unrated, sizeChart: oneSizeChart('Carryall proportion', 'One size with generous capacity and softened structure.') },
   { id: 10, name: "Quiet Hours Watch", brand: "Sabi Time", category: "Watches", collection: "The Essentials", price: 156000, color: "Obsidian", colors: ["Obsidian", "Cognac"], sizes: ["One size"], inventoryBySize: { "One size": 6 }, badge: "Limited", audiences: ["Women", "Men", "Unisex"], description: "A minimal timepiece with a tactile strap and a calm, architectural face.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 6, ...unrated, sizeChart: oneSizeChart('Watch strap fit', 'One size with an adjustable strap.') },
   { id: 11, name: "Kora Body Ritual Set", brand: "Kora Rituals", category: "Beauty & Lifestyle", collection: "Daily Rituals", price: 48000, color: "Oat", colors: ["Oat", "Amber"], sizes: ["One size"], inventoryBySize: { "One size": 20 }, badge: "New", audiences: ["Women", "Men", "Unisex"], description: "A considered body-care ritual for slower mornings and softer evenings.", image: "/manus-storage/averae-editorial_41cdaa8e.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 20, ...unrated, sizeChart: oneSizeChart('Ritual set fit', 'One size. Each item is designed for an easy everyday ritual.') },
+  { id: 13, name: "Kumasi Human Hair Body Wave Bundle", brand: "Nuru Hair Studio", category: "Hair", collection: "The Hair Edit", price: 185000, color: "Natural Black", colors: ["Natural Black", "Dark Brown"], sizes: ["One size"], inventoryBySize: { "One size": 8 }, badge: "New", audiences: ["Women", "Men", "Unisex"], description: "A full-bodied human hair bundle with a soft body wave and an easy, natural movement.", image: "/manus-storage/averae-product-linen_48e45a38.jpg", secondaryImage: "/manus-storage/averae-hair-editorial_70f4dd20.jpg", stock: 8, ...unrated, length: "Long", texture: "Body wave", style: "Bundles" },
+  { id: 14, name: "Lagos Blend Straight Set", brand: "Kora Hair Co.", category: "Hair", collection: "The Hair Edit", price: 78000, color: "Off Black", colors: ["Off Black", "Warm Brown"], sizes: ["One size"], inventoryBySize: { "One size": 4 }, audiences: ["Women", "Men", "Unisex"], description: "A polished blend-hair set with a smooth finish for everyday styling and protective looks.", image: "/manus-storage/averae-product-bag_c6fe5185.jpg", secondaryImage: "/manus-storage/averae-hair-editorial_70f4dd20.jpg", stock: 4, ...unrated, length: "Medium", texture: "Straight", style: "Bundles" },
+  { id: 15, name: "Oshogbo Coily Packet Hair", brand: "Maji Beauty Supply", category: "Hair", collection: "Daily Rituals", price: 18500, color: "1B Natural", colors: ["1B Natural", "4 Warm Brown"], sizes: ["One size"], inventoryBySize: { "One size": 18 }, badge: "Best Seller", audiences: ["Women", "Men", "Unisex"], description: "A versatile packet-hair texture with a defined coil for braids, twists and expressive protective styling.", image: "/manus-storage/averae-editorial_41cdaa8e.jpg", secondaryImage: "/manus-storage/averae-hair-editorial_70f4dd20.jpg", stock: 18, ...unrated, length: "Long", texture: "Coily", style: "Braiding hair" },
+  { id: 16, name: "Indigo Workwear Jacket", brand: "Áveraẹ Archive", category: "Thrift Wear", collection: "Archive Finds", price: 92000, color: "Faded Indigo", colors: ["Faded Indigo"], sizes: ["M"], inventoryBySize: { M: 1 }, badge: "Limited", audiences: ["Women", "Men", "Unisex"], description: "A one-of-one indigo workwear jacket with softened structure and an honest lived-in patina.", image: "/manus-storage/averae-thrift-editorial_276a1c9a.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 1, ...unrated, condition: "Excellent" },
+  { id: 17, name: "Vintage Silk Column Dress", brand: "Áveraẹ Archive", category: "Thrift Wear", collection: "Archive Finds", price: 68000, color: "Burnt Sienna", colors: ["Burnt Sienna"], sizes: ["S"], inventoryBySize: { S: 0 }, badge: "Currently unavailable", audiences: ["Women"], description: "A vintage silk column dress with a warm, luminous hand and the singular character of a carefully kept archive piece.", image: "/manus-storage/averae-thrift-editorial_276a1c9a.jpg", secondaryImage: "/manus-storage/averae-editorial_41cdaa8e.jpg", stock: 0, ...unrated, condition: "Good" },
+  { id: 18, name: "Leather Penny Loafers", brand: "Áveraẹ Archive", category: "Thrift Wear", collection: "Archive Finds", price: 54000, color: "Cocoa", colors: ["Cocoa"], sizes: ["39"], inventoryBySize: { "39": 1 }, audiences: ["Women", "Men", "Unisex"], description: "A gently worn pair of cocoa leather loafers with a classic profile and plenty of life left in them.", image: "/manus-storage/averae-thrift-editorial_276a1c9a.jpg", secondaryImage: "/manus-storage/averae-product-bag_c6fe5185.jpg", stock: 1, ...unrated, condition: "Excellent" },
   { id: 12, name: "Daybreak Cotton Set", brand: "Áveraẹ", category: "Ready to Wear", collection: "Little Essentials", price: 55000, color: "Ivory", colors: ["Ivory", "Oat"], sizes: ["2Y", "4Y", "6Y", "8Y", "10Y"], inventoryBySize: { "2Y": 0, "4Y": 3, "6Y": 4, "8Y": 4, "10Y": 3 }, badge: "New", audiences: ["Kids"], description: "A soft cotton set designed for movement, comfort and everyday expression.", image: "/manus-storage/averae-marketplace-hero_ccb2d39f.jpg", secondaryImage: "/manus-storage/averae-product-linen_48e45a38.jpg", stock: 14, ...unrated, sizeChart: kidsChart },
 ];
 
@@ -162,6 +168,27 @@ export const productCategories: ProductCategory[] = [
   { slug: 'beauty-lifestyle', label: 'Beauty & Lifestyle', description: 'Objects and rituals for everyday expression.', image: '/manus-storage/averae-department-beauty-lifestyle-v2_4ea1504e.jpg', keywords: 'beauty lifestyle rituals objects', filters: ['colour', 'price', 'availability'] },
   { slug: 'thrift-wear', label: 'Thrift Wear', description: 'One-of-a-kind and limited pieces with a story to tell.', image: '/manus-storage/averae-marketplace-hero_ccb2d39f.jpg', keywords: 'thrift thrift wear vintage statement pre-loved secondhand', subcategories: ['Thrift Women', 'Thrift Men', 'Thrift Kids', 'Vintage / Statement Pieces'], filters: ['size', 'colour', 'condition', 'price', 'availability'] },
 ];
+
+export const categoryLandingPages = {
+  hair: {
+    slug: 'hair',
+    eyebrow: 'The Hair Edit',
+    title: 'Hair for every expression',
+    description: 'Explore human hair, blend hair and packet hair selected for texture, movement and the way you want to show up.',
+    image: '/manus-storage/averae-hair-editorial_70f4dd20.jpg',
+    subcategories: ['Human Hair', 'Blend Hair', 'Packet Hair'],
+    cta: 'SHOP HAIR',
+  },
+  'thrift-wear': {
+    slug: 'thrift-wear',
+    eyebrow: 'The Áveraẹ Archive',
+    title: 'Pieces with a past, a point of view',
+    description: 'Discover one-of-a-kind and limited pre-loved pieces. Every item is inspected, clearly described and available only while it lasts.',
+    image: '/manus-storage/averae-thrift-editorial_276a1c9a.jpg',
+    subcategories: ['Thrift Women', 'Thrift Men', 'Thrift Kids', 'Vintage / Statement Pieces'],
+    cta: 'SHOP THRIFT WEAR',
+  },
+} as const;
 
 export const marketplaceCategories = [...audienceCategories, ...productCategories] as const;
 

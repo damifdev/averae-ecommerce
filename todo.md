@@ -433,3 +433,12 @@
 - [x] Add regression tests for routes, category metadata, filters, search, navigation, breadcrumbs, and stock labels
 - [x] Verify TypeScript, Vitest, production build, and responsive category journeys
 - [x] Save the verified Hair and Thrift Wear checkpoint
+
+- [x] Audit category landing, catalog, inventory, notification, and editorial asset patterns
+- [x] Add realistic Hair sample products with filter metadata and truthful stock states
+- [x] Add realistic Thrift Wear sample products with condition metadata and one-of-a-kind availability states
+- [x] Implement Notify Me for out-of-stock one-of-a-kind thrift items with persistence and feedback
+- [x] Create dedicated Hair and Thrift Wear landing sections with promotional copy and editorial imagery
+- [x] Add regression tests for catalog entries, filters, stock labels, notifications, routes, and landing content
+- [x] Verify TypeScript, Vitest, production build, and responsive category journeys
+- [x] Save the verified category-content checkpoint
