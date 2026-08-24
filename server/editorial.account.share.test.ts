@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 const discoverySource = readFileSync(new URL('../client/src/pages/Discovery.tsx', import.meta.url), 'utf8');
 const accountSource = readFileSync(new URL('../client/src/pages/Account.tsx', import.meta.url), 'utf8');
+const miniCartSource = readFileSync(new URL('../client/src/components/EditorialMiniCart.tsx', import.meta.url), 'utf8');
 const cssSource = readFileSync(new URL('../client/src/index.css', import.meta.url), 'utf8');
 
 describe('editorial account and sharing enhancements', () => {
@@ -30,7 +31,17 @@ describe('editorial account and sharing enhancements', () => {
     expect(discoverySource).toContain('onPointerDown');
     expect(discoverySource).toContain("event.pointerType === 'touch'");
     expect(discoverySource).toContain('data-testid="shop-look-view-cart"');
+    expect(discoverySource).toContain('EditorialMiniCart');
+    expect(discoverySource).toContain('setMiniCartOpen(true)');
     expect(discoverySource).toContain("toast[saved ? 'success' : 'message']");
+  });
+
+  it('provides an editorial mini-cart with accessible current bag and checkout controls', () => {
+    expect(miniCartSource).toContain('role="dialog"');
+    expect(miniCartSource).toContain('aria-modal="true"');
+    expect(miniCartSource).toContain('data-testid="editorial-mini-cart-checkout"');
+    expect(miniCartSource).toContain('onKeyDown');
+    expect(cssSource).toContain('.mini-cart-panel');
   });
 
   it('provides an article skeleton before content and sharing controls render', () => {

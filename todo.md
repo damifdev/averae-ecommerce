@@ -236,3 +236,6 @@
 - [x] Add View Cart to the quick-add confirmation state
 - [x] Add toast or subtle animation feedback when a product is saved
 - [x] Add regression coverage for hotspot touch behavior, View Cart, and saved-product feedback
+- [x] Add a slide-out mini-cart sidebar opened by the Shop the Look quick-add View Cart action
+- [x] Add mini-cart accessibility, responsive motion, current bag contents, and checkout navigation
+- [x] Add regression coverage for opening and closing the editorial mini-cart flow

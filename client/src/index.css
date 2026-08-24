@@ -228,3 +228,10 @@ button:active, a:active { transform: scale(.98); }
 .action-link-dark:focus-visible {
   color: #B7654A !important;
 }
+
+/* Editorial mini-cart: side-entry motion stays subtle and disappears for reduced-motion users. */
+.mini-cart-panel { animation: editorial-mini-cart-in 220ms cubic-bezier(.23,1,.32,1) both; }
+@keyframes editorial-mini-cart-in { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .mini-cart-panel { animation: none; }
+}
