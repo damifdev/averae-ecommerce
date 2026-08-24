@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { availableSizes, isSizeAvailable, products, sizeInventory } from '../client/src/lib/brand';
-import { addToCart, cartItemCount, getCart } from '../client/src/lib/store';
+import { addToCart, cartItemCount, clearCart, getCart } from '../client/src/lib/store';
 
 const quickViewSource = readFileSync(new URL('../client/src/components/QuickView.tsx', import.meta.url), 'utf8');
 const shopSource = readFileSync(new URL('../client/src/pages/Shop.tsx', import.meta.url), 'utf8');
@@ -50,5 +50,8 @@ describe('catalog metadata and quick view', () => {
     expect(typeof getCart).toBe('function');
     expect(typeof addToCart).toBe('function');
     expect(typeof cartItemCount).toBe('function');
+    expect(typeof clearCart).toBe('function');
+    expect(storeSource).toContain('export function clearCart()');
+    expect(storeSource).toContain('LAST_ADDED_CART_ITEM_KEY');
   });
 });

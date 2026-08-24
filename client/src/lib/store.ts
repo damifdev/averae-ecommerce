@@ -78,10 +78,21 @@ export function addToCart(id: number, selection: Partial<Pick<CartItem, 'size' |
   return next;
 }
 
+function clearLatestAddedItemIfEmpty(next: CartItem[]) {
+  if (next.length === 0 && typeof window !== 'undefined') window.localStorage.removeItem(LAST_ADDED_CART_ITEM_KEY);
+}
+
 export function removeFromCart(id: number, size = '', color = '') {
   const next = getCart().filter(item => !(item.id === id && item.size === size && item.color === color));
+  clearLatestAddedItemIfEmpty(next);
   write(CART_KEY, next);
   return next;
+}
+
+export function clearCart() {
+  if (typeof window !== 'undefined') window.localStorage.removeItem(LAST_ADDED_CART_ITEM_KEY);
+  write(CART_KEY, []);
+  return [];
 }
 
 export function updateCartQuantity(id: number, quantity: number, size = '', color = '') {
@@ -90,6 +101,7 @@ export function updateCartQuantity(id: number, quantity: number, size = '', colo
     if (item.id !== id || item.size !== size || item.color !== color) return [item];
     return safeQuantity > 0 ? [{ ...item, quantity: safeQuantity }] : [];
   });
+  clearLatestAddedItemIfEmpty(next);
   write(CART_KEY, next);
   return next;
 }

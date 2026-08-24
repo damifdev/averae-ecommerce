@@ -6,7 +6,7 @@ const shopSource = readFileSync(new URL('../client/src/pages/Shop.tsx', import.m
 
 describe('Shop UX Refinement Part 2', () => {
   it('exposes the required browse hierarchy and result-count copy', () => {
-    expect(shopSource).toContain('Shop all');
+    expect(shopSource).toContain('Discover Áveraẹ');
     expect(shopSource).toContain('Explore fashion, accessories and lifestyle products');
     expect(shopSource).toContain("{shown.length === 1 ? 'product' : 'products'}");
     expect(audienceCategories.map(item => item.label)).toEqual(['Women', 'Men', 'Kids', 'Unisex']);

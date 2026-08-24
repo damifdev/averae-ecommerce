@@ -195,3 +195,6 @@
 - [x] Add regression coverage that samples preview opacity during open, switch, and close transitions
 - [x] Change wishlist and bag previews to enter and exit from the header’s outer side while fading
 - [x] Add regression coverage for side-transition direction and reduced-motion behavior
+- [x] Rename the Shop page heading from SHOP ALL to Discover Áveraẹ
+- [x] Add accessible controls to remove bag selections individually and clear the full bag
+- [x] Add regression coverage for the heading and bag-clearing behavior across responsive layouts
