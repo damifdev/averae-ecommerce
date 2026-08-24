@@ -220,3 +220,7 @@
 - [x] Add contextual SHOP THIS LOOK and SHOP RELATED PRODUCTS pathways
 - [x] Build audience-aware Shop the Look product identification with individual ADD TO BAG and ADD ALL TO BAG actions for men, women, kids, and unisex looks
 - [x] Add Part 5 editorial regression tests and responsive verification
+- [x] Add interactive product hotspots over Shop the Look imagery with accessible product shopping actions
+- [x] Add Save Article persistence and social share buttons to editorial article pages
+- [x] Add reduced-motion-aware smooth scrolling from Shop This Look CTAs to product sections
+- [x] Add regression coverage for hotspots, saved articles, sharing, and anchored scrolling

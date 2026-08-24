@@ -20,6 +20,8 @@ describe('UX Refinement Part 5 — editorial experience', () => {
     expect(editorialEntries.every(entry => entry.relatedProductIds.every(id => products.some(product => product.id === id)))).toBe(true);
     expect(editorialEntries.every(entry => entry.lookProductIds.every(id => products.some(product => product.id === id)))).toBe(true);
     expect(lookCollections.every(look => look.productIds.every(id => products.some(product => product.id === id)))).toBe(true);
+    expect(editorialEntries.every(entry => entry.hotspots.length === entry.lookProductIds.length && entry.hotspots.every(hotspot => entry.lookProductIds.includes(hotspot.productId) && hotspot.x >= 0 && hotspot.x <= 100 && hotspot.y >= 0 && hotspot.y <= 100))).toBe(true);
+    expect(lookCollections.every(look => look.hotspots.length === look.productIds.length && look.hotspots.every(hotspot => look.productIds.includes(hotspot.productId)))).toBe(true);
   });
 
   it('supports all four audience-specific looks and purchase-safe actions', () => {
@@ -37,5 +39,10 @@ describe('UX Refinement Part 5 — editorial experience', () => {
     expect(discoverySource).toContain('Breadcrumb');
     expect(discoverySource).toContain('Related articles.');
     expect(discoverySource).toContain('Shop related products.');
+    expect(discoverySource).toContain('data-testid={`look-hotspot-');
+    expect(discoverySource).toContain('SAVE ARTICLE');
+    expect(discoverySource).toContain('SHARE');
+    expect(discoverySource).toContain('scrollToAnchor');
+    expect(discoverySource).toContain('prefers-reduced-motion');
   });
 });

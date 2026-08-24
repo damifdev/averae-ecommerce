@@ -2,6 +2,8 @@ const WISHLIST_KEY = 'averae-wishlist';
 const CART_KEY = 'averae-cart';
 const BACK_IN_STOCK_KEY = 'averae-back-in-stock-alerts';
 const LAST_ADDED_CART_ITEM_KEY = 'averae-last-added-cart-item';
+const SAVED_ARTICLES_KEY = 'averae-saved-articles';
+export const SAVED_ARTICLES_UPDATED_EVENT = 'averae-saved-articles-updated';
 export const CART_UPDATED_EVENT = 'averae-cart-updated';
 export const BACK_IN_STOCK_UPDATED_EVENT = 'averae-back-in-stock-updated';
 
@@ -32,6 +34,18 @@ export function toggleWishlist(id: number) {
   write(WISHLIST_KEY, value);
   if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('averae-wishlist-updated'));
   return value;
+}
+
+export function getSavedArticles() { return read<string[]>(SAVED_ARTICLES_KEY, []).filter(slug => typeof slug === 'string' && slug.length > 0); }
+
+export function isArticleSaved(slug: string) { return getSavedArticles().includes(slug); }
+
+export function toggleSavedArticle(slug: string) {
+  const current = getSavedArticles();
+  const next = current.includes(slug) ? current.filter(item => item !== slug) : [...current, slug];
+  write(SAVED_ARTICLES_KEY, next);
+  if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent(SAVED_ARTICLES_UPDATED_EVENT));
+  return next;
 }
 
 export function getCart(): CartItem[] {

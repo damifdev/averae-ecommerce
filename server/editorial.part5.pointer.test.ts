@@ -32,8 +32,16 @@ async function auditEdit(port: number) {
     const filtered = await evaluate<{ visible: number; categoryVisible: boolean }>(`(() => ({ visible: [...document.querySelectorAll('a[aria-label^="Read "]')].filter(item => item.offsetParent !== null).length, categoryVisible: Boolean([...document.querySelectorAll('[aria-label="Edit categories"] button')].find(item => item.textContent?.trim() === 'African Fashion' && item.getAttribute('aria-pressed') === 'true')) }))()`);
     await evaluate(`document.querySelector('a[aria-label^="Read "]')?.click()`);
     await sleep(500);
-    const article = await evaluate<{ breadcrumb: boolean; related: boolean; look: boolean; addAll: boolean }>(`(() => ({ breadcrumb: Boolean(document.querySelector('[aria-label="Breadcrumb"]')), related: document.body.innerText.includes('Shop related products.'), look: document.body.innerText.includes('THIS LOOK'), addAll: document.body.innerText.includes('ADD ALL TO BAG') }))()`);
-    return { initial, filtered, article };
+    const article = await evaluate<{ breadcrumb: boolean; related: boolean; look: boolean; addAll: boolean; hotspots: number; save: boolean; share: boolean }>(`(() => ({ breadcrumb: Boolean(document.querySelector('[aria-label="Breadcrumb"]')), related: document.body.innerText.includes('Shop related products.'), look: document.body.innerText.includes('THIS LOOK'), addAll: document.body.innerText.includes('ADD ALL TO BAG'), hotspots: document.querySelectorAll('[data-testid^="look-hotspot-"]').length, save: Boolean(document.querySelector('[data-testid="save-article"]')), share: Boolean(document.querySelector('[data-testid="share-article"]')) }))()`);
+    await evaluate(`document.querySelector('[data-testid="save-article"]')?.click()`);
+    await sleep(180);
+    const saved = await evaluate<boolean>(`document.querySelector('[data-testid="save-article"]')?.getAttribute('aria-pressed') === 'true'`);
+    const scrollBefore = await evaluate<number>('window.scrollY');
+    await evaluate(`document.querySelector('a[href="#this-look"]')?.click()`);
+    await sleep(500);
+    const scrollAfter = await evaluate<number>('window.scrollY');
+    const hotspot = await evaluate<{ clicked: boolean; targetVisible: boolean }>(`(() => { const button = document.querySelector('[data-testid^="look-hotspot-"]'); if (!button) return { clicked: false, targetVisible: false }; button.click(); const targetId = button.getAttribute('data-testid')?.replace('look-hotspot-', 'look-product-'); const target = targetId ? document.getElementById(targetId) : null; return { clicked: true, targetVisible: Boolean(target) }; })()`);
+    return { initial, filtered, article, saved, scrollBefore, scrollAfter, hotspot };
   } finally { socket.close(); }
 }
 
@@ -53,6 +61,13 @@ describe('Áveraẹ Edit Part 5 pointer interactions', () => {
       expect(result.article.related).toBe(true);
       expect(result.article.look).toBe(true);
       expect(result.article.addAll).toBe(true);
+      expect(result.article.hotspots).toBeGreaterThanOrEqual(3);
+      expect(result.article.save).toBe(true);
+      expect(result.article.share).toBe(true);
+      expect(result.saved).toBe(true);
+      expect(result.scrollAfter).toBeGreaterThan(result.scrollBefore);
+      expect(result.hotspot.clicked).toBe(true);
+      expect(result.hotspot.targetVisible).toBe(true);
     } finally { chrome.kill('SIGTERM'); }
   }, 30000);
 });
