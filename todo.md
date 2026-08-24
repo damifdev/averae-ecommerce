@@ -191,3 +191,5 @@
 - [x] Add smooth fade-in and fade-out transitions when switching wishlist and bag previews
 - [x] Optimize wishlist and bag preview sizing and placement for very narrow desktop widths
 - [x] Extend regression coverage for preview transitions and narrow-desktop geometry
+- [x] Ensure wishlist and bag previews visibly fade in when appearing and fade out when closing or switching
+- [x] Add regression coverage that samples preview opacity during open, switch, and close transitions

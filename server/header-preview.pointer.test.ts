@@ -59,6 +59,11 @@ async function auditPreviews(port: number) {
     await sleep(900);
 
     await evaluate(`document.querySelector('[aria-label^="Wishlist"]')?.parentElement?.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, relatedTarget: null }))`);
+    await sleep(55);
+    const wishlistOpening = await evaluate<{ present: boolean; opacity: number }>(`(() => {
+      const preview = document.querySelector('[data-testid="wishlist-latest-preview"]');
+      return { present: Boolean(preview), opacity: preview ? Number(getComputedStyle(preview).opacity) : -1 };
+    })()`);
     await sleep(120);
     const wishlistState = await evaluate<{ previews: number; wishlistPreview: boolean; wishlistTooltipOpacity: string }>(`(() => {
       const wishlist = document.querySelector('[data-testid="wishlist-latest-preview"]');
@@ -67,7 +72,13 @@ async function auditPreviews(port: number) {
     })()`);
 
     await evaluate(`document.querySelector('[aria-label^="Bag"]')?.parentElement?.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, relatedTarget: null }))`);
-        await sleep(240);
+    await sleep(55);
+    const switchingState = await evaluate<{ wishlistPresent: boolean; bagPresent: boolean; wishlistOpacity: number }>(`(() => {
+      const wishlist = document.querySelector('[data-testid="wishlist-latest-preview"]');
+      const bag = document.querySelector('[data-testid="bag-latest-preview"]');
+      return { wishlistPresent: Boolean(wishlist), bagPresent: Boolean(bag), wishlistOpacity: wishlist ? Number(getComputedStyle(wishlist).opacity) : -1 };
+    })()`);
+    await sleep(240);
 
     const bagState = await evaluate<{ previews: number; wishlistPreview: boolean; bagPreview: boolean; bagTooltipOpacity: string }>(`(() => {
       const bag = document.querySelector('[data-testid="bag-latest-preview"]');
@@ -84,7 +95,16 @@ async function auditPreviews(port: number) {
       return { left: rect?.left ?? -1, right: rect?.right ?? -1, width: rect?.width ?? 0, viewport: window.innerWidth };
     })()`);
 
-    return { wishlistState, bagState, narrowState };
+    await evaluate(`document.querySelector('[data-testid="bag-latest-preview"]')?.parentElement?.dispatchEvent(new MouseEvent('mouseout', { bubbles: true, relatedTarget: document.body }))`);
+    await sleep(60);
+    const bagClosing = await evaluate<{ present: boolean; opacity: number }>(`(() => {
+      const preview = document.querySelector('[data-testid="bag-latest-preview"]');
+      return { present: Boolean(preview), opacity: preview ? Number(getComputedStyle(preview).opacity) : -1 };
+    })()`);
+    await sleep(220);
+    const bagClosed = await evaluate<boolean>(`Boolean(document.querySelector('[data-testid="bag-latest-preview"]'))`);
+
+    return { wishlistOpening, wishlistState, switchingState, bagState, narrowState, bagClosing, bagClosed };
   } finally {
     socket.close();
   }
@@ -106,6 +126,13 @@ describe('header preview layering', () => {
     try {
       await waitForDevTools(port);
       const result = await auditPreviews(port);
+      expect(result.wishlistOpening.present).toBe(true);
+      expect(result.wishlistOpening.opacity).toBeGreaterThan(0);
+      expect(result.wishlistOpening.opacity).toBeLessThan(1);
+      expect(result.switchingState.wishlistPresent).toBe(true);
+      expect(result.switchingState.bagPresent).toBe(false);
+      expect(result.switchingState.wishlistOpacity).toBeGreaterThan(0);
+      expect(result.switchingState.wishlistOpacity).toBeLessThan(1);
       expect(result.wishlistState.previews).toBe(1);
       expect(result.wishlistState.wishlistPreview).toBe(true);
       expect(result.wishlistState.wishlistTooltipOpacity).toBe('0');
@@ -116,6 +143,10 @@ describe('header preview layering', () => {
       expect(result.narrowState.left).toBeGreaterThanOrEqual(0);
       expect(result.narrowState.right).toBeLessThanOrEqual(result.narrowState.viewport);
       expect(result.narrowState.width).toBeLessThanOrEqual(result.narrowState.viewport - 32);
+      expect(result.bagClosing.present).toBe(true);
+      expect(result.bagClosing.opacity).toBeGreaterThan(0);
+      expect(result.bagClosing.opacity).toBeLessThan(1);
+      expect(result.bagClosed).toBe(false);
     } finally {
       chrome.kill('SIGTERM');
     }

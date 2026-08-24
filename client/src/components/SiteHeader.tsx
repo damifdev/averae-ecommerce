@@ -90,7 +90,9 @@ export default function SiteHeader() {
     const switchPreview = () => {
       setWishlistPreviewOpen(key === 'wishlist');
       setBagPreviewOpen(key === 'bag');
-      window.requestAnimationFrame(() => setPreviewVisible(true));
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => setPreviewVisible(true));
+      });
     };
     if (hasOpenPreview && !reducedPreviewMotion()) {
       previewTransitionTimerRef.current = window.setTimeout(() => {
