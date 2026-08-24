@@ -300,3 +300,9 @@
 - [x] Editorial listing pages need contextual breadcrumbs for easier orientation.
 - [x] Footer Shop the Look needs a concrete anchor target on the homepage.
 - [x] Empty bag CTA query must match the Shop page parser.
+
+- [x] Add accessible product quick-view modals to Trends and The Áveraẹ Edit discovery product cards
+- [x] Keep discovery quick view purchase-safe with variant selection, inventory-aware options, and clear recovery feedback
+- [x] Add regression coverage for discovery-page quick view on desktop and mobile
+- [x] Run TypeScript, Vitest, production build, and responsive visual verification for discovery quick view
+- [x] Save the verified discovery quick-view checkpoint

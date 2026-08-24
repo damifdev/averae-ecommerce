@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { addToCart, getSavedArticles, getWishlist, SAVED_ARTICLES_UPDATED_EVENT, toggleSavedArticle, toggleWishlist } from '@/lib/store';
 import { availableSizes } from '@/lib/brand';
 import { brand, editorialEntries, editorialTaxonomy, formatPrice, lookCollections, products, trendCollections, trendItems, type EditorialEntry, type Product } from '@/lib/brand';
+import QuickView from '@/components/QuickView';
 
 function scrollToAnchor(id: string) {
   const target = document.getElementById(id);
@@ -45,14 +46,23 @@ async function shareEditorialTo(platform: 'whatsapp' | 'pinterest' | 'instagram'
 }
 
 function ProductTile({ product, badge }: { product: Product; badge?: string }) {
-  return <Link href={`/product/${product.id}`} className="group block" aria-label={`View ${product.name}`}>
+  const [quickViewOpen, setQuickViewOpen] = useState(false);
+  const handleAddToBag = (selectedProduct: Product, size: string, color: string) => {
+    addToCart(selectedProduct.id, { size, color });
+    toast.success('Added to your bag', { description: selectedProduct.name, duration: 2500, position: 'bottom-center' });
+  };
+  return <article className="group block">
     <div className="relative aspect-[4/5] overflow-hidden bg-[#D7C2A7]">
-      <img src={product.image} alt={product.name} className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
-      {badge && <span className="absolute left-3 top-3 bg-[#FFFDF8] px-2 py-1 text-[9px] uppercase tracking-[.14em]">{badge}</span>}
+      <Link href={`/product/${product.id}`} aria-label={`View ${product.name}`} className="absolute inset-0 z-0">
+        <img src={product.image} alt={product.name} className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
+      </Link>
+      {badge && <span className="pointer-events-none absolute left-3 top-3 z-10 bg-[#FFFDF8] px-2 py-1 text-[9px] uppercase tracking-[.14em]">{badge}</span>}
+      <button type="button" data-testid={`discovery-quick-view-${product.id}`} onClick={() => setQuickViewOpen(true)} className="action-link-light absolute bottom-3 left-3 right-3 z-10 bg-[#FFFDF8]/95 py-3 text-[10px] uppercase tracking-[.14em] opacity-100 transition hover:bg-[#382820] hover:text-[#FFFDF8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFFDF8] sm:opacity-0 sm:group-hover:opacity-100" aria-label={`Quick view ${product.name}`}>QUICK VIEW</button>
     </div>
-    <div className="mt-4 flex justify-between gap-3 text-sm"><span className="min-w-0 truncate">{product.name}</span><span className="shrink-0">{formatPrice(product.price)}</span></div>
+    <Link href={`/product/${product.id}`} aria-label={`View details for ${product.name}`} className="mt-4 flex justify-between gap-3 text-sm"><span className="min-w-0 truncate">{product.name}</span><span className="shrink-0">{formatPrice(product.price)}</span></Link>
     <p className="mt-1 text-xs text-[#866F62]">{product.brand} · {product.color}</p>
-  </Link>;
+    <QuickView product={product} open={quickViewOpen} onOpenChange={setQuickViewOpen} onAddToBag={handleAddToBag} />
+  </article>;
 }
 
 function ArticleCard({ entry }: { entry: EditorialEntry }) {
@@ -71,6 +81,7 @@ function ShopTheLook({ productIds, image, title, description, audience, hotspots
   const [openHotspotId, setOpenHotspotId] = useState<number | null>(null);
   const [touchHotspot, setTouchHotspot] = useState(false);
   const [miniCartOpen, setMiniCartOpen] = useState(false);
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const viewCartRef = useRef<HTMLButtonElement>(null);
   const [savedProductIds, setSavedProductIds] = useState<number[]>(() => productIds.filter(id => getWishlist().includes(id)));
   const lookProducts = productIds.map(id => products.find(product => product.id === id)).filter(Boolean) as Product[];
@@ -103,12 +114,12 @@ function ShopTheLook({ productIds, image, title, description, audience, hotspots
       <div className="relative aspect-[4/3] overflow-hidden bg-[#D7C2A7]"><img src={image} alt={`${audience} editorial look`} className="h-full w-full object-cover" /><span className="absolute left-4 top-4 bg-[#FFFDF8] px-3 py-2 text-[10px] uppercase tracking-[.16em]">THIS LOOK · {audience}</span>{hotspots.map(hotspot => { const hotspotProduct = products.find(product => product.id === hotspot.productId); return <HoverCard key={hotspot.productId} open={openHotspotId === hotspot.productId} onOpenChange={open => setOpenHotspotId(open ? hotspot.productId : null)} openDelay={120} closeDelay={80}><HoverCardTrigger asChild><button type="button" data-testid={`look-hotspot-${audience.toLowerCase()}-${hotspot.productId}`} aria-label={`Shop ${hotspotProduct?.name ?? hotspot.label}`} onPointerDown={event => setTouchHotspot(event.pointerType === 'touch')} onClick={() => { if (touchHotspot) setOpenHotspotId(current => current === hotspot.productId ? null : hotspot.productId); else scrollToAnchor(`look-product-${audience.toLowerCase()}-${hotspot.productId}`); }} className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#FFFDF8] bg-[#382820] p-2 text-[#FFFDF8] shadow-md transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFFDF8]" style={{ left: `${hotspot.x}%`, top: `${hotspot.y}%` }}><span className="block h-2 w-2 rounded-full bg-[#D7C2A7]" /></button></HoverCardTrigger><HoverCardContent data-testid={`look-hotspot-card-${audience.toLowerCase()}-${hotspot.productId}`} className="w-60 border-[#D7C2A7] bg-[#FFFDF8] p-3 text-[#382820]"><p className="text-[10px] uppercase tracking-[.14em] text-[#B7654A]">{audience} look</p><p className="mt-2 text-sm font-medium">{hotspotProduct?.name ?? hotspot.label}</p>{hotspotProduct && <p className="mt-1 text-xs text-[#866F62]">{formatPrice(hotspotProduct.price)}</p>}{hotspotProduct && <div className="mt-3 grid gap-2"><button type="button" data-testid={`look-hotspot-add-${audience.toLowerCase()}-${hotspot.productId}`} onClick={() => addProduct(hotspotProduct)} disabled={availableSizes(hotspotProduct).length === 0} className="action-link-light pressable inline-flex items-center justify-center gap-2 bg-[#382820] px-3 py-2 text-[10px] uppercase tracking-[.12em] text-[#FFFDF8] disabled:cursor-not-allowed disabled:opacity-45"><ShoppingBag size={13} /> ADD TO CART</button><button type="button" data-testid={`look-hotspot-save-${audience.toLowerCase()}-${hotspot.productId}`} onClick={() => saveProduct(hotspotProduct)} aria-pressed={savedProductIds.includes(hotspotProduct.id)} className="action-link-dark pressable inline-flex items-center justify-center gap-2 border border-[#382820] px-3 py-2 text-[10px] uppercase tracking-[.12em]"><Heart size={13} fill={savedProductIds.includes(hotspotProduct.id) ? 'currentColor' : 'none'} /> {savedProductIds.includes(hotspotProduct.id) ? 'SAVED PRODUCT' : 'SAVE PRODUCT'}</button></div>}</HoverCardContent></HoverCard>; })}</div>
       <div>
         <p className="eyebrow text-[#B7654A]">Shop the look</p><h2 id={`look-${audience.toLowerCase()}-heading`} className="mt-3 font-display text-4xl md:text-5xl">{title}</h2><p className="mt-4 max-w-md text-sm leading-7 text-[#866F62]">{description}</p>
-        <div className="mt-7 divide-y divide-[#D7C2A7] border-y border-[#D7C2A7]">{lookProducts.map(product => <div key={product.id} id={`look-product-${audience.toLowerCase()}-${product.id}`} className="flex scroll-mt-8 items-center justify-between gap-4 py-4"><div className="min-w-0"><Link href={`/product/${product.id}`} className="text-sm underline-offset-4 hover:underline">{product.name}</Link><p className="mt-1 text-xs text-[#866F62]">{formatPrice(product.price)} · {product.color}</p></div><button type="button" onClick={() => addProduct(product)} disabled={availableSizes(product).length === 0} className="action-link-dark inline-flex shrink-0 items-center gap-2 border border-[#382820] px-3 py-2 text-[10px] uppercase tracking-[.12em] disabled:cursor-not-allowed disabled:opacity-45"><ShoppingBag size={13} /> ADD TO BAG</button></div>)}</div>
+        <div className="mt-7 divide-y divide-[#D7C2A7] border-y border-[#D7C2A7]">{lookProducts.map(product => <div key={product.id} id={`look-product-${audience.toLowerCase()}-${product.id}`} className="flex scroll-mt-8 items-center justify-between gap-4 py-4"><div className="min-w-0"><Link href={`/product/${product.id}`} className="text-sm underline-offset-4 hover:underline">{product.name}</Link><p className="mt-1 text-xs text-[#866F62]">{formatPrice(product.price)} · {product.color}</p></div><div className="flex shrink-0 flex-wrap justify-end gap-2"><button type="button" onClick={() => setQuickViewProduct(product)} className="action-link-dark inline-flex items-center gap-2 border-b border-[#382820] px-1 py-2 text-[10px] uppercase tracking-[.12em]">QUICK VIEW</button><button type="button" onClick={() => addProduct(product)} disabled={availableSizes(product).length === 0} className="action-link-dark inline-flex items-center gap-2 border border-[#382820] px-3 py-2 text-[10px] uppercase tracking-[.12em] disabled:cursor-not-allowed disabled:opacity-45"><ShoppingBag size={13} /> ADD TO BAG</button></div></div>)}</div>
         <button type="button" onClick={addAll} className="action-link-light mt-6 inline-flex items-center gap-2 bg-[#382820] px-5 py-3 text-[10px] uppercase tracking-[.16em] text-[#FFFDF8]"><ShoppingBag size={14} /> ADD ALL TO BAG</button>
         <div className="mt-3 flex min-h-10 flex-wrap items-center gap-3" aria-live="polite"><p className="text-xs text-[#866F62]">{status}</p>{addedProduct && <button ref={viewCartRef} type="button" data-testid="shop-look-view-bag" onClick={() => setMiniCartOpen(true)} className="action-link-dark inline-flex items-center gap-2 border-b border-[#382820] pb-1 text-[10px] uppercase tracking-[.14em]">VIEW BAG <ArrowRight size={13} /></button>}</div>
       </div>
     </div>
-  </section><EditorialMiniCart open={miniCartOpen} onOpenChange={setMiniCartOpen} returnFocusRef={viewCartRef} /></>;
+  </section><EditorialMiniCart open={miniCartOpen} onOpenChange={setMiniCartOpen} returnFocusRef={viewCartRef} /><QuickView product={quickViewProduct} open={Boolean(quickViewProduct)} onOpenChange={open => { if (!open) setQuickViewProduct(null); }} onAddToBag={(product, size, color) => { addToCart(product.id, { size, color }); setStatus(`${product.name} added to your bag.`); toast.success('Added to your bag', { description: product.name, duration: 2500, position: 'bottom-center' }); }} /></>;
 }
 
 function ShopTheLookWithCart(props: React.ComponentProps<typeof ShopTheLook>) {

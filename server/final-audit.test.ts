@@ -27,6 +27,17 @@ describe('Final UX audit contracts', () => {
     expect(discovery).toContain('setActiveCategory(matched ?? \'All\')');
   });
 
+  it('exposes purchase-safe quick view on discovery product surfaces', () => {
+    const discovery = read('pages/Discovery.tsx');
+    expect(discovery).toContain('data-testid={`discovery-quick-view-${product.id}`}');
+    expect(discovery).toContain('QUICK VIEW');
+    expect(discovery).toContain('<QuickView product={product}');
+    expect(discovery).toContain('data-testid={`look-hotspot');
+    expect(discovery).toContain('setQuickViewProduct(product)');
+    expect(discovery).toContain('<QuickView product={quickViewProduct}');
+    expect(discovery).toContain('addToCart(product.id, { size, color })');
+  });
+
   it('provides useful recovery states without fabricated customer content', () => {
     const header = read('components/SiteHeader.tsx');
     const account = read('pages/Account.tsx');
