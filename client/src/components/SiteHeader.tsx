@@ -10,9 +10,9 @@ import { cartItemCount, CART_UPDATED_EVENT, clearCart, getCart, getLastAddedCart
 import WishlistPanel from '@/components/WishlistPanel';
 import { trackEngagement, safeEventLabel } from '@/lib/analytics';
 
-type MenuKey = 'shop' | 'women' | 'men' | 'kids' | 'jewelry' | 'shoes' | 'trends' | 'edit';
+type MenuKey = 'shop' | 'women' | 'men' | 'kids' | 'jewelry' | 'shoes' | 'hair' | 'thrift' | 'trends' | 'edit';
 type DrawerKey = 'wishlist' | 'bag';
-const menuLabels: Record<MenuKey, string> = { shop: 'Shop', women: 'Women', men: 'Men', kids: 'Kids', jewelry: 'Jewelry', shoes: 'Shoes', trends: 'Trends', edit: 'The Edit' };
+const menuLabels: Record<MenuKey, string> = { shop: 'Shop', women: 'Women', men: 'Men', kids: 'Kids', jewelry: 'Jewelry', shoes: 'Shoes', hair: 'Hair', thrift: 'Thrift Wear', trends: 'Trends', edit: 'The Edit' };
 
 const audienceLinks = audienceCategories.map(item => ({ label: item.label, href: `/shop?audience=${item.slug}` }));
 const categoryLinks = productCategories.map(item => ({ label: item.label, href: `/shop?category=${item.slug}` }));
@@ -24,7 +24,7 @@ const discoveryLinks = [
   { label: "Editor's Picks", href: '/trends#editors-picks' },
   { label: 'Sale', href: '/shop?sale=true' },
 ];
-const popularSearches = ['Linen', 'Everyday essentials', 'African contemporary', 'New arrivals', 'Statement bags'];
+const popularSearches = ['Human hair', 'Thrift wear', 'Linen', 'Everyday essentials', 'African contemporary', 'New arrivals', 'Statement bags'];
 
 function MenuLink({ href, children, onClick }: { href: string; children: React.ReactNode; onClick?: () => void }) {
   return <Link href={href} onClick={onClick} className="group/menu flex items-center justify-between border-b border-[#D7C2A7]/70 py-2 text-sm transition hover:pl-1 hover:text-[#B7654A] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#382820]">{children}<ChevronRight size={13} className="opacity-0 transition group-hover/menu:opacity-100" /></Link>;
@@ -187,8 +187,12 @@ export default function SiteHeader() {
     const term = query.trim().toLowerCase();
     const categorySuggestions = [
       { label: 'Linen clothing', href: '/shop?search=linen', keywords: 'linen clothing ready to wear' },
+      { label: 'Human hair', href: '/shop?category=hair&search=human%20hair', keywords: 'human hair hair extensions wigs' },
+      { label: 'Blend hair', href: '/shop?category=hair&search=blend%20hair', keywords: 'blend hair hair extensions' },
+      { label: 'Packet hair', href: '/shop?category=hair&search=packet%20hair', keywords: 'packet hair braiding hair' },
+      { label: 'Thrift wear', href: '/shop?category=thrift-wear', keywords: 'thrift thrift wear vintage pre-loved secondhand' },
       ...audienceCategories.map(item => ({ label: item.label, href: `/shop?audience=${item.slug}`, keywords: `${item.label} fashion ${item.description}` })),
-      ...productCategories.map(item => ({ label: item.label, href: `/shop?category=${item.slug}`, keywords: `${item.label} ${item.description}` })),
+      ...productCategories.map(item => ({ label: item.label, href: `/shop?category=${item.slug}`, keywords: `${item.label} ${item.description} ${item.keywords}` })),
     ];
     const matchingProducts = (term ? products.filter(product => `${product.name} ${product.brand} ${product.category} ${product.collection} ${product.color} ${product.badge ?? ''}`.toLowerCase().includes(term)) : products).slice(0, 3);
     const matchingCategories = categorySuggestions.filter(item => !term || item.keywords.toLowerCase().includes(term)).slice(0, 4);
@@ -199,6 +203,8 @@ export default function SiteHeader() {
   }, [query]);
   const isActive = (key: MenuKey) => {
     if (key === 'trends') return location.startsWith('/trends');
+    if (key === 'hair') return location.includes('category=hair');
+    if (key === 'thrift') return location.includes('category=thrift-wear');
     if (key === 'edit') return location.startsWith('/edit');
     if (key === 'shop') return location === '/shop' || location.startsWith('/shop?');
     return location.includes(`audience=${key}`) || location.includes(`category=${key}`);
@@ -214,13 +220,15 @@ export default function SiteHeader() {
     kids: [{ label: 'Girls', href: '/shop?audience=kids&search=girls' }, { label: 'Boys', href: '/shop?audience=kids&search=boys' }, { label: 'Baby', href: '/shop?audience=kids&search=baby' }, { label: 'Clothing', href: '/shop?audience=kids&category=clothing' }, { label: 'Shoes', href: '/shop?audience=kids&category=shoes' }, { label: 'Accessories', href: '/shop?audience=kids&category=accessories' }, { label: 'New Arrivals', href: '/shop?audience=kids&sort=new' }, { label: 'Trending in Kids', href: '/trends?audience=kids' }, { label: 'VIEW ALL KIDS', href: '/shop?audience=kids' }],
     jewelry: [{ label: 'Necklaces', href: '/shop?category=jewelry&search=necklaces' }, { label: 'Bracelets', href: '/shop?category=jewelry&search=bracelets' }, { label: 'Rings', href: '/shop?category=jewelry&search=rings' }, { label: 'Earrings', href: '/shop?category=jewelry&search=earrings' }, { label: 'Watches', href: '/shop?category=watches' }, { label: 'New Jewelry', href: '/shop?category=jewelry&sort=new' }, { label: 'Trending Jewelry', href: '/trends?category=jewelry' }, { label: "Editor's Picks", href: '/edit' }],
     shoes: [{ label: 'Sneakers', href: '/shop?category=shoes&search=sneakers' }, { label: 'Heels', href: '/shop?category=shoes&search=heels' }, { label: 'Sandals', href: '/shop?category=shoes&search=sandals' }, { label: 'Boots', href: '/shop?category=shoes&search=boots' }, { label: 'Flats', href: '/shop?category=shoes&search=flats' }, { label: 'Loafers', href: '/shop?category=shoes&search=loafers' }, { label: 'New Arrivals', href: '/shop?category=shoes&sort=new' }, { label: 'Trending Shoes', href: '/trends?category=shoes' }, { label: 'Best Sellers', href: '/shop?category=shoes&sort=popular' }],
+    hair: [{ label: 'Human Hair', href: '/shop?category=hair&search=human%20hair' }, { label: 'Blend Hair', href: '/shop?category=hair&search=blend%20hair' }, { label: 'Packet Hair', href: '/shop?category=hair&search=packet%20hair' }, { label: 'New Arrivals', href: '/shop?category=hair&sort=new' }, { label: 'Trending Hair', href: '/trends#hair-edit' }, { label: 'VIEW ALL HAIR', href: '/shop?category=hair' }],
+    thrift: [{ label: 'Thrift Women', href: '/shop?category=thrift-wear&audience=women' }, { label: 'Thrift Men', href: '/shop?category=thrift-wear&audience=men' }, { label: 'Thrift Kids', href: '/shop?category=thrift-wear&audience=kids' }, { label: 'Vintage / Statement Pieces', href: '/shop?category=thrift-wear&search=vintage' }, { label: 'Only 1 Available', href: '/shop?category=thrift-wear&availability=low' }, { label: 'VIEW ALL THRIFT WEAR', href: '/shop?category=thrift-wear' }],
     trends: [{ label: 'Trending Now', href: '/trends' }, { label: 'Trending Products', href: '/trends#trending-products' }, { label: 'Trending Styles', href: '/trends#soft-structure' }, { label: 'Trending Colours', href: '/trends#quiet-neutrals' }, { label: 'Trending Accessories', href: '/trends#objects-of-ease' }, { label: 'African Fashion', href: '/trends#african-contemporary' }, { label: "Editor's Picks", href: '/trends#editors-picks' }, { label: 'EXPLORE ALL TRENDS', href: '/trends' }],
     edit: [{ label: 'Latest Stories', href: '/edit' }, { label: 'Style Guides', href: '/edit?category=style-guides' }, { label: 'Fashion Trends', href: '/edit?category=trends' }, { label: 'African Fashion', href: '/edit?category=african-fashion' }, { label: 'Culture', href: '/edit?category=culture' }, { label: 'Shopping Guides', href: '/edit?category=shopping-guides' }, { label: 'Inspiration', href: '/edit?category=inspiration' }, { label: 'EXPLORE THE EDIT', href: '/edit' }],
   };
 
   const renderMegaMenu = (key: MenuKey) => {
     if (key === 'shop') return <div className="grid gap-8 lg:grid-cols-[1fr_1fr_1fr_220px]"><MenuColumn title="Shop by audience" links={audienceLinks} onClick={closeAll} /><MenuColumn title="Shop by category" links={categoryLinks} onClick={closeAll} /><MenuColumn title="Shop by discovery" links={discoveryLinks} onClick={closeAll} /><Link href="/edit" onClick={closeAll} className="group relative min-h-48 overflow-hidden bg-[#D7C2A7]"><img src={editorialEntries[0]?.image} alt="Featured editorial" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" /><div className="absolute inset-0 bg-[#382820]/45" /><div className="absolute inset-x-4 bottom-4 text-[#FFFDF8]"><p className="eyebrow">Featured</p><p className="mt-2 font-display text-2xl">The Edit</p><span className="mt-3 inline-flex text-[9px] uppercase tracking-[.15em]">Explore story <ChevronRight size={13} /></span></div></Link></div>;
-    return <div className="grid gap-8 lg:grid-cols-[1fr_1fr_1fr_220px]"><MenuColumn title={menuLabels[key]} links={menuLinks[key].slice(0, Math.ceil(menuLinks[key].length / 2))} onClick={closeAll} /><MenuColumn title="Discover" links={menuLinks[key].slice(Math.ceil(menuLinks[key].length / 2))} onClick={closeAll} /><div className="hidden lg:block lg:col-span-2"><Link href={key === 'trends' ? '/trends' : key === 'edit' ? '/edit' : `/shop?${key === 'jewelry' || key === 'shoes' ? `category=${key}` : `audience=${key}`}`} onClick={closeAll} className="group relative block h-full min-h-48 overflow-hidden bg-[#D7C2A7]"><img src={key === 'edit' ? editorialEntries[0]?.image : products.find(product => product.category.toLowerCase() === key)?.image || productCategories.find(category => category.slug === key)?.image} alt={`${menuLabels[key]} selection`} className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-r from-[#382820]/65 to-transparent" /><div className="absolute inset-x-6 bottom-5 text-[#FFFDF8]"><p className="eyebrow">Áveraẹ selection</p><p className="mt-2 font-display text-3xl">Explore {menuLabels[key]}</p><span className="mt-3 inline-flex text-[9px] uppercase tracking-[.15em]">View all <ChevronRight size={13} /></span></div></Link></div></div>;
+    return <div className="grid gap-8 lg:grid-cols-[1fr_1fr_1fr_220px]"><MenuColumn title={menuLabels[key]} links={menuLinks[key].slice(0, Math.ceil(menuLinks[key].length / 2))} onClick={closeAll} /><MenuColumn title="Discover" links={menuLinks[key].slice(Math.ceil(menuLinks[key].length / 2))} onClick={closeAll} /><div className="hidden lg:block lg:col-span-2"><Link href={key === 'trends' ? '/trends' : key === 'edit' ? '/edit' : `/shop?${key === 'jewelry' || key === 'shoes' || key === 'hair' ? `category=${key}` : key === 'thrift' ? 'category=thrift-wear' : `audience=${key}`}`} onClick={closeAll} className="group relative block h-full min-h-48 overflow-hidden bg-[#D7C2A7]"><img src={key === 'edit' ? editorialEntries[0]?.image : products.find(product => product.category.toLowerCase() === key)?.image || productCategories.find(category => category.slug === key)?.image} alt={`${menuLabels[key]} selection`} className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-r from-[#382820]/65 to-transparent" /><div className="absolute inset-x-6 bottom-5 text-[#FFFDF8]"><p className="eyebrow">Áveraẹ selection</p><p className="mt-2 font-display text-3xl">Explore {menuLabels[key]}</p><span className="mt-3 inline-flex text-[9px] uppercase tracking-[.15em]">View all <ChevronRight size={13} /></span></div></Link></div></div>;
   };
 
   const mobileNavClass = (href: string) => `flex flex-col items-center gap-1 py-1 text-[9px] uppercase tracking-[.12em] ${href === '/' ? location === '/' : location.startsWith(href) ? 'font-medium underline decoration-[1px] underline-offset-4' : ''}`;

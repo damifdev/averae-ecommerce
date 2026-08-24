@@ -61,6 +61,11 @@ export type Product = {
   ratingCount: number;
   /** Product-specific fit data shown in the product detail and quick-view sizing surfaces. */
   sizeChart?: ProductSizeChart;
+  /** Optional category facets used only when a product has verified catalog attributes. */
+  length?: string;
+  texture?: string;
+  style?: string;
+  condition?: string;
 };
 
 const apparelChart = (title: string, rows: SizeChartRow[], note = 'Measurements are a guide. Compare with your own measurements and consider the fit note.') => ({ title, unit: 'cm' as const, columns: ['Size', 'Chest / bust', 'Waist', 'Hips'], rows, note });
@@ -135,17 +140,39 @@ export const audienceCategories = [
   { slug: 'unisex', label: 'Unisex', description: 'Considered pieces made for every expression.', image: '/manus-storage/averae-marketplace-hero_ccb2d39f.jpg' },
 ] as const;
 
-export const productCategories = [
-  { slug: 'clothing', label: 'Clothing', description: 'Fluid layers, tailoring and everyday essentials.', image: '/manus-storage/averae-department-clothing_b3b7c47b.jpg' },
-  { slug: 'shoes', label: 'Shoes', description: 'Sneakers, heels, sandals, boots and more.', image: '/manus-storage/averae-department-shoes-v2_a6a9e572.jpg' },
-  { slug: 'bags', label: 'Bags', description: 'Handbags, backpacks, crossbody bags and more.', image: '/manus-storage/averae-department-bags-v2_199bf048.jpg' },
-  { slug: 'jewelry', label: 'Jewelry', description: 'Necklaces, bracelets, rings, earrings and more.', image: '/manus-storage/averae-department-jewelry-v2_8be58182.jpg' },
-  { slug: 'accessories', label: 'Accessories', description: 'Sunglasses, belts, hats and finishing touches.', image: '/manus-storage/averae-department-accessories-v2_af4f197a.jpg' },
-  { slug: 'watches', label: 'Watches', description: 'Timepieces with a quiet point of view.', image: '/manus-storage/averae-department-watches-v2_77fa47cf.jpg' },
-  { slug: 'beauty-lifestyle', label: 'Beauty & Lifestyle', description: 'Objects and rituals for everyday expression.', image: '/manus-storage/averae-department-beauty-lifestyle-v2_4ea1504e.jpg' },
-] as const;
+export type CategoryFilterKey = 'length' | 'texture' | 'colour' | 'style' | 'size' | 'condition' | 'price' | 'availability';
+export type ProductCategory = {
+  slug: string;
+  label: string;
+  description: string;
+  image: string;
+  keywords: string;
+  subcategories?: readonly string[];
+  filters?: readonly CategoryFilterKey[];
+};
+
+export const productCategories: ProductCategory[] = [
+  { slug: 'clothing', label: 'Clothing', description: 'Fluid layers, tailoring and everyday essentials.', image: '/manus-storage/averae-department-clothing_b3b7c47b.jpg', keywords: 'clothing ready to wear fashion apparel', subcategories: ['Dresses', 'Tops', 'Trousers', 'Outerwear'], filters: ['size', 'colour', 'price', 'availability'] },
+  { slug: 'shoes', label: 'Shoes', description: 'Sneakers, heels, sandals, boots and more.', image: '/manus-storage/averae-department-shoes-v2_a6a9e572.jpg', keywords: 'shoes footwear sneakers heels sandals boots', filters: ['size', 'colour', 'price', 'availability'] },
+  { slug: 'bags', label: 'Bags', description: 'Handbags, backpacks, crossbody bags and more.', image: '/manus-storage/averae-department-bags-v2_199bf048.jpg', keywords: 'bags handbags backpacks crossbody', filters: ['colour', 'price', 'availability'] },
+  { slug: 'jewelry', label: 'Jewelry', description: 'Necklaces, bracelets, rings, earrings and more.', image: '/manus-storage/averae-department-jewelry-v2_8be58182.jpg', keywords: 'jewelry necklaces bracelets rings earrings', filters: ['colour', 'price', 'availability'] },
+  { slug: 'hair', label: 'Hair', description: 'Human hair, blend hair and packet hair for every expression.', image: '/manus-storage/averae-department-beauty-lifestyle-v2_4ea1504e.jpg', keywords: 'hair human hair blend hair packet hair extensions wigs', subcategories: ['Human Hair', 'Blend Hair', 'Packet Hair'], filters: ['length', 'texture', 'colour', 'style', 'price', 'availability'] },
+  { slug: 'accessories', label: 'Accessories', description: 'Sunglasses, belts, hats and finishing touches.', image: '/manus-storage/averae-department-accessories-v2_af4f197a.jpg', keywords: 'accessories sunglasses belts hats finishing touches', filters: ['colour', 'price', 'availability'] },
+  { slug: 'watches', label: 'Watches', description: 'Timepieces with a quiet point of view.', image: '/manus-storage/averae-department-watches-v2_77fa47cf.jpg', keywords: 'watches timepieces', filters: ['colour', 'price', 'availability'] },
+  { slug: 'beauty-lifestyle', label: 'Beauty & Lifestyle', description: 'Objects and rituals for everyday expression.', image: '/manus-storage/averae-department-beauty-lifestyle-v2_4ea1504e.jpg', keywords: 'beauty lifestyle rituals objects', filters: ['colour', 'price', 'availability'] },
+  { slug: 'thrift-wear', label: 'Thrift Wear', description: 'One-of-a-kind and limited pieces with a story to tell.', image: '/manus-storage/averae-marketplace-hero_ccb2d39f.jpg', keywords: 'thrift thrift wear vintage statement pre-loved secondhand', subcategories: ['Thrift Women', 'Thrift Men', 'Thrift Kids', 'Vintage / Statement Pieces'], filters: ['size', 'colour', 'condition', 'price', 'availability'] },
+];
 
 export const marketplaceCategories = [...audienceCategories, ...productCategories] as const;
+
+export const categorySubcategories: Record<string, readonly string[]> = Object.fromEntries(productCategories.filter(category => category.subcategories).map(category => [category.slug, category.subcategories!])) as Record<string, readonly string[]>;
+
+export const categoryFilterOptions = {
+  length: ['Short', 'Medium', 'Long'],
+  texture: ['Straight', 'Body wave', 'Deep wave', 'Curly', 'Coily'],
+  style: ['Bundles', 'Wig', 'Closure', 'Frontal', 'Braiding hair'],
+  condition: ['New with tags', 'Excellent', 'Good', 'Visible wear'],
+} as const;
 
 export const trendItems = [
   { label: 'Trending', title: 'The new uniform', description: 'Relaxed tailoring, tactile layers and considered ease.', productId: 1 },
@@ -160,6 +187,8 @@ export const trendCollections = [
   { slug: 'objects-of-ease', label: 'Trending accessories', title: 'Objects of ease', description: 'Bags, jewelry and finishing pieces that bring intention to the everyday.', keywords: 'objects ease accessories bags jewelry', productIds: [2, 5, 8, 9], shopHref: '/shop?category=accessories' },
   { slug: 'african-contemporary', label: 'Trending now', title: 'African contemporary', description: 'Rooted references, modern proportions and a point of view that travels.', keywords: 'african contemporary rooted culture', productIds: [2, 7, 8, 11], shopHref: '/shop?category=accessories' },
   { slug: 'everyday-essentials', label: 'Trending categories', title: 'Everyday essentials', description: 'The pieces that build a wardrobe with room for every expression.', keywords: 'everyday essentials wardrobe basics', productIds: [1, 4, 6, 10], shopHref: '/shop?search=essentials' },
+  { slug: 'hair-edit', label: 'Trending categories', title: 'The Hair edit', description: 'A dedicated destination for human hair, blend hair and packet hair.', keywords: 'hair human hair blend hair packet hair', productIds: [], shopHref: '/shop?category=hair' },
+  { slug: 'thrift-wear', label: 'Trending now', title: 'Thrift Wear', description: 'One-of-a-kind and limited pieces, clearly marked by availability and condition.', keywords: 'thrift thrift wear vintage statement pieces', productIds: [], shopHref: '/shop?category=thrift-wear' },
   { slug: 'editors-picks', label: "Editor's Picks", title: 'The considered edit', description: 'A focused selection chosen for texture, proportion and everyday relevance.', keywords: 'editors picks considered edit', productIds: [1, 2, 3, 11], shopHref: '/shop?sort=popular' },
 ] as const;
 

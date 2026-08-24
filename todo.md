@@ -422,3 +422,14 @@
 - [x] Verify responsive support flows and preserve shopping/checkout context on back navigation
 - [x] Run TypeScript, Vitest, production build, and responsive verification
 - [x] Save the verified support UX integration checkpoint
+
+- [x] Audit current catalog, routes, navigation, filters, search, recommendations, trends, homepage, footer, and breadcrumb architecture
+- [x] Add typed Hair and Thrift Wear category metadata and real inventory-safe catalog entries
+- [x] Add Hair subcategories: Human Hair, Blend Hair, and Packet Hair
+- [x] Add Thrift Wear subcategories: Thrift Women, Thrift Men, Thrift Kids, and Vintage / Statement Pieces where supported
+- [x] Add category-specific Hair and Thrift Wear filters and especially clear one-of-one stock states
+- [x] Add Hair and Thrift Wear to the shop mega menu, category routes, Discover Áveraẹ, footer, breadcrumbs, and homepage discovery
+- [x] Update search, recommendations, trending, and new-arrival discovery for Hair and Thrift Wear terms
+- [x] Add regression tests for routes, category metadata, filters, search, navigation, breadcrumbs, and stock labels
+- [x] Verify TypeScript, Vitest, production build, and responsive category journeys
+- [x] Save the verified Hair and Thrift Wear checkpoint
