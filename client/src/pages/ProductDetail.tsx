@@ -15,6 +15,7 @@ import {
   Minus,
   Plus,
   Star,
+  Share2,
   ZoomIn,
 } from 'lucide-react';
 import {
@@ -158,6 +159,24 @@ export default function ProductDetail() {
     setLiked(next.includes(product.id));
   };
 
+  const shareEligible = product.category === 'Hair' || product.category === 'Thrift Wear';
+  const shareItem = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: product.name, text: `Discover ${product.name} at Áveraẹ.`, url });
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(url);
+        toast.success('Item link copied to your clipboard.');
+      } else {
+        window.prompt('Copy this item link', url);
+      }
+    } catch (shareError) {
+      if (shareError instanceof DOMException && shareError.name === 'AbortError') return;
+      toast.error('We could not share this item. Please try again.');
+    }
+  };
+
   return <div>
     <SiteHeader />
     <main className="container py-8 md:py-14">
@@ -198,9 +217,12 @@ export default function ProductDetail() {
               <p className="eyebrow text-[#866F62]">{product.brand} · {product.collection}</p>
               <h1 className="mt-3 font-display text-5xl leading-tight">{product.name}</h1>
             </div>
-            <button type="button" data-testid="wishlist-save" onClick={toggleSaved} aria-label={liked ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`} aria-pressed={liked} className="pressable focus-ring rounded-full border border-[#D7C2A7] p-3">
-              <Heart size={18} fill={liked ? '#B7654A' : 'none'} strokeWidth={1.2} />
-            </button>
+            <div className="flex items-center gap-2">
+              {shareEligible && <button type="button" data-testid="share-item" onClick={() => void shareItem()} className="pressable focus-ring inline-flex items-center gap-2 border border-[#D7C2A7] px-3 py-3 text-[10px] uppercase tracking-[.12em]" aria-label={`Share ${product.name}`}><Share2 size={16} strokeWidth={1.2} /><span className="hidden sm:inline">Share this item</span></button>}
+              <button type="button" data-testid="wishlist-save" onClick={toggleSaved} aria-label={liked ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`} aria-pressed={liked} className="pressable focus-ring rounded-full border border-[#D7C2A7] p-3">
+                <Heart size={18} fill={liked ? '#B7654A' : 'none'} strokeWidth={1.2} />
+              </button>
+            </div>
           </div>
           <p className="mt-5 text-xl">{formatPrice(product.price)}</p>
           {product.compareAt && <p className="mt-1 text-sm text-[#866F62] line-through">{formatPrice(product.compareAt)}</p>}

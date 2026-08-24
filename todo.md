@@ -442,3 +442,11 @@
 - [x] Add regression tests for catalog entries, filters, stock labels, notifications, routes, and landing content
 - [x] Verify TypeScript, Vitest, production build, and responsive category journeys
 - [x] Save the verified category-content checkpoint
+
+- [x] Audit existing Thrift Wear cards, account subscription patterns, local persistence, and product sharing controls
+- [x] Add hover-revealed condition and size metadata to Thrift Wear product cards
+- [x] Add My Subscriptions account section for viewing and managing Notify Me alerts
+- [x] Add Share this item controls to Hair and Thrift Wear product detail pages
+- [x] Add regression tests for hover metadata, subscription management, and sharing behavior
+- [x] Verify TypeScript, Vitest, production build, and responsive behavior
+- [x] Save the verified product-discovery checkpoint
