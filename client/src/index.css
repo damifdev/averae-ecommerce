@@ -144,7 +144,7 @@ button:active, a:active { transform: scale(.98); }
 .preview-card {
   pointer-events: none;
   opacity: 0;
-  transform: translateY(-5px) scale(.985);
+  transform: translateX(14px) scale(.985);
   transition: opacity 180ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)), transform 180ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1));
   will-change: opacity, transform;
 }
@@ -152,13 +152,13 @@ button:active, a:active { transform: scale(.98); }
 .preview-card-visible {
   pointer-events: auto;
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translateX(0) scale(1);
 }
 
 .preview-card-hidden {
   pointer-events: none;
   opacity: 0;
-  transform: translateY(-5px) scale(.985);
+  transform: translateX(14px) scale(.985);
 }
 
 .bag-latest-preview,

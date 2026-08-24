@@ -70,6 +70,9 @@ describe('shared SiteHeader specification contract', () => {
     expect(headerSource).toContain('preview-card-hidden');
     expect(headerSource).toContain('window.setTimeout(() => {');
     expect(cssSource).toContain('transition: opacity 180ms var(--ease-out');
+    expect(cssSource).toContain('transform: translateX(14px) scale(.985)');
+    expect(cssSource).toContain('transform: translateX(0) scale(1)');
+    expect(cssSource).toContain('transform: none');
     expect(cssSource).toContain('max-width: calc(100vw - 2rem)');
     expect(cssSource).toContain('@media (min-width: 641px) and (max-width: 767px)');
     expect(headerSource).toContain("if (headerRef.current && !headerRef.current.contains(event.target as Node)) { setOpenMenu(null); setAccountOpen(false); closePreview(); }");

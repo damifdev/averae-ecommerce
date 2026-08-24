@@ -60,9 +60,9 @@ async function auditPreviews(port: number) {
 
     await evaluate(`document.querySelector('[aria-label^="Wishlist"]')?.parentElement?.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, relatedTarget: null }))`);
     await sleep(55);
-    const wishlistOpening = await evaluate<{ present: boolean; opacity: number }>(`(() => {
+    const wishlistOpening = await evaluate<{ present: boolean; opacity: number; transform: string }>(`(() => {
       const preview = document.querySelector('[data-testid="wishlist-latest-preview"]');
-      return { present: Boolean(preview), opacity: preview ? Number(getComputedStyle(preview).opacity) : -1 };
+      return { present: Boolean(preview), opacity: preview ? Number(getComputedStyle(preview).opacity) : -1, transform: preview ? getComputedStyle(preview).transform : 'none' };
     })()`);
     await sleep(120);
     const wishlistState = await evaluate<{ previews: number; wishlistPreview: boolean; wishlistTooltipOpacity: string }>(`(() => {
@@ -97,9 +97,9 @@ async function auditPreviews(port: number) {
 
     await evaluate(`document.querySelector('[data-testid="bag-latest-preview"]')?.parentElement?.dispatchEvent(new MouseEvent('mouseout', { bubbles: true, relatedTarget: document.body }))`);
     await sleep(60);
-    const bagClosing = await evaluate<{ present: boolean; opacity: number }>(`(() => {
+    const bagClosing = await evaluate<{ present: boolean; opacity: number; transform: string }>(`(() => {
       const preview = document.querySelector('[data-testid="bag-latest-preview"]');
-      return { present: Boolean(preview), opacity: preview ? Number(getComputedStyle(preview).opacity) : -1 };
+      return { present: Boolean(preview), opacity: preview ? Number(getComputedStyle(preview).opacity) : -1, transform: preview ? getComputedStyle(preview).transform : 'none' };
     })()`);
     await sleep(220);
     const bagClosed = await evaluate<boolean>(`Boolean(document.querySelector('[data-testid="bag-latest-preview"]'))`);
@@ -129,6 +129,7 @@ describe('header preview layering', () => {
       expect(result.wishlistOpening.present).toBe(true);
       expect(result.wishlistOpening.opacity).toBeGreaterThan(0);
       expect(result.wishlistOpening.opacity).toBeLessThan(1);
+      expect(Number(result.wishlistOpening.transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,([^,]+)/)?.[1] ?? 0)).toBeGreaterThan(0);
       expect(result.switchingState.wishlistPresent).toBe(true);
       expect(result.switchingState.bagPresent).toBe(false);
       expect(result.switchingState.wishlistOpacity).toBeGreaterThan(0);
@@ -146,6 +147,7 @@ describe('header preview layering', () => {
       expect(result.bagClosing.present).toBe(true);
       expect(result.bagClosing.opacity).toBeGreaterThan(0);
       expect(result.bagClosing.opacity).toBeLessThan(1);
+      expect(Number(result.bagClosing.transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,([^,]+)/)?.[1] ?? 0)).toBeGreaterThan(0);
       expect(result.bagClosed).toBe(false);
     } finally {
       chrome.kill('SIGTERM');

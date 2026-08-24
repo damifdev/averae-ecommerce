@@ -193,3 +193,5 @@
 - [x] Extend regression coverage for preview transitions and narrow-desktop geometry
 - [x] Ensure wishlist and bag previews visibly fade in when appearing and fade out when closing or switching
 - [x] Add regression coverage that samples preview opacity during open, switch, and close transitions
+- [x] Change wishlist and bag previews to enter and exit from the header’s outer side while fading
+- [x] Add regression coverage for side-transition direction and reduced-motion behavior
