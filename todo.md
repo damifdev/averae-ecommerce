@@ -232,3 +232,7 @@
 - [x] Add quick Add to Cart and Save Product actions inside Shop the Look hotspot hover cards
 - [x] Add an accessible, reduced-motion-aware skeleton loading state for editorial article pages before article and sharing content renders
 - [x] Add regression coverage for hotspot quick actions and article skeleton loading behavior
+- [x] Add mobile tap-to-open and dismiss behavior for Shop the Look hotspots
+- [x] Add View Cart to the quick-add confirmation state
+- [x] Add toast or subtle animation feedback when a product is saved
+- [x] Add regression coverage for hotspot touch behavior, View Cart, and saved-product feedback

@@ -26,6 +26,11 @@ describe('editorial account and sharing enhancements', () => {
     expect(discoverySource).toContain('data-testid={`look-hotspot-save-');
     expect(discoverySource).toContain('SAVE PRODUCT');
     expect(discoverySource).toContain('toggleWishlist');
+    expect(discoverySource).toContain('openHotspotId');
+    expect(discoverySource).toContain('onPointerDown');
+    expect(discoverySource).toContain("event.pointerType === 'touch'");
+    expect(discoverySource).toContain('data-testid="shop-look-view-cart"');
+    expect(discoverySource).toContain("toast[saved ? 'success' : 'message']");
   });
 
   it('provides an article skeleton before content and sharing controls render', () => {
