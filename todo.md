@@ -321,3 +321,12 @@
 - [x] Add Contact page regression coverage for routing, validation, submission feedback, and support links
 - [x] Run TypeScript, Vitest, production build, and responsive visual verification for Contact
 - [x] Save the verified Contact page checkpoint
+
+- [x] Create dedicated responsive Delivery Information page with approved shared storefront styling
+- [x] Add delivery options, timelines, costs, processing, tracking, service areas, and delay guidance
+- [x] Add incorrect-address guidance and working TRACK YOUR ORDER and CONTACT US pathways
+- [x] Add scan-friendly accordions for delivery FAQs and important information
+- [x] Route the footer Delivery link to the dedicated Delivery Information page
+- [x] Add Delivery page regression coverage for routing, content, accordions, and CTAs
+- [x] Run TypeScript, Vitest, production build, and responsive visual verification for Delivery
+- [x] Save the verified Delivery page checkpoint
