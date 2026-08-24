@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowRight, Share2 } from 'lucide-react';
 import SiteHeader from '@/components/SiteHeader';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
 import BackToTop from '@/components/BackToTop';
 import { Link } from 'wouter';
 import { brand, editorialEntries, formatPrice, products, trendCollections, trendItems, type Product } from '@/lib/brand';
@@ -22,7 +22,24 @@ function ProductTile({ product, badge }: { product: Product; badge?: string }) {
 
 function TrendStory({ trend }: { trend: typeof trendCollections[number] }) {
   const [shareMessage, setShareMessage] = useState('');
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const [carouselPaused, setCarouselPaused] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const relatedProducts = trend.productIds.map(id => products.find(product => product.id === id)).filter(Boolean) as Product[];
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const syncReducedMotion = () => setPrefersReducedMotion(mediaQuery.matches);
+    syncReducedMotion();
+    mediaQuery.addEventListener?.('change', syncReducedMotion);
+    return () => mediaQuery.removeEventListener?.('change', syncReducedMotion);
+  }, []);
+
+  useEffect(() => {
+    if (!carouselApi || relatedProducts.length < 2 || carouselPaused || prefersReducedMotion) return;
+    const intervalId = window.setInterval(() => carouselApi.scrollNext(), 4500);
+    return () => window.clearInterval(intervalId);
+  }, [carouselApi, carouselPaused, prefersReducedMotion, relatedProducts.length]);
 
   const shareTrend = async () => {
     const url = new URL(`/trends#${trend.slug}`, window.location.origin).toString();
@@ -54,7 +71,7 @@ function TrendStory({ trend }: { trend: typeof trendCollections[number] }) {
         </div>
         <p className="min-h-5 mt-3 text-xs text-[#866F62]" aria-live="polite">{shareMessage}</p>
       </div>
-      <Carousel opts={{ align: 'start', loop: relatedProducts.length > 1 }} className="w-full" aria-label={`${trend.title} related products`} data-testid={`trend-carousel-${trend.slug}`}>
+      <Carousel opts={{ align: 'start', loop: relatedProducts.length > 1 }} setApi={setCarouselApi} className="w-full" aria-label={`${trend.title} related products`} data-testid={`trend-carousel-${trend.slug}`} data-autoplay-paused={carouselPaused || prefersReducedMotion ? 'true' : 'false'} onMouseEnter={() => setCarouselPaused(true)} onMouseLeave={() => setCarouselPaused(false)} onFocusCapture={() => setCarouselPaused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setCarouselPaused(false); }}>
         <CarouselContent className="-ml-4">
           {relatedProducts.slice(0, 4).map(product => <CarouselItem key={`${trend.slug}-${product.id}`} className="basis-[82%] sm:basis-1/2 xl:basis-1/3"><ProductTile product={product} /></CarouselItem>)}
         </CarouselContent>

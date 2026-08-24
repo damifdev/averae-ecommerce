@@ -178,3 +178,11 @@
 - [x] Show Recent Searches and Popular Searches immediately when the Search overlay opens before typing
 - [x] Add dynamic image carousels to every Trends section with usable controls and responsive behavior
 - [x] Add an accessible Share action to every Trends section with social/share feedback
+
+- [x] Add a Clear History action next to Recent Searches with immediate empty-state feedback
+- [x] Add smooth autoplay to trend image carousels with automatic pause on hover and keyboard focus
+- [x] Add product thumbnails next to product suggestions in the Search dropdown
+- [x] Add Clear History control to Recent Searches in the shared Search overlay
+- [x] Add hover-paused autoplay to Trends page image carousels with reduced-motion support
+- [x] Add product thumbnail images to shared Search suggestion rows
+- [x] Extend regression tests and browser audits for search-history clearing, carousel autoplay pause, and visual suggestions

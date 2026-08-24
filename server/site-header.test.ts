@@ -34,12 +34,28 @@ describe('shared SiteHeader specification contract', () => {
     expect(headerSource).toContain('href={`/edit/${entry.slug}`}');
   });
 
-  it('surfaces immediate recent and popular Search discovery before typing', () => {
+  it('surfaces immediate recent and popular Search discovery before typing and allows history clearing', () => {
     expect(headerSource).toContain('data-testid="search-zero-query"');
     expect(headerSource).toContain('data-testid="search-recent-searches"');
     expect(headerSource).toContain('data-testid="search-popular-searches"');
     expect(headerSource).toContain('const popularSearches');
     expect(headerSource).toContain('Your latest searches will appear here');
+    expect(headerSource).toContain('data-testid="clear-search-history"');
+    expect(headerSource).toContain("localStorage.removeItem('averae-recent-searches')");
+    expect(headerSource).toContain('Clear History');
+  });
+
+  it('keeps product suggestions visual and Trends carousels respectfully autoplaying', () => {
+    const discoverySource = readFileSync(new URL('../client/src/pages/Discovery.tsx', import.meta.url), 'utf8');
+    expect(headerSource).toContain('src={product.image}');
+    expect(headerSource).toContain('h-10 w-8 shrink-0 object-cover');
+    expect(discoverySource).toContain('setApi={setCarouselApi}');
+    expect(discoverySource).toContain('window.setInterval(() => carouselApi.scrollNext(), 4500)');
+    expect(discoverySource).toContain('onMouseEnter={() => setCarouselPaused(true)}');
+    expect(discoverySource).toContain('onMouseLeave={() => setCarouselPaused(false)}');
+    expect(discoverySource).toContain('onFocusCapture={() => setCarouselPaused(true)}');
+    expect(discoverySource).toContain("matchMedia('(prefers-reduced-motion: reduce)')");
+    expect(discoverySource).toContain('window.clearInterval(intervalId)');
   });
 
   it('keeps keyboard and dismissal affordances in the shared shell', () => {
