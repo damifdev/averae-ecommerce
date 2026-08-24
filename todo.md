@@ -186,3 +186,5 @@
 - [x] Add hover-paused autoplay to Trends page image carousels with reduced-motion support
 - [x] Add product thumbnail images to shared Search suggestion rows
 - [x] Extend regression tests and browser audits for search-history clearing, carousel autoplay pause, and visual suggestions
+- [x] Fix overlapping wishlist and bag header preview modals so previews are mutually exclusive and correctly layered
+- [x] Add regression coverage for preview switching and responsive header layering

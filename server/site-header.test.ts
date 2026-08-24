@@ -123,6 +123,14 @@ describe('shared SiteHeader specification contract', () => {
     expect(headerSource).toContain('href="/checkout"');
     expect(headerSource).toContain('Checkout');
     expect(headerSource).toContain('aria-haspopup="dialog"');
+    expect(headerSource).toContain("const openPreview = (key: 'wishlist' | 'bag')");
+    expect(headerSource).toContain("setWishlistPreviewOpen(key === 'wishlist')");
+    expect(headerSource).toContain("setBagPreviewOpen(key === 'bag')");
+    expect(headerSource).toContain("onMouseEnter={() => openPreview('wishlist')}");
+    expect(headerSource).toContain("onMouseEnter={() => openPreview('bag')}");
+    expect(headerSource).toContain("${wishlistPreviewOpen ? 'preview-open' : ''}");
+    expect(headerSource).toContain("${bagPreviewOpen ? 'preview-open' : ''}");
+    expect(cssSource).toContain('.icon-action.preview-open .icon-tooltip');
   });
 
   it('keeps the desktop menu centered and drawers smoothly animated', () => {
