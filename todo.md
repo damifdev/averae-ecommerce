@@ -392,3 +392,13 @@
 - [x] Add regression coverage for the thumbs-down improvement-note interaction
 - [x] Run TypeScript, Vitest, production build, and responsive verification
 - [x] Save the verified FAQ improvement-note checkpoint
+
+- [x] Create dedicated responsive Size Guide page with approved shared storefront styling
+- [x] Add Women and Men clothing measurement tables for requested garment types
+- [x] Add Kids age/size guidance and international shoe conversion table with foot length
+- [x] Add measurement instructions, fit notes, and product-specific sizing guidance
+- [x] Add SHOP NOW and VIEW RETURNS POLICY support CTAs
+- [x] Route the footer Size Guide link to the dedicated Size Guide page
+- [x] Add regression coverage for Size Guide content, tables, responsive sections, and routing
+- [x] Run TypeScript, Vitest, production build, and responsive visual verification
+- [x] Save the verified Size Guide checkpoint
