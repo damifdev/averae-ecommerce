@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 const discoverySource = readFileSync(new URL('../client/src/pages/Discovery.tsx', import.meta.url), 'utf8');
+const brandSource = readFileSync(new URL('../client/src/lib/brand.ts', import.meta.url), 'utf8');
 const accountSource = readFileSync(new URL('../client/src/pages/Account.tsx', import.meta.url), 'utf8');
 const miniCartSource = readFileSync(new URL('../client/src/components/EditorialMiniCart.tsx', import.meta.url), 'utf8');
 const cssSource = readFileSync(new URL('../client/src/index.css', import.meta.url), 'utf8');
@@ -32,6 +33,8 @@ describe('editorial account and sharing enhancements', () => {
     expect(discoverySource).toContain("event.pointerType === 'touch'");
     expect(discoverySource).toContain('data-testid="shop-look-view-cart"');
     expect(discoverySource).toContain('EditorialMiniCart');
+    expect(brandSource).toContain("productId: 7, x: 57, y: 57");
+    expect(brandSource).toContain("productId: 2, x: 76, y: 72");
     expect(discoverySource).toContain('setMiniCartOpen(true)');
     expect(discoverySource).toContain("toast[saved ? 'success' : 'message']");
   });
@@ -41,6 +44,10 @@ describe('editorial account and sharing enhancements', () => {
     expect(miniCartSource).toContain('aria-modal="true"');
     expect(miniCartSource).toContain('data-testid="editorial-mini-cart-checkout"');
     expect(miniCartSource).toContain('onKeyDown');
+    expect(miniCartSource).toContain('SHIPPING_THRESHOLD');
+    expect(miniCartSource).toContain('Free shipping progress');
+    expect(miniCartSource).toContain('You may also like');
+    expect(miniCartSource).toContain('returnFocusRef');
     expect(cssSource).toContain('.mini-cart-panel');
   });
 

@@ -239,3 +239,8 @@
 - [x] Add a slide-out mini-cart sidebar opened by the Shop the Look quick-add View Cart action
 - [x] Add mini-cart accessibility, responsive motion, current bag contents, and checkout navigation
 - [x] Add regression coverage for opening and closing the editorial mini-cart flow
+- [x] Correct the Shop the Look hotspot position that currently labels a sandal while pointing at the handbag
+- [x] Add a free-shipping progress bar to the editorial mini-cart
+- [x] Add a You may also like recommendation section to the editorial mini-cart
+- [x] Trap focus inside the mini-cart and return focus to the originating View Cart button on close
+- [x] Add regression coverage for hotspot mapping and mini-cart enhancements
