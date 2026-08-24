@@ -99,3 +99,7 @@ The bag quick preview now shows the most recently added item’s thumbnail, name
 The desktop `/trends` route now reads as a destination rather than a product listing: it opens with “Trending now.”, provides a six-part trend map, and leads into a dedicated Trending Products section while preserving the approved Cream/Cocoa/Terracotta palette and editorial typography. The desktop `/shop?search=xyz` route keeps the applied query visible and begins a structured “Keep exploring” fallback under `No results for “xyz”` instead of presenting an empty page.
 
 At 390px mobile width, the Trends taxonomy wraps cleanly under “Find your next direction.” and the fixed five-item bottom navigation remains unobstructed. The mobile no-results Shop state keeps its search/filter controls, readable heading, and discovery copy within the viewport without horizontal overflow.
+
+## UX Refinement Part 4 — Search and Trends enhancement verification
+
+The zero-query Search overlay now offers Recent Searches and Popular Searches immediately on open, with grouped typed discovery preserved for Products, Categories, Brands, Trending, and The Edit. The Trends destination uses six editorial sections with related-product carousels, accessible previous/next controls, and section-level Share actions with Web Share or clipboard fallback feedback. Desktop and 390px mobile checks confirm the carousels, share controls, taxonomy, and Search discovery states preserve the approved warm editorial hierarchy and remain usable without horizontal overflow.

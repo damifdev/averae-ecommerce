@@ -34,6 +34,14 @@ describe('shared SiteHeader specification contract', () => {
     expect(headerSource).toContain('href={`/edit/${entry.slug}`}');
   });
 
+  it('surfaces immediate recent and popular Search discovery before typing', () => {
+    expect(headerSource).toContain('data-testid="search-zero-query"');
+    expect(headerSource).toContain('data-testid="search-recent-searches"');
+    expect(headerSource).toContain('data-testid="search-popular-searches"');
+    expect(headerSource).toContain('const popularSearches');
+    expect(headerSource).toContain('Your latest searches will appear here');
+  });
+
   it('keeps keyboard and dismissal affordances in the shared shell', () => {
     expect(headerSource).toContain('aria-haspopup="true"');
     expect(headerSource).toContain('aria-expanded={openMenu === key}');
@@ -80,6 +88,11 @@ describe('shared SiteHeader specification contract', () => {
     expect(brandSource).toContain('label: "Editor\'s Picks"');
     expect(discoverySource).toContain('EXPLORE TREND');
     expect(discoverySource).toContain('SHOP THE TREND');
+    expect(discoverySource).toContain('<Carousel');
+    expect(discoverySource).toContain('trend-carousel-${trend.slug}');
+    expect(discoverySource).toContain('Share2');
+    expect(discoverySource).toContain('navigator.share');
+    expect(discoverySource).toContain('Trend link copied.');
   });
 
   it('keeps preview cards rich, truthful, and keyboard-addressable', () => {

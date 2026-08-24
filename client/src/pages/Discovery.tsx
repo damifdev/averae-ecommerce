@@ -1,5 +1,7 @@
-import { ArrowRight } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowRight, Share2 } from 'lucide-react';
 import SiteHeader from '@/components/SiteHeader';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import BackToTop from '@/components/BackToTop';
 import { Link } from 'wouter';
 import { brand, editorialEntries, formatPrice, products, trendCollections, trendItems, type Product } from '@/lib/brand';
@@ -19,8 +21,27 @@ function ProductTile({ product, badge }: { product: Product; badge?: string }) {
 }
 
 function TrendStory({ trend }: { trend: typeof trendCollections[number] }) {
+  const [shareMessage, setShareMessage] = useState('');
   const relatedProducts = trend.productIds.map(id => products.find(product => product.id === id)).filter(Boolean) as Product[];
-  return <section id={trend.slug} className="scroll-mt-8 border-t border-[#D7C2A7] pt-8">
+
+  const shareTrend = async () => {
+    const url = new URL(`/trends#${trend.slug}`, window.location.origin).toString();
+    try {
+      if (typeof navigator.share === 'function') {
+        await navigator.share({ title: `${trend.title} · Áveraẹ`, text: trend.description, url });
+        setShareMessage('Share sheet opened.');
+      } else if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+        setShareMessage('Trend link copied.');
+      } else {
+        setShareMessage('Copy this trend link from your browser.');
+      }
+    } catch {
+      setShareMessage('Share cancelled.');
+    }
+  };
+
+  return <section id={trend.slug} className="scroll-mt-8 border-t border-[#D7C2A7] pt-8" data-testid={`trend-section-${trend.slug}`}>
     <div className="grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-start">
       <div>
         <p className="eyebrow text-[#B7654A]">{trend.label}</p>
@@ -29,11 +50,17 @@ function TrendStory({ trend }: { trend: typeof trendCollections[number] }) {
         <div className="mt-7 flex flex-wrap gap-3">
           <a href={`#${trend.slug}`} className="border-b border-[#382820] pb-2 text-[10px] uppercase tracking-[.15em]">EXPLORE TREND</a>
           <Link href={trend.shopHref} className="action-link-light bg-[#382820] px-4 py-3 text-[10px] uppercase tracking-[.15em] text-[#FFFDF8]">SHOP THE TREND</Link>
+          <button type="button" onClick={shareTrend} aria-label={`Share ${trend.title}`} className="inline-flex items-center gap-2 border border-[#382820] px-4 py-3 text-[10px] uppercase tracking-[.15em] transition hover:bg-[#382820] hover:text-[#FFFDF8] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#382820]"><Share2 size={14} strokeWidth={1.4} /> SHARE</button>
         </div>
+        <p className="min-h-5 mt-3 text-xs text-[#866F62]" aria-live="polite">{shareMessage}</p>
       </div>
-      <div className="grid gap-x-5 gap-y-8 sm:grid-cols-2">
-        {relatedProducts.slice(0, 4).map(product => <ProductTile key={`${trend.slug}-${product.id}`} product={product} />)}
-      </div>
+      <Carousel opts={{ align: 'start', loop: relatedProducts.length > 1 }} className="w-full" aria-label={`${trend.title} related products`} data-testid={`trend-carousel-${trend.slug}`}>
+        <CarouselContent className="-ml-4">
+          {relatedProducts.slice(0, 4).map(product => <CarouselItem key={`${trend.slug}-${product.id}`} className="basis-[82%] sm:basis-1/2 xl:basis-1/3"><ProductTile product={product} /></CarouselItem>)}
+        </CarouselContent>
+        <CarouselPrevious className="left-3 border-[#382820] bg-[#FFFDF8]/90 text-[#382820] hover:bg-[#FFFDF8]" />
+        <CarouselNext className="right-3 border-[#382820] bg-[#FFFDF8]/90 text-[#382820] hover:bg-[#FFFDF8]" />
+      </Carousel>
     </div>
   </section>;
 }

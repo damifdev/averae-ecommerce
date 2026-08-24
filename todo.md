@@ -174,3 +174,7 @@
 - [x] UX Part 4: Upgrade Trends into a major destination with themed product, category, style, colour, accessory, and Editor’s Picks sections
 - [x] UX Part 4: Give each trend an explanation, related products, EXPLORE TREND, and SHOP THE TREND pathways
 - [x] UX Part 4: Add responsive accessibility regression coverage for Search and Trends journeys
+
+- [x] Show Recent Searches and Popular Searches immediately when the Search overlay opens before typing
+- [x] Add dynamic image carousels to every Trends section with usable controls and responsive behavior
+- [x] Add an accessible Share action to every Trends section with social/share feedback
