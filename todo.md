@@ -460,3 +460,15 @@
 - [x] Add regression coverage for every menu item, subcategory, route, and accessibility behavior
 - [x] Verify desktop/mobile navbar journeys, TypeScript, tests, production build, and responsive behavior
 - [x] Save the verified simplified-navbar checkpoint
+
+- [x] Audit existing support components, account menu, journey surfaces, footer, mobile menu, and route contracts
+- [x] Add Account Help & Support links for Contact Us and FAQs without overcrowding the primary navbar
+- [x] Add contextual Delivery and Returns links near Bag order summary and Product Detail sizing/information
+- [x] Add checkout Delivery, Returns, FAQs, and Contact Support links without destroying progress
+- [x] Add confirmation and order-detail Track Order, Delivery, Returns, and Contact Support links
+- [x] Complete FAQ, Contact, Delivery, Returns, and Size Guide cross-links exactly as specified
+- [x] Preserve all five support links in the footer as secondary access
+- [x] Add mobile Help & Support section with Contact, FAQs, Delivery, Returns, and Size Guide
+- [x] Add route and dead-end regression coverage for the complete support-accessibility journey
+- [x] Verify desktop/mobile support journeys, TypeScript, tests, production build, and responsive behavior
+- [x] Save the verified support-accessibility checkpoint
