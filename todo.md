@@ -339,3 +339,11 @@
 - [x] Add Returns page regression coverage for routing, content, steps, accordions, and CTAs
 - [x] Run TypeScript, Vitest, production build, and responsive visual verification for Returns
 - [x] Save the verified Returns page checkpoint
+
+- [x] Add accessible Request Return modal with return-reason selection and item photo uploads
+- [x] Validate return reason and photo constraints with clear inline feedback and success confirmation
+- [x] Add visual return-status timeline to account order details without fabricating customer history
+- [x] Persist return-request state for the current account/order experience
+- [x] Add regression coverage for modal opening, validation, uploads, submission, and timeline states
+- [x] Run TypeScript, Vitest, production build, and responsive visual verification
+- [x] Save the verified Request Return checkpoint
