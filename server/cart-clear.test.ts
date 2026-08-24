@@ -6,6 +6,9 @@ const cartSource = readFileSync(new URL('../client/src/pages/Cart.tsx', import.m
 const headerSource = readFileSync(new URL('../client/src/components/SiteHeader.tsx', import.meta.url), 'utf8');
 const storeSource = readFileSync(new URL('../client/src/lib/store.ts', import.meta.url), 'utf8');
 const dialogSource = readFileSync(new URL('../client/src/components/ClearBagDialog.tsx', import.meta.url), 'utf8');
+const checkoutSource = readFileSync(new URL('../client/src/pages/Checkout.tsx', import.meta.url), 'utf8');
+const savedItemsSource = readFileSync(new URL('../client/src/pages/SavedItems.tsx', import.meta.url), 'utf8');
+const appSource = readFileSync(new URL('../client/src/App.tsx', import.meta.url), 'utf8');
 
 describe('Shop naming and bag clearing', () => {
   it('uses the requested discovery-led Shop heading', () => {
@@ -45,6 +48,24 @@ describe('Shop naming and bag clearing', () => {
     expect(dialogSource).toContain('data-testid="clear-bag-cancel"');
     expect(dialogSource).toContain('data-testid="clear-bag-confirm"');
     expect(dialogSource).toContain('Keep selections');
+  });
+
+  it('supports real-time inline checkout validation and a guest account path after confirmation', () => {
+    expect(checkoutSource).toContain('validateContact');
+    expect(checkoutSource).toContain('validateDelivery');
+    expect(checkoutSource).toContain('aria-invalid');
+    expect(checkoutSource).toContain('Enter a valid email address.');
+    expect(checkoutSource).toContain('CREATE ACCOUNT');
+    expect(checkoutSource).toContain('startLogin()');
+  });
+
+  it('registers a dedicated Saved Items page backed by the existing saved-product collection', () => {
+    expect(appSource).toContain('import SavedItems');
+    expect(appSource).toContain('path="/saved-items"');
+    expect(savedItemsSource).toContain('Saved Items');
+    expect(savedItemsSource).toContain('WishlistPageContent');
+    expect(savedItemsSource).toContain('getWishlist');
+    expect(savedItemsSource).toContain('Saved for later');
   });
 
   it('clears persisted cart lines and stale latest-added preview metadata', () => {

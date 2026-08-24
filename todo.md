@@ -251,3 +251,7 @@
 - [x] Improve order confirmation with order details, delivery information, payment status, and next actions
 - [x] Add Part 6 regression coverage for terminology, bag, checkout, and order confirmation flows
 - [x] Fix mobile checkout step labels so the four-step progress indicator remains readable without overlap
+- [x] Add real-time inline validation to Checkout contact and delivery fields
+- [x] Create a dedicated Saved Items page for save-for-later products with move-to-bag actions
+- [x] Add a guest Create Account action on the order confirmation page
+- [x] Add regression coverage for checkout validation, Saved Items routing/actions, and guest account creation

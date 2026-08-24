@@ -9,6 +9,7 @@ import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Account from './pages/Account';
 import Wishlist from './pages/Wishlist';
+import SavedItems from './pages/SavedItems';
 import Admin from './pages/Admin';
 import Checkout from './pages/Checkout';
 import { Edit, EditArticle, Trends } from './pages/Discovery';
@@ -22,6 +23,7 @@ function Router() {
     <Route path="/cart" component={Cart} />
     <Route path="/account" component={Account} />
     <Route path="/wishlist" component={Wishlist} />
+    <Route path="/saved-items" component={SavedItems} />
     <Route path="/admin" component={Admin} />
     <Route path="/checkout" component={Checkout} />
     <Route path="/trends" component={Trends} />
