@@ -54,17 +54,61 @@ export default function SiteHeader() {
   const [badgePulse, setBadgePulse] = useState<'wishlist' | 'bag' | null>(null);
   const [bagPreviewOpen, setBagPreviewOpen] = useState(false);
   const [wishlistPreviewOpen, setWishlistPreviewOpen] = useState(false);
+  const [previewVisible, setPreviewVisible] = useState(false);
   const previousCountsRef = useRef({ wishlist: wishlistIds.length, bag: cartItemCount(cartItems) });
   const badgePulseTimerRef = useRef<number | null>(null);
+  const previewTransitionTimerRef = useRef<number | null>(null);
+
+  const clearPreviewTransitionTimer = () => {
+    if (previewTransitionTimerRef.current !== null) window.clearTimeout(previewTransitionTimerRef.current);
+    previewTransitionTimerRef.current = null;
+  };
+  const reducedPreviewMotion = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const closePreview = () => {
+    clearPreviewTransitionTimer();
+    setPreviewVisible(false);
+    if (reducedPreviewMotion()) {
+      setBagPreviewOpen(false);
+      setWishlistPreviewOpen(false);
+      return;
+    }
+    previewTransitionTimerRef.current = window.setTimeout(() => {
+      setBagPreviewOpen(false);
+      setWishlistPreviewOpen(false);
+      previewTransitionTimerRef.current = null;
+    }, 180);
+  };
+  const openPreview = (key: 'wishlist' | 'bag') => {
+    clearPreviewTransitionTimer();
+    const alreadyOpen = key === 'wishlist' ? wishlistPreviewOpen : bagPreviewOpen;
+    if (alreadyOpen) {
+      setPreviewVisible(true);
+      return;
+    }
+    const hasOpenPreview = wishlistPreviewOpen || bagPreviewOpen;
+    setPreviewVisible(false);
+    const switchPreview = () => {
+      setWishlistPreviewOpen(key === 'wishlist');
+      setBagPreviewOpen(key === 'bag');
+      window.requestAnimationFrame(() => setPreviewVisible(true));
+    };
+    if (hasOpenPreview && !reducedPreviewMotion()) {
+      previewTransitionTimerRef.current = window.setTimeout(() => {
+        switchPreview();
+        previewTransitionTimerRef.current = null;
+      }, 140);
+    } else {
+      switchPreview();
+    }
+  };
 
   const showDrawer = (key: DrawerKey) => {
     if (drawerCloseTimerRef.current !== null) window.clearTimeout(drawerCloseTimerRef.current);
+    closePreview();
     setOpenMenu(null);
     setMobileOpen(false);
     setSearchOpen(false);
     setAccountOpen(false);
-    setBagPreviewOpen(false);
-    setWishlistPreviewOpen(false);
     setDrawer(key);
     setDrawerVisible(false);
     window.requestAnimationFrame(() => setDrawerVisible(true));
@@ -80,10 +124,10 @@ export default function SiteHeader() {
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
-    const onKeyDown = (event: KeyboardEvent) => { if (event.key === 'Escape') { setOpenMenu(null); setMobileOpen(false); setSearchOpen(false); setAccountOpen(false); hideDrawer(); } };
+    const onKeyDown = (event: KeyboardEvent) => { if (event.key === 'Escape') { setOpenMenu(null); setMobileOpen(false); setSearchOpen(false); setAccountOpen(false); closePreview(); hideDrawer(); } };
     const syncStore = () => { const nextCart = getCart(); const nextWishlist = getWishlist(); setCartItems(nextCart); setWishlistIds(nextWishlist); setLastAddedItem(getLastAddedCartItem()); };
     const onPointerDown = (event: PointerEvent) => {
-      if (headerRef.current && !headerRef.current.contains(event.target as Node)) { setOpenMenu(null); setAccountOpen(false); }
+      if (headerRef.current && !headerRef.current.contains(event.target as Node)) { setOpenMenu(null); setAccountOpen(false); closePreview(); }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('keydown', onKeyDown);
@@ -93,8 +137,8 @@ export default function SiteHeader() {
     return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('keydown', onKeyDown); window.removeEventListener('storage', syncStore); window.removeEventListener(CART_UPDATED_EVENT, syncStore); window.removeEventListener('averae-wishlist-updated', syncStore); document.removeEventListener('pointerdown', onPointerDown); };
   }, []);
 
-  useEffect(() => { setOpenMenu(null); setMobileOpen(false); setAccountOpen(false); setBagPreviewOpen(false); setWishlistPreviewOpen(false); hideDrawer(); }, [location]);
-  useEffect(() => () => { if (drawerCloseTimerRef.current !== null) window.clearTimeout(drawerCloseTimerRef.current); if (badgePulseTimerRef.current !== null) window.clearTimeout(badgePulseTimerRef.current); }, []);
+  useEffect(() => { setOpenMenu(null); setMobileOpen(false); setAccountOpen(false); clearPreviewTransitionTimer(); setPreviewVisible(false); setBagPreviewOpen(false); setWishlistPreviewOpen(false); hideDrawer(); }, [location]);
+  useEffect(() => () => { if (drawerCloseTimerRef.current !== null) window.clearTimeout(drawerCloseTimerRef.current); if (badgePulseTimerRef.current !== null) window.clearTimeout(badgePulseTimerRef.current); clearPreviewTransitionTimer(); }, []);
 
   const cartLines = useMemo(() => cartItems.map(item => ({ item, product: products.find(product => product.id === item.id) })).filter(line => line.product) as { item: CartItem; product: typeof products[number] }[], [cartItems]);
   const subtotal = cartLines.reduce((sum, line) => sum + line.product.price * line.item.quantity, 0); const cartCount = cartItemCount(cartItems);
@@ -132,7 +176,6 @@ export default function SiteHeader() {
     return location.includes(`audience=${key}`) || location.includes(`category=${key}`);
   };
   const closeAll = () => { setOpenMenu(null); setMobileOpen(false); setAccountOpen(false); hideDrawer(); };
-  const openPreview = (key: 'wishlist' | 'bag') => { setWishlistPreviewOpen(key === 'wishlist'); setBagPreviewOpen(key === 'bag'); };
   const clearRecentSearches = () => { setRecentSearches([]); localStorage.removeItem('averae-recent-searches'); };
   const submitSearch = (value = query) => { const term = value.trim(); if (!term) return; const next = [term, ...recentSearches.filter(item => item.toLowerCase() !== term.toLowerCase())].slice(0, 5); setRecentSearches(next); localStorage.setItem('averae-recent-searches', JSON.stringify(next)); setSearchOpen(false); navigate(`/shop?search=${encodeURIComponent(term)}`); };
 
@@ -164,8 +207,8 @@ export default function SiteHeader() {
         <div className="flex flex-1 items-center justify-end gap-3 sm:gap-4">
           <button type="button" aria-label="Search" onClick={() => { setSearchOpen(true); setMobileOpen(false); setAccountOpen(false); }} className="icon-action focus-ring group relative"><Search size={17} strokeWidth={1.3} /><span className="icon-tooltip">Search</span></button>
           <div className="relative hidden sm:block"><button type="button" aria-label="Account" aria-expanded={accountOpen} onClick={() => { setAccountOpen(!accountOpen); setOpenMenu(null); hideDrawer(); }} className="icon-action focus-ring group relative"><UserRound size={17} strokeWidth={1.3} /><span className="icon-tooltip">Account</span></button>{accountOpen && <div className="absolute right-0 top-10 z-50 w-48 border border-[#D7C2A7] bg-[#FFFDF8] p-4 shadow-lg"><p className="eyebrow text-[#866F62]">{user ? `Hello, ${user.name || 'there'}` : 'Your account'}</p><div className="mt-3 space-y-1"><MenuLink href="/account" onClick={() => setAccountOpen(false)}>My Account</MenuLink>{user ? <><MenuLink href="/account#orders" onClick={() => setAccountOpen(false)}>Orders</MenuLink><MenuLink href="/wishlist" onClick={() => setAccountOpen(false)}>Wishlist</MenuLink><MenuLink href="/account#addresses" onClick={() => setAccountOpen(false)}>Addresses</MenuLink><button type="button" onClick={() => { setAccountOpen(false); void logout(); }} className="flex w-full border-b border-[#D7C2A7]/70 py-2 text-left text-sm hover:text-[#B7654A]">Logout</button></> : <><button type="button" onClick={() => { setAccountOpen(false); startLogin(); }} className="flex w-full border-b border-[#D7C2A7]/70 py-2 text-left text-sm hover:text-[#B7654A]">Sign In</button><button type="button" onClick={() => { setAccountOpen(false); startLogin(); }} className="flex w-full border-b border-[#D7C2A7]/70 py-2 text-left text-sm hover:text-[#B7654A]">Create Account</button></>}</div></div>}</div>
-          <div className="relative hidden sm:block" onMouseEnter={() => openPreview('wishlist')} onMouseLeave={() => setWishlistPreviewOpen(false)}><button type="button" aria-label={`Wishlist${wishlistIds.length ? `, ${wishlistIds.length} saved` : ''}`} aria-haspopup="dialog" aria-expanded={wishlistPreviewOpen} aria-controls={wishlistPreviewOpen ? 'wishlist-latest-preview' : undefined} aria-describedby={wishlistPreviewOpen ? 'wishlist-latest-preview' : undefined} onFocus={() => openPreview('wishlist')} onBlur={event => { if (!event.currentTarget.parentElement?.contains(event.relatedTarget as Node)) setWishlistPreviewOpen(false); }} onClick={() => showDrawer('wishlist')} className={`icon-action focus-ring group relative ${wishlistPreviewOpen ? 'preview-open' : ''}`}><Heart size={17} strokeWidth={1.3} /><span className="icon-tooltip">Wishlist</span>{wishlistIds.length > 0 && <span data-testid="wishlist-count-badge" aria-hidden="true" className={`header-count-badge absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#B7654A] px-1 text-[8px] text-[#FFFDF8] ${badgePulse === 'wishlist' ? 'header-count-badge-bounce' : ''}`}>{wishlistIds.length}</span>}</button>{wishlistPreviewOpen && <div id="wishlist-latest-preview" data-testid="wishlist-latest-preview" role="dialog" aria-label="Wishlist preview" className="wishlist-latest-preview absolute right-0 top-[calc(100%+14px)] z-[60] flex w-64 gap-3 border border-[#D7C2A7] bg-[#FFFDF8] p-3 text-left shadow-[0_14px_30px_rgba(56,40,32,.14)]">{latestWishlistProduct ? <><img src={latestWishlistProduct.image} alt={`${latestWishlistProduct.name} thumbnail`} className="h-16 w-12 object-cover" /><div className="min-w-0"><p className="eyebrow text-[#866F62]">Recently saved</p><p className="mt-1 truncate text-sm">{latestWishlistProduct.name}</p><p className="mt-1 text-xs text-[#866F62]">{latestWishlistProduct.brand} · {latestWishlistProduct.collection}</p><p className="mt-2 text-sm">{formatPrice(latestWishlistProduct.price)}</p></div></> : <div className="py-2"><Heart className="text-[#D7C2A7]" size={22} strokeWidth={1} /><p className="mt-3 font-display text-xl">Keep discovering.</p><p className="mt-1 text-xs leading-5 text-[#866F62]">Save a piece you love and it will appear here.</p></div>}</div>}</div>
-          <div className="relative" onMouseEnter={() => openPreview('bag')} onMouseLeave={() => setBagPreviewOpen(false)}><button type="button" aria-label={`Bag${cartCount ? `, ${cartCount} item${cartCount === 1 ? '' : 's'}` : ''}`} aria-haspopup="dialog" aria-expanded={bagPreviewOpen} aria-controls={bagPreviewOpen ? 'bag-latest-preview' : undefined} aria-describedby={bagPreviewOpen ? 'bag-latest-preview' : undefined} onFocus={() => openPreview('bag')} onBlur={event => { if (!event.currentTarget.parentElement?.contains(event.relatedTarget as Node)) setBagPreviewOpen(false); }} onClick={() => { showDrawer('bag'); setOpenMenu(null); }} className={`icon-action focus-ring group relative ${bagPreviewOpen ? 'preview-open' : ''}`}><ShoppingBag size={17} strokeWidth={1.3} /><span className="icon-tooltip">Bag</span>{cartCount > 0 && <span data-testid="bag-count-badge" aria-hidden="true" className={`header-count-badge absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#B7654A] px-1 text-[8px] text-[#FFFDF8] ${badgePulse === 'bag' ? 'header-count-badge-bounce' : ''}`}>{cartCount}</span>}</button>{bagPreviewOpen && <div id="bag-latest-preview" data-testid="bag-latest-preview" role="dialog" aria-label="Shopping bag preview" className="bag-latest-preview absolute right-0 top-[calc(100%+14px)] z-[60] flex w-64 gap-3 border border-[#D7C2A7] bg-[#FFFDF8] p-3 text-left shadow-[0_14px_30px_rgba(56,40,32,.14)]">{latestAddedProduct && lastAddedItem ? <><img src={latestAddedProduct.image} alt={`${latestAddedProduct.name} thumbnail`} className="h-16 w-12 object-cover" /><div className="min-w-0 flex-1"><p className="eyebrow text-[#866F62]">Recently added</p><p className="mt-1 truncate text-sm">{latestAddedProduct.name}</p><p className="mt-1 text-xs text-[#866F62]">{lastAddedItem.color || latestAddedProduct.color}{lastAddedItem.size ? ` · ${lastAddedItem.size}` : ''} · Qty {lastAddedItem.quantity}</p><p className="mt-2 text-sm">{formatPrice(latestAddedProduct.price * lastAddedItem.quantity)}</p><Link href="/checkout" onClick={() => setBagPreviewOpen(false)} className="action-link-light mt-3 block bg-[#382820] py-2 text-center text-[9px] uppercase tracking-[.14em]">Checkout</Link></div></> : <div className="py-2"><ShoppingBag className="text-[#D7C2A7]" size={22} strokeWidth={1} /><p className="mt-3 font-display text-xl">Your bag is waiting.</p><p className="mt-1 text-xs leading-5 text-[#866F62]">Add a piece and it will appear here.</p></div>}</div>}</div>
+          <div className="relative hidden sm:block" onMouseEnter={() => openPreview('wishlist')} onMouseLeave={closePreview}><button type="button" aria-label={`Wishlist${wishlistIds.length ? `, ${wishlistIds.length} saved` : ''}`} aria-haspopup="dialog" aria-expanded={wishlistPreviewOpen} aria-controls={wishlistPreviewOpen ? 'wishlist-latest-preview' : undefined} aria-describedby={wishlistPreviewOpen ? 'wishlist-latest-preview' : undefined} onFocus={() => openPreview('wishlist')} onBlur={event => { if (!event.currentTarget.parentElement?.contains(event.relatedTarget as Node)) closePreview(); }} onClick={() => showDrawer('wishlist')} className={`icon-action focus-ring group relative ${wishlistPreviewOpen ? 'preview-open' : ''}`}><Heart size={17} strokeWidth={1.3} /><span className="icon-tooltip">Wishlist</span>{wishlistIds.length > 0 && <span data-testid="wishlist-count-badge" aria-hidden="true" className={`header-count-badge absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#B7654A] px-1 text-[8px] text-[#FFFDF8] ${badgePulse === 'wishlist' ? 'header-count-badge-bounce' : ''}`}>{wishlistIds.length}</span>}</button>{wishlistPreviewOpen && <div id="wishlist-latest-preview" data-testid="wishlist-latest-preview" role="dialog" aria-label="Wishlist preview" className={`wishlist-latest-preview preview-card ${previewVisible ? 'preview-card-visible' : 'preview-card-hidden'} absolute right-0 top-[calc(100%+14px)] z-[60] flex w-[min(16rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] gap-3 border border-[#D7C2A7] bg-[#FFFDF8] p-3 text-left shadow-[0_14px_30px_rgba(56,40,32,.14)]`}>{latestWishlistProduct ? <><img src={latestWishlistProduct.image} alt={`${latestWishlistProduct.name} thumbnail`} className="h-16 w-12 object-cover" /><div className="min-w-0"><p className="eyebrow text-[#866F62]">Recently saved</p><p className="mt-1 truncate text-sm">{latestWishlistProduct.name}</p><p className="mt-1 text-xs text-[#866F62]">{latestWishlistProduct.brand} · {latestWishlistProduct.collection}</p><p className="mt-2 text-sm">{formatPrice(latestWishlistProduct.price)}</p></div></> : <div className="py-2"><Heart className="text-[#D7C2A7]" size={22} strokeWidth={1} /><p className="mt-3 font-display text-xl">Keep discovering.</p><p className="mt-1 text-xs leading-5 text-[#866F62]">Save a piece you love and it will appear here.</p></div>}</div>}</div>
+          <div className="relative" onMouseEnter={() => openPreview('bag')} onMouseLeave={closePreview}><button type="button" aria-label={`Bag${cartCount ? `, ${cartCount} item${cartCount === 1 ? '' : 's'}` : ''}`} aria-haspopup="dialog" aria-expanded={bagPreviewOpen} aria-controls={bagPreviewOpen ? 'bag-latest-preview' : undefined} aria-describedby={bagPreviewOpen ? 'bag-latest-preview' : undefined} onFocus={() => openPreview('bag')} onBlur={event => { if (!event.currentTarget.parentElement?.contains(event.relatedTarget as Node)) closePreview(); }} onClick={() => { showDrawer('bag'); setOpenMenu(null); }} className={`icon-action focus-ring group relative ${bagPreviewOpen ? 'preview-open' : ''}`}><ShoppingBag size={17} strokeWidth={1.3} /><span className="icon-tooltip">Bag</span>{cartCount > 0 && <span data-testid="bag-count-badge" aria-hidden="true" className={`header-count-badge absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#B7654A] px-1 text-[8px] text-[#FFFDF8] ${badgePulse === 'bag' ? 'header-count-badge-bounce' : ''}`}>{cartCount}</span>}</button>{bagPreviewOpen && <div id="bag-latest-preview" data-testid="bag-latest-preview" role="dialog" aria-label="Shopping bag preview" className={`bag-latest-preview preview-card ${previewVisible ? 'preview-card-visible' : 'preview-card-hidden'} absolute right-0 top-[calc(100%+14px)] z-[60] flex w-[min(16rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] gap-3 border border-[#D7C2A7] bg-[#FFFDF8] p-3 text-left shadow-[0_14px_30px_rgba(56,40,32,.14)]`}>{latestAddedProduct && lastAddedItem ? <><img src={latestAddedProduct.image} alt={`${latestAddedProduct.name} thumbnail`} className="h-16 w-12 object-cover" /><div className="min-w-0 flex-1"><p className="eyebrow text-[#866F62]">Recently added</p><p className="mt-1 truncate text-sm">{latestAddedProduct.name}</p><p className="mt-1 text-xs text-[#866F62]">{lastAddedItem.color || latestAddedProduct.color}{lastAddedItem.size ? ` · ${lastAddedItem.size}` : ''} · Qty {lastAddedItem.quantity}</p><p className="mt-2 text-sm">{formatPrice(latestAddedProduct.price * lastAddedItem.quantity)}</p><Link href="/checkout" onClick={() => setBagPreviewOpen(false)} className="action-link-light mt-3 block bg-[#382820] py-2 text-center text-[9px] uppercase tracking-[.14em]">Checkout</Link></div></> : <div className="py-2"><ShoppingBag className="text-[#D7C2A7]" size={22} strokeWidth={1} /><p className="mt-3 font-display text-xl">Your bag is waiting.</p><p className="mt-1 text-xs leading-5 text-[#866F62]">Add a piece and it will appear here.</p></div>}</div>}</div>
         </div>
       </div>
       {openMenu && <div className="site-nav-panel absolute left-0 right-0 top-full hidden border-b border-[#D7C2A7] bg-[#FFFDF8] shadow-[0_16px_30px_rgba(56,40,32,.08)] lg:block"><div className="container py-8">{renderMegaMenu(openMenu)}</div></div>}

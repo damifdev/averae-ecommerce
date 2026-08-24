@@ -141,9 +141,39 @@ button:active, a:active { transform: scale(.98); }
   transform-origin: center;
 }
 
+.preview-card {
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-5px) scale(.985);
+  transition: opacity 180ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)), transform 180ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1));
+  will-change: opacity, transform;
+}
+
+.preview-card-visible {
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.preview-card-hidden {
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-5px) scale(.985);
+}
+
 .bag-latest-preview,
 .wishlist-latest-preview {
-  animation: bagPreviewIn 220ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)) both;
+  max-width: calc(100vw - 2rem);
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 641px) and (max-width: 767px) {
+  .bag-latest-preview,
+  .wishlist-latest-preview {
+    right: -0.25rem;
+    width: min(15rem, calc(100vw - 1.5rem));
+    max-width: calc(100vw - 1.5rem);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -151,10 +181,12 @@ button:active, a:active { transform: scale(.98); }
     transition-duration: 1ms;
     transform: none;
   }
-  .header-count-badge-bounce,
-  .bag-latest-preview,
-  .wishlist-latest-preview {
+  .header-count-badge-bounce {
     animation: none;
+  }
+  .preview-card {
+    transition-duration: 1ms;
+    transform: none;
   }
 }
 

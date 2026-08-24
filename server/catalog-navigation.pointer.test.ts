@@ -16,8 +16,8 @@ type NavigationAudit = {
   wishlistDrawer: { label: string; transition: string; open: boolean };
   bagDrawer: { label: string; transition: string; open: boolean };
   badgePulse: { wishlist: boolean; bag: boolean };
-  bagPreview: { name: string; describedBy: string | null; animation: string; price: string; checkoutHref: string };
-  wishlistPreview: { name: string; imageAlt: string; price: string; animation: string };
+  bagPreview: { name: string; describedBy: string | null; transition: string; opacity: string; price: string; checkoutHref: string };
+  wishlistPreview: { name: string; imageAlt: string; price: string; transition: string; opacity: string };
   emptyPreviews: { bag: string; wishlist: string };
   longFormBackToTop: { path: string; exists: boolean }[];
 };
@@ -84,7 +84,7 @@ async function auditNavigation(port: number, mobile: boolean): Promise<Navigatio
     await sleep(90);
     const emptyWishlistPreview = await evaluate<string>(`document.querySelector('[data-testid="wishlist-latest-preview"]')?.textContent?.trim() ?? ''`);
     await evaluate(`document.querySelector('button[aria-label^="Bag"]')?.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))`);
-    await sleep(90);
+    await sleep(260);
     const emptyBagPreview = await evaluate<string>(`document.querySelector('[data-testid="bag-latest-preview"]')?.textContent?.trim() ?? ''`);
 
     await evaluate(`(() => {
@@ -147,20 +147,20 @@ async function auditNavigation(port: number, mobile: boolean): Promise<Navigatio
     const bagPulse = await evaluate<boolean>(`document.querySelector('[data-testid="bag-count-badge"]')?.classList.contains('header-count-badge-bounce') ?? false`);
     const badges = await evaluate<{ wishlist: string; bag: string }>(`({ wishlist: document.querySelector('[data-testid="wishlist-count-badge"]')?.textContent?.trim() ?? '', bag: document.querySelector('[data-testid="bag-count-badge"]')?.textContent?.trim() ?? '' })`);
     await evaluate(`document.querySelector('button[aria-label^="Bag"]')?.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))`);
-    await sleep(90);
+    await sleep(260);
     const bagPreview = await evaluate<NavigationAudit['bagPreview']>(`(() => {
       const button = document.querySelector('button[aria-label^="Bag"]');
       const preview = document.querySelector('[data-testid="bag-latest-preview"]');
       if (!preview) throw new Error('Latest bag preview did not open');
-      return { name: preview.querySelector('.text-sm')?.textContent?.trim() ?? '', describedBy: button?.getAttribute('aria-describedby'), animation: getComputedStyle(preview).animationName, price: preview.querySelector('.mt-2.text-sm')?.textContent?.trim() ?? '', checkoutHref: preview.querySelector('a')?.getAttribute('href') ?? '' };
+      return { name: preview.querySelector('.text-sm')?.textContent?.trim() ?? '', describedBy: button?.getAttribute('aria-describedby'), transition: getComputedStyle(preview).transition, opacity: getComputedStyle(preview).opacity, price: preview.querySelector('.mt-2.text-sm')?.textContent?.trim() ?? '', checkoutHref: preview.querySelector('a')?.getAttribute('href') ?? '' };
     })()`);
     await evaluate(`document.querySelector('button[aria-label^="Wishlist"]')?.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))`);
-    await sleep(90);
+    await sleep(420);
     const wishlistPreview = await evaluate<NavigationAudit['wishlistPreview']>(`(() => {
       const preview = document.querySelector('[data-testid="wishlist-latest-preview"]');
       if (!preview) throw new Error('Latest wishlist preview did not open');
       const image = preview.querySelector('img');
-      return { name: preview.querySelector('.text-sm')?.textContent?.trim() ?? '', imageAlt: image?.getAttribute('alt') ?? '', price: preview.querySelector('.mt-2.text-sm')?.textContent?.trim() ?? '', animation: getComputedStyle(preview).animationName };
+      return { name: preview.querySelector('.text-sm')?.textContent?.trim() ?? '', imageAlt: image?.getAttribute('alt') ?? '', price: preview.querySelector('.mt-2.text-sm')?.textContent?.trim() ?? '', transition: getComputedStyle(preview).transition, opacity: getComputedStyle(preview).opacity };
     })()`);
     await evaluate(`document.querySelector('button[aria-label^="Wishlist"]')?.click()`);
     await sleep(70);
@@ -226,11 +226,13 @@ describe('catalog navigation pointer flow', () => {
         expect(result.bagPreview.price).toBe('₦136,000');
         expect(result.bagPreview.checkoutHref).toBe('/checkout');
         expect(result.bagPreview.describedBy).toBe('bag-latest-preview');
-        expect(result.bagPreview.animation).toContain('bagPreviewIn');
+        expect(result.bagPreview.transition).toContain('0.18s');
+        expect(result.bagPreview.opacity).toBe('1');
         expect(result.wishlistPreview.name).toBe('Column Dress');
         expect(result.wishlistPreview.imageAlt).toContain('Column Dress thumbnail');
         expect(result.wishlistPreview.price).toBe('₦148,000');
-        expect(result.wishlistPreview.animation).toContain('bagPreviewIn');
+        expect(result.wishlistPreview.transition).toContain('0.18s');
+        expect(result.wishlistPreview.opacity).toBe('1');
         expect(result.emptyPreviews.bag).toContain('Your bag is waiting.');
         expect(result.emptyPreviews.wishlist).toContain('Keep discovering.');
         expect(result.longFormBackToTop.every(item => item.exists)).toBe(true);

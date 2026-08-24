@@ -67,7 +67,8 @@ async function auditPreviews(port: number) {
     })()`);
 
     await evaluate(`document.querySelector('[aria-label^="Bag"]')?.parentElement?.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, relatedTarget: null }))`);
-    await sleep(120);
+        await sleep(240);
+
     const bagState = await evaluate<{ previews: number; wishlistPreview: boolean; bagPreview: boolean; bagTooltipOpacity: string }>(`(() => {
       const bag = document.querySelector('[data-testid="bag-latest-preview"]');
       const wishlist = document.querySelector('[data-testid="wishlist-latest-preview"]');
@@ -75,7 +76,15 @@ async function auditPreviews(port: number) {
       return { previews: document.querySelectorAll('[data-testid$="-latest-preview"]').length, wishlistPreview: Boolean(wishlist), bagPreview: Boolean(bag), bagTooltipOpacity: tooltip ? getComputedStyle(tooltip).opacity : 'missing' };
     })()`);
 
-    return { wishlistState, bagState };
+    await command('Emulation.setDeviceMetricsOverride', { width: 660, height: 900, deviceScaleFactor: 1, mobile: false });
+    await sleep(80);
+    const narrowState = await evaluate<{ left: number; right: number; width: number; viewport: number }>(`(() => {
+      const preview = document.querySelector('[data-testid="bag-latest-preview"]');
+      const rect = preview?.getBoundingClientRect();
+      return { left: rect?.left ?? -1, right: rect?.right ?? -1, width: rect?.width ?? 0, viewport: window.innerWidth };
+    })()`);
+
+    return { wishlistState, bagState, narrowState };
   } finally {
     socket.close();
   }
@@ -104,6 +113,9 @@ describe('header preview layering', () => {
       expect(result.bagState.wishlistPreview).toBe(false);
       expect(result.bagState.bagPreview).toBe(true);
       expect(result.bagState.bagTooltipOpacity).toBe('0');
+      expect(result.narrowState.left).toBeGreaterThanOrEqual(0);
+      expect(result.narrowState.right).toBeLessThanOrEqual(result.narrowState.viewport);
+      expect(result.narrowState.width).toBeLessThanOrEqual(result.narrowState.viewport - 32);
     } finally {
       chrome.kill('SIGTERM');
     }

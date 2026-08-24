@@ -188,3 +188,6 @@
 - [x] Extend regression tests and browser audits for search-history clearing, carousel autoplay pause, and visual suggestions
 - [x] Fix overlapping wishlist and bag header preview modals so previews are mutually exclusive and correctly layered
 - [x] Add regression coverage for preview switching and responsive header layering
+- [x] Add smooth fade-in and fade-out transitions when switching wishlist and bag previews
+- [x] Optimize wishlist and bag preview sizing and placement for very narrow desktop widths
+- [x] Extend regression coverage for preview transitions and narrow-desktop geometry

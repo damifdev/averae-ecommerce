@@ -66,7 +66,13 @@ describe('shared SiteHeader specification contract', () => {
     expect(headerSource).toContain("event.key === 'Escape'");
     expect(headerSource).toContain('document.addEventListener(\'pointerdown\'');
     expect(headerSource).toContain('event.target === event.currentTarget');
-    expect(headerSource).toContain("if (headerRef.current && !headerRef.current.contains(event.target as Node)) { setOpenMenu(null); setAccountOpen(false); }");
+    expect(headerSource).toContain('preview-card-visible');
+    expect(headerSource).toContain('preview-card-hidden');
+    expect(headerSource).toContain('window.setTimeout(() => {');
+    expect(cssSource).toContain('transition: opacity 180ms var(--ease-out');
+    expect(cssSource).toContain('max-width: calc(100vw - 2rem)');
+    expect(cssSource).toContain('@media (min-width: 641px) and (max-width: 767px)');
+    expect(headerSource).toContain("if (headerRef.current && !headerRef.current.contains(event.target as Node)) { setOpenMenu(null); setAccountOpen(false); closePreview(); }");
   });
 
   it('keeps mobile menu sections and bottom navigation available', () => {
