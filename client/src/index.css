@@ -280,3 +280,49 @@ button[class~="bg-[#B7654A]"]:not([class~="hover:text-[#382820]"]):hover,
 button[class~="bg-[#B7654A]"]:not([class~="hover:text-[#382820]"]):focus-visible {
   color: #FFFDF8 !important;
 }
+
+/* Floating support controls enter with a restrained lift when they become available. */
+@keyframes floatingControlEnter {
+  from { opacity: 0; transform: translateY(8px) scale(.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.floating-control-enter {
+  animation: floatingControlEnter 220ms var(--ease-out) both;
+}
+
+.floating-help-tooltip {
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  z-index: 60;
+  width: max-content;
+  border: 1px solid #D7C2A7;
+  background: #382820;
+  padding: 7px 9px;
+  color: #FFFDF8;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  line-height: 1;
+  opacity: 0;
+  transform: translateY(4px);
+  visibility: hidden;
+  transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out), visibility 180ms var(--ease-out);
+}
+
+.floating-help-control:hover .floating-help-tooltip,
+.floating-help-control:focus-visible .floating-help-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-control-enter,
+  .floating-help-tooltip {
+    animation: none;
+    transition-duration: 1ms;
+  }
+}

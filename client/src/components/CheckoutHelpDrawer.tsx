@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { ArrowRight, HelpCircle, Search, X } from 'lucide-react';
 import { Link } from 'wouter';
 import { trackEngagement } from '@/lib/analytics';
+import { useFooterVisibility } from '@/hooks/useFooterVisibility';
 
 export type CheckoutHelpDrawerProps = {
   open: boolean;
@@ -45,11 +46,13 @@ export function CheckoutHelpDrawer({ open, onClose, onSupportInteraction }: Chec
 
 export function FloatingFAQHelp() {
   const [open, setOpen] = useState(false);
+  const footerVisible = useFooterVisibility();
   const show = () => { setOpen(true); trackEngagement('help_widget_open', { source: 'floating_faq' }); };
-  return <div className="fixed bottom-5 right-5 z-[55]">{open ? <div className="w-[min(20rem,calc(100vw-2.5rem))] border border-[#D7C2A7] bg-[#FFFDF8] p-5 text-[#382820] shadow-xl"><div className="flex items-start justify-between gap-4"><div><p className="eyebrow text-[#B7654A]">Quick help</p><h2 className="mt-1 font-display text-2xl">Questions?</h2></div><button type="button" aria-label="Close quick help" onClick={() => setOpen(false)} className="focus-ring rounded-full p-1"><X size={16} /></button></div><p className="mt-3 text-sm leading-6 text-[#866F62]">Find quick answers or browse the full FAQ.</p><div className="mt-4 flex items-center gap-4"><Link href="/faq" onClick={() => setOpen(false)} className="action-link-light bg-[#382820] px-4 py-3 text-[10px] uppercase tracking-[.14em] text-[#FFFDF8]">VIEW FAQs</Link><button type="button" onClick={() => setOpen(false)} className="text-[10px] uppercase tracking-[.14em] underline">Close</button></div></div> : <button type="button" aria-label="Open FAQ help" onClick={show} className="focus-ring flex items-center gap-2 border border-[#382820] bg-[#FFFDF8] px-4 py-3 text-[10px] uppercase tracking-[.14em] text-[#382820] shadow-lg transition hover:bg-[#382820] hover:text-[#FFFDF8]"><HelpCircle size={16} strokeWidth={1.3} /> Help</button>}</div>;
+  if (footerVisible && !open) return null;
+
+  return <div className="fixed bottom-5 right-5 z-[55]">{open ? <div className="w-[min(20rem,calc(100vw-2.5rem))] border border-[#D7C2A7] bg-[#FFFDF8] p-5 text-[#382820] shadow-xl"><div className="flex items-start justify-between gap-4"><div><p className="eyebrow text-[#B7654A]">Quick help</p><h2 className="mt-1 font-display text-2xl">Questions?</h2></div><button type="button" aria-label="Close quick help" onClick={() => setOpen(false)} className="focus-ring rounded-full p-1"><X size={16} /></button></div><p className="mt-3 text-sm leading-6 text-[#866F62]">Find quick answers or browse the full FAQ.</p><div className="mt-4 flex items-center gap-4"><Link href="/faq" onClick={() => setOpen(false)} className="action-link-light bg-[#382820] px-4 py-3 text-[10px] uppercase tracking-[.14em] text-[#FFFDF8]">VIEW FAQs</Link><button type="button" onClick={() => setOpen(false)} className="text-[10px] uppercase tracking-[.14em] underline">Close</button></div></div> : <button type="button" aria-label="Open FAQ help" aria-describedby="floating-help-tooltip" data-testid="floating-help-trigger" data-footer-aware="true" onClick={show} className="floating-help-control floating-control-enter focus-ring group relative flex items-center gap-2 border border-[#382820] bg-[#FFFDF8] px-4 py-3 text-[10px] uppercase tracking-[.14em] text-[#382820] shadow-lg transition hover:bg-[#382820] hover:text-[#FFFDF8]"><HelpCircle size={16} strokeWidth={1.3} /><span>Help</span><span id="floating-help-tooltip" role="tooltip" className="floating-help-tooltip">Need Help?</span></button>}</div>;
 }
 
 export default CheckoutHelpDrawer;
 
 // Keep FAQ assistance lightweight: the widget links to the full FAQ while checkout receives the searchable drawer.
-

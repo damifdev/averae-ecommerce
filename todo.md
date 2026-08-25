@@ -493,3 +493,11 @@
 - [x] Add regression coverage for positioning, visibility, action, keyboard, and responsive behavior
 - [x] Verify TypeScript, Vitest, production build, and responsive behavior
 - [x] Save the verified floating-controls checkpoint
+
+- [x] Add a “Need Help?” hover tooltip to the floating FAQ help icon
+- [x] Hide floating help and BackToTop controls when the footer enters the viewport
+- [x] Add subtle entrance animations when floating controls appear
+- [x] Add regression coverage for tooltip, footer-aware visibility, and entrance motion
+- [x] Verify TypeScript, focused Vitest, production build, and preview route availability; screenshot capture unavailable
+- [x] Save the verified floating-control enhancement checkpoint
+
