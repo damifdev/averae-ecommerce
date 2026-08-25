@@ -50,11 +50,11 @@ function MenuLink({ href, children, onClick }: { href: string; children: React.R
 }
 
 function MenuColumn({ title, links, onClick }: { title: string; links: { label: string; href: string }[]; onClick?: () => void }) {
-  return <div><p className="eyebrow text-[#866F62]">{title}</p><div className="mt-4 space-y-1">{links.map(link => <MenuLink key={link.label} href={link.href} onClick={onClick}>{link.label}</MenuLink>)}</div></div>;
+  return <div><p className="eyebrow text-[#866F62]">{title}</p><div className="mt-4 space-y-1">{links.map(link => <MenuLink key={link.href} href={link.href} onClick={onClick}>{link.label}</MenuLink>)}</div></div>;
 }
 
 function MobileSection({ title, links, onNavigate }: { title: string; links: { label: string; href: string }[]; onNavigate: () => void }) {
-  return <details open className="border-b border-[#D7C2A7] py-4"><summary className="cursor-pointer list-none text-[10px] uppercase tracking-[.16em] text-[#866F62]">{title}</summary><div className="mt-3 space-y-1">{links.map(link => <MenuLink key={link.label} href={link.href} onClick={() => { trackEngagement('mobile_nav_click', { group: safeEventLabel(title), label: safeEventLabel(link.label) }); onNavigate(); }}>{link.label}</MenuLink>)}</div></details>;
+  return <details open className="border-b border-[#D7C2A7] py-4"><summary className="cursor-pointer list-none text-[10px] uppercase tracking-[.16em] text-[#866F62]">{title}</summary><div className="mt-3 space-y-1">{links.map(link => <MenuLink key={link.href} href={link.href} onClick={() => { trackEngagement('mobile_nav_click', { group: safeEventLabel(title), label: safeEventLabel(link.label) }); onNavigate(); }}>{link.label}</MenuLink>)}</div></details>;
 }
 
 export default function SiteHeader() {

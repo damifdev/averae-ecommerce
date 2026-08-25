@@ -501,3 +501,9 @@
 - [x] Verify TypeScript, focused Vitest, production build, and preview route availability; screenshot capture unavailable
 - [x] Save the verified floating-control enhancement checkpoint
 
+
+- [x] Fix duplicate React keys for repeated audience/category labels on the product-detail route
+- [x] Add regression coverage ensuring repeated labels use stable unique keys
+- [x] Verify /product/1 with TypeScript, focused Vitest, production build, and browser console checks
+- [x] Save the verified duplicate-key bug-fix checkpoint
+

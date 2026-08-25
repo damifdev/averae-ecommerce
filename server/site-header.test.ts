@@ -90,6 +90,12 @@ describe('shared SiteHeader specification contract', () => {
     expect(brandSource).toContain("label: 'Beauty & Lifestyle'");
   });
 
+  it('uses stable destination keys for repeated audience labels in shared navigation lists', () => {
+    expect(headerSource).toContain('links.map(link => <MenuLink key={link.href} href={link.href}');
+    expect(headerSource).not.toContain('links.map(link => <MenuLink key={link.label} href={link.href}');
+    expect(headerSource).toContain('thriftSubcategoryLinks.map(link => <MenuLink key={link.href}');
+  });
+
   it('keeps the shared header in normal document flow while preserving the fixed mobile navigation', () => {
     expect(headerSource).toContain('className={`relative z-50 border-b');
     expect(headerSource).not.toContain('className={`sticky top-0 z-50 border-b');
