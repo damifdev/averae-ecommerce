@@ -548,3 +548,12 @@
 - [x] Verify TypeScript, Vitest, production build, and fresh /shop browser rendering
 - [x] Save the verified Shop reload-fix checkpoint
 
+
+- [x] Audit the entire project for conflicting Women defaults, redirects, and persisted Shop state
+- [x] Ensure neutral /shop initializes as audience All and category All without redirecting
+- [x] Preserve explicit Shop category and audience URLs for Women, Men, Kids, Hair, Thrift Wear, Jewelry, and Shoes
+- [x] Ensure leaving and returning to /shop resets to neutral state unless the URL explicitly contains filters
+- [x] Add comprehensive refresh, direct-navigation, and category-routing regression coverage
+- [x] Verify TypeScript, Vitest, production build, and fresh browser URL/state behavior
+- [x] Save the verified critical Shop routing checkpoint
+

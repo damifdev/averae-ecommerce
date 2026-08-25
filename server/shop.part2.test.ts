@@ -18,7 +18,16 @@ describe('Shop UX Refinement Part 2', () => {
     expect(shopSource).toContain('function parseShopLocation(location: string)');
     expect(shopSource).toContain('const locationWithSearch = typeof window === \'undefined\' || location.includes(\'?\') ? location : `${location}${window.location.search}`;');
     expect(shopSource).toContain('const params = useMemo(() => parseShopLocation(locationWithSearch), [locationWithSearch]);');
-    expect(shopSource).toContain("window.sessionStorage.setItem('averae-last-shop-url', location)");
+    expect(shopSource).not.toContain("window.sessionStorage.setItem('averae-last-shop-url', location)");
+    expect(shopSource).toContain('getAudienceFromParams(params)');
+    expect(shopSource).toContain('getCategoryFromParams(params)');
+    expect(shopSource).toContain('setFilters({ ...filterDefaults });');
+  });
+
+  it('normalizes unknown or stale route values back to the neutral Shop state', () => {
+    expect(shopSource).toContain("return match?.label ?? 'All';");
+    expect(shopSource).toContain("const categoryAudience = !explicitAudience && isAudienceValue(params.get('category')) ? params.get('category') : null;");
+    expect(shopSource).toContain("return normalizeCategory(isAudienceValue(params.get('category')) ? null : params.get('category'));");
   });
 
   it('keeps the default toolbar compact and exposes a dedicated responsive filter panel', () => {

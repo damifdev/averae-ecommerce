@@ -13,16 +13,30 @@ function parseShopLocation(location: string) {
   return new URLSearchParams(location.slice(queryIndex + 1).split('#')[0]);
 }
 
+function isAudienceValue(value: string | null) {
+  return Boolean(value && value.toLowerCase() !== 'all' && audienceCategories.some(item => item.slug === value.toLowerCase() || item.label.toLowerCase() === value.toLowerCase()));
+}
+
 function normalizeAudience(value: string | null) {
   if (!value || value.toLowerCase() === 'all') return 'All';
   const match = audienceCategories.find(item => item.slug === value.toLowerCase() || item.label.toLowerCase() === value.toLowerCase());
-  return match?.label ?? value.charAt(0).toUpperCase() + value.slice(1);
+  return match?.label ?? 'All';
 }
 
 function normalizeCategory(value: string | null) {
   if (!value || value.toLowerCase() === 'all') return 'All';
   const match = productCategories.find(item => item.slug === value.toLowerCase() || item.label.toLowerCase() === value.toLowerCase());
-  return match?.label ?? value.replace(/-/g, ' ').replace(/\b\w/g, character => character.toUpperCase());
+  return match?.label ?? 'All';
+}
+
+function getAudienceFromParams(params: URLSearchParams) {
+  const explicitAudience = params.get('audience');
+  const categoryAudience = !explicitAudience && isAudienceValue(params.get('category')) ? params.get('category') : null;
+  return normalizeAudience(explicitAudience ?? categoryAudience);
+}
+
+function getCategoryFromParams(params: URLSearchParams) {
+  return normalizeCategory(isAudienceValue(params.get('category')) ? null : params.get('category'));
 }
 
 const sortOptions = ['Recommended', 'Newest', 'Trending', 'Best Selling', 'Price: Low to High', 'Price: High to Low'] as const;
@@ -102,8 +116,8 @@ export default function Shop() {
   const [location] = useLocation();
   const locationWithSearch = typeof window === 'undefined' || location.includes('?') ? location : `${location}${window.location.search}`;
   const params = useMemo(() => parseShopLocation(locationWithSearch), [locationWithSearch]);
-  const [category, setCategory] = useState(normalizeCategory(params.get('category')));
-  const [audience, setAudience] = useState(normalizeAudience(params.get('audience')));
+  const [category, setCategory] = useState(getCategoryFromParams(params));
+  const [audience, setAudience] = useState(getAudienceFromParams(params));
   const [saleOnly, setSaleOnly] = useState(params.get('sale') === 'true');
   const [sort, setSort] = useState<typeof sortOptions[number]>(params.get('sort') === 'new' || params.get('sort') === 'newest' ? 'Newest' : params.get('sort') === 'popular' ? 'Best Selling' : params.get('sort') === 'trending' ? 'Trending' : 'Recommended');
   const [query, setQuery] = useState(params.get('search') ?? params.get('q') ?? '');
@@ -114,12 +128,17 @@ export default function Shop() {
   const [draftAudience, setDraftAudience] = useState('All');
   const [draftCategory, setDraftCategory] = useState('All');
   useEffect(() => {
-    setCategory(normalizeCategory(params.get('category')));
-    setAudience(normalizeAudience(params.get('audience')));
+    const nextCategory = getCategoryFromParams(params);
+    const nextAudience = getAudienceFromParams(params);
+    setCategory(nextCategory);
+    setAudience(nextAudience);
     setSaleOnly(params.get('sale') === 'true');
     setSort(params.get('sort') === 'new' || params.get('sort') === 'newest' ? 'Newest' : params.get('sort') === 'popular' ? 'Best Selling' : params.get('sort') === 'trending' ? 'Trending' : 'Recommended');
     setQuery(params.get('search') ?? params.get('q') ?? '');
-    if (typeof window !== 'undefined') window.sessionStorage.setItem('averae-last-shop-url', location);
+    setFilters({ ...filterDefaults });
+    setDraftFilters({ ...filterDefaults });
+    setDraftAudience(nextAudience);
+    setDraftCategory(nextCategory);
   }, [params]);
 
   const options = useMemo(() => ({
