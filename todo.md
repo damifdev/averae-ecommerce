@@ -541,3 +541,10 @@
 - [x] Verify TypeScript, Vitest, production build, and desktop/mobile rendering
 - [x] Save the verified search-bar interaction checkpoint
 
+
+- [x] Fix /shop reload so it opens the unfiltered Discover Áveraẹ view instead of Women
+- [x] Preserve explicit audience and category URL filters on direct navigation and reload
+- [x] Add regression coverage for base Shop initialization and explicit category links
+- [x] Verify TypeScript, Vitest, production build, and fresh /shop browser rendering
+- [x] Save the verified Shop reload-fix checkpoint
+

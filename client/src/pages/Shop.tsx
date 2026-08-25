@@ -7,6 +7,12 @@ import { audienceCategories, categoryFilterOptions, categorySubcategories, produ
 import { useEffect, useMemo, useState } from 'react';
 import { addToCart, getWishlist, toggleWishlist } from '@/lib/store';
 
+function parseShopLocation(location: string) {
+  const queryIndex = location.indexOf('?');
+  if (queryIndex === -1) return new URLSearchParams();
+  return new URLSearchParams(location.slice(queryIndex + 1).split('#')[0]);
+}
+
 function normalizeAudience(value: string | null) {
   if (!value || value.toLowerCase() === 'all') return 'All';
   const match = audienceCategories.find(item => item.slug === value.toLowerCase() || item.label.toLowerCase() === value.toLowerCase());
@@ -94,8 +100,8 @@ function Card({ p, onQuickView }: { p: Product; onQuickView: (product: Product) 
 
 export default function Shop() {
   const [location] = useLocation();
-  const searchString = typeof window === 'undefined' ? '' : window.location.search;
-  const params = useMemo(() => new URLSearchParams(searchString), [location, searchString]);
+  const locationWithSearch = typeof window === 'undefined' || location.includes('?') ? location : `${location}${window.location.search}`;
+  const params = useMemo(() => parseShopLocation(locationWithSearch), [locationWithSearch]);
   const [category, setCategory] = useState(normalizeCategory(params.get('category')));
   const [audience, setAudience] = useState(normalizeAudience(params.get('audience')));
   const [saleOnly, setSaleOnly] = useState(params.get('sale') === 'true');
@@ -113,7 +119,7 @@ export default function Shop() {
     setSaleOnly(params.get('sale') === 'true');
     setSort(params.get('sort') === 'new' || params.get('sort') === 'newest' ? 'Newest' : params.get('sort') === 'popular' ? 'Best Selling' : params.get('sort') === 'trending' ? 'Trending' : 'Recommended');
     setQuery(params.get('search') ?? params.get('q') ?? '');
-    if (typeof window !== 'undefined') window.sessionStorage.setItem('averae-last-shop-url', `${window.location.pathname}${window.location.search}`);
+    if (typeof window !== 'undefined') window.sessionStorage.setItem('averae-last-shop-url', location);
   }, [params]);
 
   const options = useMemo(() => ({

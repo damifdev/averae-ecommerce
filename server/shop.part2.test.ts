@@ -14,6 +14,13 @@ describe('Shop UX Refinement Part 2', () => {
     expect(productCategories.map(item => item.label)).toContain('Watches');
   });
 
+  it('initializes the base Shop route from the reactive location without stale query state', () => {
+    expect(shopSource).toContain('function parseShopLocation(location: string)');
+    expect(shopSource).toContain('const locationWithSearch = typeof window === \'undefined\' || location.includes(\'?\') ? location : `${location}${window.location.search}`;');
+    expect(shopSource).toContain('const params = useMemo(() => parseShopLocation(locationWithSearch), [locationWithSearch]);');
+    expect(shopSource).toContain("window.sessionStorage.setItem('averae-last-shop-url', location)");
+  });
+
   it('keeps the default toolbar compact and exposes a dedicated responsive filter panel', () => {
     expect(shopSource).toContain('Search products...');
     expect(shopSource).toContain('FILTERS');

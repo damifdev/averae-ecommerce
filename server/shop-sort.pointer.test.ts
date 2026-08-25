@@ -76,7 +76,20 @@ async function runSortAudit(port: number, mobile: boolean) {
       value: document.querySelector('select[aria-label="Sort products"]')?.value ?? '',
       firstProduct: document.querySelector('article[data-testid^="product-card-"] > div:nth-child(2) a')?.textContent?.trim() ?? '',
     }))()`);
-    return { initial, sorted };
+    await command('Page.navigate', { url: `${baseUrl}/shop?audience=women` });
+    await sleep(700);
+    const women = await evaluate<{ heading: string; count: string }>(`(() => ({
+      heading: document.querySelector('h1')?.textContent?.trim() ?? '',
+      count: document.querySelector('[data-testid="product-count"]')?.textContent?.trim() ?? '',
+    }))()`);
+    await command('Page.navigate', { url: `${baseUrl}/shop` });
+    await sleep(700);
+    const baseAfterReload = await evaluate<{ heading: string; count: string; audiencePressed: string }>(`(() => ({
+      heading: document.querySelector('h1')?.textContent?.trim() ?? '',
+      count: document.querySelector('[data-testid="product-count"]')?.textContent?.trim() ?? '',
+      audiencePressed: [...document.querySelectorAll('button')].find(button => button.textContent?.trim() === 'Women')?.getAttribute('aria-pressed') ?? '',
+    }))()`);
+    return { initial, sorted, women, baseAfterReload };
   } finally {
     socket.close();
   }
@@ -101,7 +114,12 @@ describe('Shop sort pointer flow', () => {
         expect(result.initial.value).toBe('Recommended');
         expect(result.initial.firstProduct).toBe('Signature Linen Shirt');
         expect(result.sorted.value).toBe('Price: Low to High');
-        expect(result.sorted.firstProduct).toBe('Kora Body Ritual Set');
+        expect(result.sorted.firstProduct).toBe('Oshogbo Coily Packet Hair');
+        expect(result.women.heading).toBe('Women');
+        expect(result.women.count).toBe('17 products');
+        expect(result.baseAfterReload.heading).toBe('Discover Áveraẹ');
+        expect(result.baseAfterReload.count).toBe('18 products');
+        expect(result.baseAfterReload.audiencePressed).toBe('false');
       } finally {
         chrome.kill('SIGTERM');
       }
