@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { audienceCategories, productCategories, products } from '../client/src/lib/brand';
 
 const shopSource = readFileSync(new URL('../client/src/pages/Shop.tsx', import.meta.url), 'utf8');
+const globalStyles = readFileSync(new URL('../client/src/index.css', import.meta.url), 'utf8');
 
 describe('Shop UX Refinement Part 2', () => {
   it('exposes the required browse hierarchy and result-count copy', () => {
@@ -32,6 +33,12 @@ describe('Shop UX Refinement Part 2', () => {
     expect(shopSource).toContain('focus:border-transparent');
     expect(shopSource).toContain('focus:outline-none');
     expect(shopSource).toContain('focus:ring-0');
+    expect(shopSource).toContain('hover:border-[#382820]');
+    expect(shopSource).toContain('hover:bg-[#F6F0E6]');
+    expect(shopSource).toContain('transition-[background-color,border-color,box-shadow]');
+    expect(globalStyles).toContain('.shop-search-input:focus-visible');
+    expect(globalStyles).toContain('outline: none !important;');
+    expect(globalStyles).toContain('.shop-search-shell:focus-within');
   });
 
   it('keeps the FILTERS control lightweight and separates the active count', () => {

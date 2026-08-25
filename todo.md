@@ -533,3 +533,11 @@
 - [x] Verify TypeScript, Vitest, production build, and desktop/mobile rendering
 - [x] Save the verified search-field refinement checkpoint
 
+
+- [x] Remove any remaining red outline or accent focus shadow from the Shop search bar
+- [x] Apply the FILTERS control’s subtle hover transition to the search bar shell
+- [x] Preserve search behavior, keyboard visibility, and responsive toolbar alignment
+- [x] Add regression coverage for search hover and focus styling
+- [x] Verify TypeScript, Vitest, production build, and desktop/mobile rendering
+- [x] Save the verified search-bar interaction checkpoint
+
