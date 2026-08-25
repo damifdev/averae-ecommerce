@@ -507,3 +507,13 @@
 - [x] Verify /product/1 with TypeScript, focused Vitest, production build, and browser console checks
 - [x] Save the verified duplicate-key bug-fix checkpoint
 
+
+- [x] Keep the default Shop toolbar limited to search, FILTERS, and SORT BY
+- [x] Move the complete filter system into a dedicated responsive panel with Apply and Clear actions
+- [x] Support Hair and Thrift Wear subfilters inside the filter panel
+- [x] Show applied-filter count and removable chips without reloading the page
+- [x] Preserve independent always-visible search and sort controls across desktop and mobile
+- [x] Add regression coverage for the compact Shop filter UX and responsive interactions
+- [x] Verify TypeScript, Vitest, production build, and responsive Shop routes
+- [x] Save the verified Shop filter UX checkpoint
+

@@ -16,6 +16,7 @@ type FilterAudit = {
   chipLabelsAfterRemoval: string[];
   finalCount: string;
   mobileFilterOpened: boolean;
+  filterPanelOpened: boolean;
 };
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -101,23 +102,22 @@ async function runFilterAudit(port: number, mobile: boolean): Promise<FilterAudi
     await command('Page.navigate', { url: `${baseUrl}/shop` });
     await sleep(1800);
 
-    let mobileFilterOpened = false;
-    if (mobile) {
-      await clickSelector('[data-testid="mobile-filter-trigger"]');
-      mobileFilterOpened = await evaluate<boolean>('Boolean(document.querySelector("[role=dialog][aria-label=\\"Product filters\\"]"))');
-      if (!mobileFilterOpened) throw new Error('Mobile product filter drawer did not open');
-    }
+    await clickSelector('[data-testid="mobile-filter-trigger"]');
+    const filterPanelOpened = await evaluate<boolean>('Boolean(document.querySelector("[role=dialog][aria-label=\\"Product filters\\"]"))');
+    if (!filterPanelOpened) throw new Error('Product filter panel did not open');
+    const mobileFilterOpened = mobile;
 
     const initial = await snapshot();
     await selectFilter('brand', 'Ona Atelier');
-    const afterBrand = await snapshot();
+    const afterBrandDraft = await snapshot();
     await selectFilter('collection', 'Quiet Form');
-    const afterCollection = await snapshot();
+    const afterCollectionDraft = await snapshot();
     await selectFilter('rating', 'Not yet rated');
-    const afterRating = await snapshot();
-
-    if (mobile) await evaluate('document.querySelector("[aria-label=\\"Close filters\\"]")?.click()');
-    await sleep(150);
+    const afterRatingDraft = await snapshot();
+    if ([afterBrandDraft.count, afterCollectionDraft.count, afterRatingDraft.count].some(count => count !== initial.count)) throw new Error('Staged filter changes altered results before Apply Filters');
+    await clickSelector('[data-testid="apply-filters"]');
+    await sleep(180);
+    const afterApplied = await snapshot();
     const chipLabelsBeforeRemoval = (await snapshot()).chips;
     await evaluate(`(() => {
       const chip = [...document.querySelectorAll('[data-testid="active-filter-chips"] button')].find(button => button.textContent?.includes('Ona Atelier'));
@@ -131,13 +131,14 @@ async function runFilterAudit(port: number, mobile: boolean): Promise<FilterAudi
 
     return {
       initialCount: initial.count,
-      brandCount: afterBrand.count,
-      collectionCount: afterCollection.count,
-      ratingCount: afterRating.count,
+      brandCount: afterApplied.count,
+      collectionCount: afterApplied.count,
+      ratingCount: afterApplied.count,
       chipLabelsBeforeRemoval,
       chipLabelsAfterRemoval,
       finalCount: final.count,
       mobileFilterOpened,
+      filterPanelOpened,
     };
   } finally {
     socket.close();
@@ -160,15 +161,16 @@ describe('Shop metadata filter pointer flow', () => {
       try {
         await waitForDevTools(port);
         const result = await runFilterAudit(port, mobile);
-        expect(result.initialCount).toBe('12 products');
+        expect(result.initialCount).toBe('18 products');
         expect(result.brandCount).toBe('2 products');
         expect(result.collectionCount).toBe('2 products');
         expect(result.ratingCount).toBe('2 products');
         expect(result.chipLabelsBeforeRemoval).toEqual(expect.arrayContaining(['Ona Atelier', 'Quiet Form', 'Not yet rated']));
         expect(result.chipLabelsAfterRemoval).not.toContain('Ona Atelier');
         expect(result.chipLabelsAfterRemoval).toEqual(expect.arrayContaining(['Quiet Form', 'Not yet rated']));
-        expect(result.finalCount).toBe('12 products');
+        expect(result.finalCount).toBe('18 products');
         expect(result.mobileFilterOpened).toBe(mobile);
+        expect(result.filterPanelOpened).toBe(true);
       } finally {
         chrome.kill('SIGTERM');
       }

@@ -13,6 +13,19 @@ describe('Shop UX Refinement Part 2', () => {
     expect(productCategories.map(item => item.label)).toContain('Watches');
   });
 
+  it('keeps the default toolbar compact and exposes a dedicated responsive filter panel', () => {
+    expect(shopSource).toContain('Search products...');
+    expect(shopSource).toContain('FILTERS');
+    expect(shopSource).toContain('SORT BY:');
+    expect(shopSource).toContain('data-testid="apply-filters"');
+    expect(shopSource).toContain('data-testid="clear-panel-filters"');
+    expect(shopSource).toContain('onClick={applyFilters}');
+    expect(shopSource).toContain('Product filters');
+    expect(shopSource).toContain('Human Hair');
+    expect(shopSource).toContain('Vintage / Statement Pieces');
+    expect(shopSource).not.toContain('hidden flex-1 items-center gap-4 md:flex');
+  });
+
   it('contains every requested filter and sort vocabulary', () => {
     for (const label of ['Audience', 'Category', 'Size', 'Colour', 'Price', 'Brand', 'Collection', 'Availability', 'Rating', 'Trend status']) {
       expect(shopSource).toContain(label);

@@ -326,3 +326,17 @@ button[class~="bg-[#B7654A]"]:not([class~="hover:text-[#382820]"]):focus-visible
     transition-duration: 1ms;
   }
 }
+
+/* Shop filters reveal as a focused side panel without shifting the product grid. */
+@keyframes averae-filter-panel-in {
+  from { opacity: 0; transform: translateX(1.25rem); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .filter-panel { animation: averae-filter-panel-in 220ms var(--ease-out) both; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filter-panel { animation: none; transform: none; }
+}
