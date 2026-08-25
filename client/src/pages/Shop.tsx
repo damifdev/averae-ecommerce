@@ -43,7 +43,40 @@ const sortOptions = ['Recommended', 'Newest', 'Trending', 'Best Selling', 'Price
 const filterDefaults = { size: 'All sizes', subcategory: 'All subcategories', length: 'All lengths', texture: 'All textures', style: 'All styles', colour: 'All colours', condition: 'All conditions', price: 'All prices', brand: 'All brands', collection: 'All collections', availability: 'All availability', rating: 'All ratings', trend: 'All trend status' };
 type FilterState = typeof filterDefaults;
 type FilterKey = keyof FilterState;
+const filterParamKeys = Object.keys(filterDefaults) as FilterKey[];
 const ratingOptions = ['4 stars & up', 'Not yet rated'];
+
+function getFiltersFromParams(params: URLSearchParams): FilterState {
+  return filterParamKeys.reduce((state, key) => {
+    const value = params.get(`filter_${key}`);
+    if (value) state[key] = value;
+    return state;
+  }, { ...filterDefaults });
+}
+
+function sortFromParams(params: URLSearchParams): typeof sortOptions[number] {
+  if (params.get('sort') === 'new' || params.get('sort') === 'newest') return 'Newest';
+  if (params.get('sort') === 'popular') return 'Best Selling';
+  if (params.get('sort') === 'trending') return 'Trending';
+  if (params.get('sort') === 'low') return 'Price: Low to High';
+  if (params.get('sort') === 'high') return 'Price: High to Low';
+  return 'Recommended';
+}
+
+function buildShopLocation(state: { category: string; audience: string; saleOnly: boolean; sort: typeof sortOptions[number]; query: string; filters: FilterState }) {
+  const next = new URLSearchParams();
+  if (state.audience !== 'All') next.set('audience', state.audience.toLowerCase());
+  else if (state.category !== 'All') next.set('category', productCategories.find(item => item.label === state.category)?.slug ?? state.category.toLowerCase().replace(/\s+/g, '-'));
+  if (state.query.trim()) next.set('search', state.query.trim());
+  if (state.saleOnly) next.set('sale', 'true');
+  const sortParam = { 'Recommended': '', 'Newest': 'newest', 'Trending': 'trending', 'Best Selling': 'popular', 'Price: Low to High': 'low', 'Price: High to Low': 'high' }[state.sort];
+  if (sortParam) next.set('sort', sortParam);
+  filterParamKeys.forEach(key => {
+    if (!state.filters[key].startsWith('All ')) next.set(`filter_${key}`, state.filters[key]);
+  });
+  const query = next.toString();
+  return query ? `/shop?${query}` : '/shop';
+}
 const selectStyles = 'mt-2 w-full border-b border-[#D7C2A7] bg-transparent pb-2 text-xs outline-none focus:border-[#382820]';
 const audienceSubcategories: Record<string, { label: string; category: string }[]> = {
   Women: ['Clothing', 'Dresses', 'Tops', 'Trousers', 'Outerwear', 'Shoes', 'Bags', 'Jewelry', 'Accessories'].map(label => ({ label, category: ['Dresses', 'Tops', 'Trousers', 'Outerwear'].includes(label) ? 'clothing' : label.toLowerCase() })),
@@ -113,8 +146,14 @@ function Card({ p, onQuickView }: { p: Product; onQuickView: (product: Product) 
 }
 
 export default function Shop() {
-  const [location] = useLocation();
-  const locationWithSearch = typeof window === 'undefined' || location.includes('?') ? location : `${location}${window.location.search}`;
+  const [location, navigate] = useLocation();
+  const [urlRevision, setUrlRevision] = useState(0);
+  useEffect(() => {
+    const handlePopState = () => setUrlRevision(current => current + 1);
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+  const locationWithSearch = useMemo(() => typeof window === 'undefined' ? location : `${window.location.pathname}${window.location.search}`, [location, urlRevision]);
   const params = useMemo(() => parseShopLocation(locationWithSearch), [locationWithSearch]);
   const [category, setCategory] = useState(getCategoryFromParams(params));
   const [audience, setAudience] = useState(getAudienceFromParams(params));
@@ -123,20 +162,21 @@ export default function Shop() {
   const [query, setQuery] = useState(params.get('search') ?? params.get('q') ?? '');
   const [filterOpen, setFilterOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
-  const [filters, setFilters] = useState<FilterState>(() => ({ ...filterDefaults }));
-  const [draftFilters, setDraftFilters] = useState<FilterState>(() => ({ ...filterDefaults }));
-  const [draftAudience, setDraftAudience] = useState('All');
-  const [draftCategory, setDraftCategory] = useState('All');
+  const [filters, setFilters] = useState<FilterState>(() => getFiltersFromParams(params));
+  const [draftFilters, setDraftFilters] = useState<FilterState>(() => getFiltersFromParams(params));
+  const [draftAudience, setDraftAudience] = useState(() => getAudienceFromParams(params));
+  const [draftCategory, setDraftCategory] = useState(() => getCategoryFromParams(params));
   useEffect(() => {
     const nextCategory = getCategoryFromParams(params);
     const nextAudience = getAudienceFromParams(params);
     setCategory(nextCategory);
     setAudience(nextAudience);
     setSaleOnly(params.get('sale') === 'true');
-    setSort(params.get('sort') === 'new' || params.get('sort') === 'newest' ? 'Newest' : params.get('sort') === 'popular' ? 'Best Selling' : params.get('sort') === 'trending' ? 'Trending' : 'Recommended');
+    setSort(sortFromParams(params));
     setQuery(params.get('search') ?? params.get('q') ?? '');
-    setFilters({ ...filterDefaults });
-    setDraftFilters({ ...filterDefaults });
+    const nextFilters = getFiltersFromParams(params);
+    setFilters(nextFilters);
+    setDraftFilters(nextFilters);
     setDraftAudience(nextAudience);
     setDraftCategory(nextCategory);
   }, [params]);
@@ -195,12 +235,44 @@ export default function Shop() {
     ...(query ? [{ key: 'query', label: `“${query}”` }] : []),
   ];
   const activeFilterCount = [audience !== 'All', category !== 'All', saleOnly, ...Object.values(filters).map(value => !value.startsWith('All '))].filter(Boolean).length;
-  const resetAppliedFilters = () => { setCategory('All'); setAudience('All'); setSaleOnly(false); setFilters({ ...filterDefaults }); };
-  const clearAll = () => { resetAppliedFilters(); setDraftCategory('All'); setDraftAudience('All'); setDraftFilters({ ...filterDefaults }); setQuery(''); setSort('Recommended'); };
-  const clearPanelFilters = () => { resetAppliedFilters(); setDraftCategory('All'); setDraftAudience('All'); setDraftFilters({ ...filterDefaults }); };
+  const currentUrlState = { category, audience, saleOnly, sort, query, filters };
+  const navigateToState = (next: Partial<typeof currentUrlState>) => {
+    const nextState = { ...currentUrlState, ...next };
+    setCategory(nextState.category);
+    setAudience(nextState.audience);
+    setSaleOnly(nextState.saleOnly);
+    setSort(nextState.sort);
+    setQuery(nextState.query);
+    setFilters(nextState.filters);
+    setDraftCategory(nextState.category);
+    setDraftAudience(nextState.audience);
+    setDraftFilters(nextState.filters);
+    navigate(buildShopLocation(nextState));
+  };
+  const clearAll = () => {
+    const resetFilters = { ...filterDefaults };
+    setFilterOpen(false);
+    setCategory('All');
+    setAudience('All');
+    setSaleOnly(false);
+    setSort('Recommended');
+    setQuery('');
+    setFilters(resetFilters);
+    setDraftCategory('All');
+    setDraftAudience('All');
+    setDraftFilters(resetFilters);
+    navigate('/shop');
+  };
+  const clearPanelFilters = () => { setDraftCategory('All'); setDraftAudience('All'); setDraftFilters({ ...filterDefaults }); };
   const openFilters = () => { setDraftCategory(category); setDraftAudience(audience); setDraftFilters({ ...filters }); setFilterOpen(true); };
-  const applyFilters = () => { setCategory(draftCategory); setAudience(draftAudience); setFilters({ ...draftFilters }); setFilterOpen(false); };
-  const removeChip = (key: string) => { if (key === 'audience') setAudience('All'); else if (key === 'category') setCategory('All'); else if (key === 'sale') setSaleOnly(false); else if (key === 'query') setQuery(''); else if (key in filterDefaults) setFilters(current => ({ ...current, [key]: filterDefaults[key as FilterKey] })); };
+  const applyFilters = () => { navigateToState({ category: draftCategory, audience: draftAudience, filters: draftFilters }); setFilterOpen(false); };
+  const removeChip = (key: string) => {
+    if (key === 'audience') navigateToState({ audience: 'All' });
+    else if (key === 'category') navigateToState({ category: 'All' });
+    else if (key === 'sale') navigateToState({ saleOnly: false });
+    else if (key === 'query') navigateToState({ query: '' });
+    else if (key in filterDefaults) navigateToState({ filters: { ...filters, [key]: filterDefaults[key as FilterKey] } });
+  };
   const setDraftFilter = (key: FilterKey, value: string) => setDraftFilters(current => ({ ...current, [key]: value }));
   const filterSelect = (key: FilterKey, label: string, values: string[]) => <label data-testid={`filter-${key}`} className="block text-[10px] uppercase tracking-[.14em] text-[#866F62]">{label}<select value={draftFilters[key]} onChange={event => setDraftFilter(key, event.target.value)} className={selectStyles}><option>{filterDefaults[key]}</option>{values.map(value => <option key={value}>{value}</option>)}</select></label>;
   const selectedCategory = productCategories.find(item => item.label === category);
@@ -212,11 +284,11 @@ export default function Shop() {
 
   return <div><SiteHeader /><main className="container py-12 md:py-16">
     <div className="flex flex-col justify-between gap-6 border-b border-[#D7C2A7] pb-8 md:flex-row md:items-end"><div><p className="eyebrow text-[#866F62]">Fashion discovery meets shopping</p><h1 className="mt-3 font-display text-5xl uppercase">{audience !== 'All' ? audience : category !== 'All' ? category : 'Discover Áveraẹ'}</h1><p className="mt-3 max-w-xl text-sm leading-6 text-[#6f675d]">Explore fashion, accessories and lifestyle products curated for every expression.</p></div><p data-testid="product-count" className="text-xs text-[#866F62]">{shown.length} {shown.length === 1 ? 'product' : 'products'}</p></div>
-    <div className="overflow-x-auto border-b border-[#D7C2A7] py-5"><div className="flex min-w-max gap-5 text-[10px] uppercase tracking-[.15em]"><button type="button" aria-pressed={category === 'All' && audience === 'All'} onClick={() => { setCategory('All'); setAudience('All'); }} className={category === 'All' && audience === 'All' ? 'border-b border-[#382820] pb-1 font-medium' : 'pb-1'}>All</button>{audienceCategories.map(item => <button type="button" key={item.slug} aria-pressed={audience === item.label} onClick={() => { setAudience(item.label); setCategory('All'); }} className={audience === item.label ? 'border-b border-[#382820] pb-1 font-medium' : 'pb-1'}>{item.label}</button>)}{productCategories.map(item => <button type="button" key={item.slug} aria-pressed={category === item.label} onClick={() => { setCategory(item.label); setAudience('All'); }} className={category === item.label ? 'border-b border-[#382820] pb-1 font-medium' : 'pb-1'}>{item.label}</button>)}</div></div>
+    <div className="overflow-x-auto border-b border-[#D7C2A7] py-5"><div className="flex min-w-max gap-5 text-[10px] uppercase tracking-[.15em]"><button type="button" aria-pressed={category === 'All' && audience === 'All'} onClick={() => navigateToState({ category: 'All', audience: 'All' })} className={category === 'All' && audience === 'All' ? 'border-b border-[#382820] pb-1 font-medium' : 'pb-1'}>All</button>{audienceCategories.map(item => <button type="button" key={item.slug} aria-pressed={audience === item.label} onClick={() => navigateToState({ audience: item.label, category: 'All' })} className={audience === item.label ? 'border-b border-[#382820] pb-1 font-medium' : 'pb-1'}>{item.label}</button>)}{productCategories.map(item => <button type="button" key={item.slug} aria-pressed={category === item.label} onClick={() => navigateToState({ category: item.label, audience: 'All' })} className={category === item.label ? 'border-b border-[#382820] pb-1 font-medium' : 'pb-1'}>{item.label}</button>)}</div></div>
     {audience !== 'All' && <div className="border-b border-[#D7C2A7] py-5"><div className="flex items-center gap-3 overflow-x-auto"><span className="eyebrow shrink-0 text-[#866F62]">{audience} edit</span>{(audienceSubcategories[audience] ?? []).map(subcategory => <Link key={subcategory.label} href={`/shop?audience=${audience.toLowerCase()}&category=${subcategory.category}`} className="shrink-0 border-b border-transparent pb-1 text-[10px] uppercase tracking-[.13em] hover:border-[#382820]">{subcategory.label}</Link>)}</div></div>}
     {selectedCategory?.subcategories && <div className="border-b border-[#D7C2A7] py-5"><div className="flex items-center gap-3 overflow-x-auto"><span className="eyebrow shrink-0 text-[#866F62]">{selectedCategory.label} edit</span>{categorySubcategories[selectedCategory.slug]?.map(subcategory => <Link key={subcategory} href={`/shop?category=${selectedCategory.slug}&search=${encodeURIComponent(subcategory.replace('Thrift ', ''))}`} className="shrink-0 border-b border-transparent pb-1 text-[10px] uppercase tracking-[.13em] hover:border-[#382820]">{subcategory}</Link>)}</div></div>}
     {isThrift && <div className="border-b border-[#D7C2A7] bg-[#F6F0E6] py-4 text-xs leading-6 text-[#6f675d]">Thrift Wear pieces may be one-of-a-kind or limited quantity. Availability is shown clearly on each product and may change quickly.</div>}
-    <div className="flex items-center gap-3 border-b border-[#D7C2A7] py-5"><label className="shop-search-shell flex min-w-0 flex-1 items-center gap-2 border-b border-[#D7C2A7] pb-1 text-[10px] uppercase tracking-[.15em] transition-[background-color,border-color,box-shadow] duration-200 hover:border-[#382820] hover:bg-[#F6F0E6] focus-within:border-[#382820] focus-within:shadow-[0_1px_0_#382820]"><Search size={14} aria-hidden="true" /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search products..." className="shop-search-input w-full border-0 bg-transparent text-xs outline-none ring-0 placeholder:text-[#866F62] focus:border-transparent focus:outline-none focus:ring-0" aria-label="Search products" /></label><button data-testid="mobile-filter-trigger" type="button" aria-pressed={activeFilterCount > 0} aria-label={`Open filters${activeFilterCount > 0 ? `, ${activeFilterCount} active` : ''}`} className={`filter-control pressable inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-[2px] border-b px-2.5 py-2 text-[10px] uppercase tracking-[.15em] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7654A] focus-visible:ring-offset-2 md:min-h-9 ${activeFilterCount > 0 ? 'filter-control-active border-[#382820] bg-[#F6F0E6]' : 'border-[#D7C2A7] hover:border-[#382820] hover:bg-[#F6F0E6]'}`} onClick={openFilters}><SlidersHorizontal size={13} strokeWidth={1.75} aria-hidden="true" /><span data-testid="filter-control-label">FILTERS</span>{activeFilterCount > 0 && <span data-testid="active-filter-count" aria-label={`${activeFilterCount} active filters`} className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#382820] px-1 text-[9px] font-medium leading-none text-[#FFFDF8]">{activeFilterCount}</span>}</button><label className="flex shrink-0 items-center gap-2 text-[10px] uppercase tracking-[.15em]"><span className="hidden sm:inline">SORT BY:</span><select value={sort} onChange={event => setSort(event.target.value as typeof sortOptions[number])} className="max-w-[8.5rem] bg-transparent text-[10px] outline-none" aria-label="Sort products">{sortOptions.map(option => <option key={option}>{option}</option>)}</select></label></div>
+    <div className="flex items-center gap-3 border-b border-[#D7C2A7] py-5"><label className="shop-search-shell flex min-w-0 flex-1 items-center gap-2 border-b border-[#D7C2A7] pb-1 text-[10px] uppercase tracking-[.15em] transition-[background-color,border-color,box-shadow] duration-200 hover:border-[#382820] hover:bg-[#F6F0E6] focus-within:border-[#382820] focus-within:shadow-[0_1px_0_#382820]"><Search size={14} aria-hidden="true" /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search products..." className="shop-search-input w-full border-0 bg-transparent text-xs outline-none ring-0 placeholder:text-[#866F62] focus:border-transparent focus:outline-none focus:ring-0" aria-label="Search products" /></label><button data-testid="mobile-filter-trigger" type="button" aria-pressed={activeFilterCount > 0} aria-label={`Open filters${activeFilterCount > 0 ? `, ${activeFilterCount} active` : ''}`} className={`filter-control pressable inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-[2px] border-b px-2.5 py-2 text-[10px] uppercase tracking-[.15em] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7654A] focus-visible:ring-offset-2 md:min-h-9 ${activeFilterCount > 0 ? 'filter-control-active border-[#382820] bg-[#F6F0E6]' : 'border-[#D7C2A7] hover:border-[#382820] hover:bg-[#F6F0E6]'}`} onClick={openFilters}><SlidersHorizontal size={13} strokeWidth={1.75} aria-hidden="true" /><span data-testid="filter-control-label">FILTERS</span>{activeFilterCount > 0 && <span data-testid="active-filter-count" aria-label={`${activeFilterCount} active filters`} className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#382820] px-1 text-[9px] font-medium leading-none text-[#FFFDF8]">{activeFilterCount}</span>}</button><label className="flex shrink-0 items-center gap-2 text-[10px] uppercase tracking-[.15em]"><span className="hidden sm:inline">SORT BY:</span><select value={sort} onChange={event => navigateToState({ sort: event.target.value as typeof sortOptions[number] })} className="max-w-[8.5rem] bg-transparent text-[10px] outline-none" aria-label="Sort products">{sortOptions.map(option => <option key={option}>{option}</option>)}</select></label></div>
     {activeChips.length > 0 && <div data-testid="active-filter-chips" className="flex flex-wrap items-center gap-2 border-b border-[#D7C2A7] py-4"><span className="eyebrow mr-2 text-[#866F62]">Applied</span>{activeChips.map(chip => <button type="button" key={chip.key} onClick={() => removeChip(chip.key)} className="inline-flex items-center gap-2 border border-[#B7654A] px-3 py-2 text-[10px] uppercase tracking-[.12em] text-[#382820]">{chip.label}<X size={12} /></button>)}<button data-testid="clear-all-filters" type="button" onClick={clearAll} className="ml-auto text-[10px] uppercase tracking-[.14em] underline underline-offset-4">CLEAR ALL</button></div>}
     {filterOpen && <div className="fixed inset-0 z-[80] bg-[#382820]/45 p-0 md:p-8" onClick={event => { if (event.target === event.currentTarget) setFilterOpen(false); }}><aside className="filter-panel ml-auto flex h-full w-full flex-col bg-[#FFFDF8] p-6 shadow-2xl md:h-auto md:max-h-[calc(100vh-4rem)] md:max-w-2xl" role="dialog" aria-modal="true" aria-label="Product filters"><div className="flex items-center justify-between border-b border-[#D7C2A7] pb-5"><div><p className="eyebrow text-[#866F62]">Refine the edit</p><h2 className="mt-2 font-display text-3xl">FILTERS</h2><p className="mt-2 text-xs text-[#866F62]">Choose what matters, then apply your edit.</p></div><button type="button" aria-label="Close filters" onClick={() => setFilterOpen(false)} className="focus-ring"><X size={20} /></button></div><div className="grid flex-1 gap-x-6 gap-y-6 overflow-y-auto py-6 sm:grid-cols-2"><label className="block text-[10px] uppercase tracking-[.14em] text-[#866F62]">Audience<select value={draftAudience} onChange={event => { setDraftAudience(event.target.value); setDraftCategory('All'); setDraftFilters(current => ({ ...current, subcategory: 'All subcategories' })); }} className={selectStyles}><option>All</option>{audienceCategories.map(item => <option key={item.slug}>{item.label}</option>)}</select></label><label className="block text-[10px] uppercase tracking-[.14em] text-[#866F62]">Category<select value={draftCategory} onChange={event => { setDraftCategory(event.target.value); setDraftAudience('All'); setDraftFilters(current => ({ ...current, subcategory: 'All subcategories', length: 'All lengths', texture: 'All textures', style: 'All styles', condition: 'All conditions' })); }} className={selectStyles}><option>All</option>{productCategories.map(item => <option key={item.slug}>{item.label}</option>)}</select></label>{(isDraftHair || isDraftThrift) && filterSelect('subcategory', isDraftHair ? 'Hair' : 'Thrift Wear', isDraftHair ? ['Human Hair', 'Blend Hair', 'Packet Hair'] : ['Thrift Women', 'Thrift Men', 'Thrift Kids', 'Vintage / Statement Pieces'])}{filterSelect('size', 'Size', options.sizes)}{isDraftHair && <>{filterSelect('length', 'Length', [...categoryFilterOptions.length])}{filterSelect('texture', 'Texture', [...categoryFilterOptions.texture])}{filterSelect('style', 'Style', [...categoryFilterOptions.style])}</>}{filterSelect('colour', 'Colour', options.colours)}{isDraftThrift && filterSelect('condition', 'Condition', [...categoryFilterOptions.condition])}{filterSelect('price', 'Price', ['Under ₦75,000', '₦75,000–₦125,000', 'Over ₦125,000'])}{filterSelect('brand', 'Brand', options.brands)}{filterSelect('collection', 'Collection', options.collections)}{filterSelect('availability', 'Availability', ['In stock', 'Low stock', 'Out of stock'])}{filterSelect('rating', 'Rating', ratingOptions)}{filterSelect('trend', 'Trend status', ['Trending', 'New', 'Popular', "Editor's Pick"])}</div><div className="grid grid-cols-2 gap-3 border-t border-[#D7C2A7] pt-5"><button data-testid="clear-panel-filters" type="button" onClick={clearPanelFilters} className="border border-[#382820] py-3 text-[10px] uppercase tracking-[.14em]">CLEAR ALL</button><button data-testid="apply-filters" type="button" onClick={applyFilters} className="action-link-light bg-[#382820] py-3 text-[10px] uppercase tracking-[.14em] text-[#FFFDF8]">APPLY FILTERS</button></div></aside></div>}
     {shown.length === 0 ? <NoResultsDiscovery query={query} onClear={clearAll} /> : <div className="mt-8 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">{shown.map(product => <Card key={product.id} p={product} onQuickView={setQuickViewProduct} />)}</div>}

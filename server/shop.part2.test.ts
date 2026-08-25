@@ -16,12 +16,13 @@ describe('Shop UX Refinement Part 2', () => {
 
   it('initializes the base Shop route from the reactive location without stale query state', () => {
     expect(shopSource).toContain('function parseShopLocation(location: string)');
-    expect(shopSource).toContain('const locationWithSearch = typeof window === \'undefined\' || location.includes(\'?\') ? location : `${location}${window.location.search}`;');
+    expect(shopSource).toContain('const locationWithSearch = useMemo(() => typeof window === \'undefined\' ? location : `${window.location.pathname}${window.location.search}`, [location, urlRevision]);');
     expect(shopSource).toContain('const params = useMemo(() => parseShopLocation(locationWithSearch), [locationWithSearch]);');
     expect(shopSource).not.toContain("window.sessionStorage.setItem('averae-last-shop-url', location)");
     expect(shopSource).toContain('getAudienceFromParams(params)');
     expect(shopSource).toContain('getCategoryFromParams(params)');
-    expect(shopSource).toContain('setFilters({ ...filterDefaults });');
+    expect(shopSource).toContain('const [filters, setFilters] = useState<FilterState>(() => getFiltersFromParams(params));');
+    expect(shopSource).toContain('setFilters(nextFilters);');
   });
 
   it('normalizes unknown or stale route values back to the neutral Shop state', () => {

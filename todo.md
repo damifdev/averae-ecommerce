@@ -557,3 +557,13 @@
 - [x] Verify TypeScript, Vitest, production build, and fresh browser URL/state behavior
 - [x] Save the verified critical Shop routing checkpoint
 
+
+- [x] Search the full project for hardcoded Women defaults, redirects, and filter overwrites
+- [x] Keep /shop neutral with Audience All and Category All on load and refresh
+- [x] Preserve Women, Men, Kids, Shoes, Jewelry, Hair, and Thrift Wear on direct navigation and refresh
+- [x] Preserve the current category when filters are applied and cleared across refresh
+- [x] Remove any initialization logic that overwrites a category already present in URL/page state
+- [x] Add regression coverage for all required category refresh journeys and filter persistence
+- [x] Verify TypeScript, Vitest, production build, and fresh browser refresh behavior
+- [x] Save the verified root-cause Shop state checkpoint
+
