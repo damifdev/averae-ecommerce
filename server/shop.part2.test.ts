@@ -26,6 +26,14 @@ describe('Shop UX Refinement Part 2', () => {
     expect(shopSource).not.toContain('hidden flex-1 items-center gap-4 md:flex');
   });
 
+  it('keeps the Shop search field borderless with a quiet shell focus state', () => {
+    expect(shopSource).toContain('shop-search-shell');
+    expect(shopSource).toContain('shop-search-input');
+    expect(shopSource).toContain('focus:border-transparent');
+    expect(shopSource).toContain('focus:outline-none');
+    expect(shopSource).toContain('focus:ring-0');
+  });
+
   it('keeps the FILTERS control lightweight and separates the active count', () => {
     expect(shopSource).toContain('data-testid="filter-control-label">FILTERS</span>');
     expect(shopSource).toContain('data-testid="active-filter-count"');

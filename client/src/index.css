@@ -340,3 +340,17 @@ button[class~="bg-[#B7654A]"]:not([class~="hover:text-[#382820]"]):focus-visible
 @media (prefers-reduced-motion: reduce) {
   .filter-panel { animation: none; transform: none; }
 }
+
+/* Shop search field: keep focus quiet and let the editorial shell carry the active state. */
+.shop-search-input,
+.shop-search-input:focus,
+.shop-search-input:focus-visible {
+  border-color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.shop-search-shell:focus-within {
+  border-bottom-color: #382820 !important;
+  box-shadow: 0 1px 0 #382820;
+}
