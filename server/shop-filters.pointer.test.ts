@@ -17,6 +17,8 @@ type FilterAudit = {
   finalCount: string;
   mobileFilterOpened: boolean;
   filterPanelOpened: boolean;
+  filterButtonCount: string;
+  filterButtonPressed: string;
 };
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -91,9 +93,11 @@ async function runFilterAudit(port: number, mobile: boolean): Promise<FilterAudi
     if (!found) throw new Error(`Could not find ${key} filter`);
     await sleep(180);
   };
-  const snapshot = () => evaluate<{ count: string; chips: string[] }>(`(() => ({
+  const snapshot = () => evaluate<{ count: string; chips: string[]; filterButtonCount: string; filterButtonPressed: string }>(`(() => ({
     count: document.querySelector('[data-testid="product-count"]')?.textContent?.trim() ?? '',
     chips: [...document.querySelectorAll('[data-testid="active-filter-chips"] button')].map(button => button.textContent?.trim() ?? ''),
+    filterButtonCount: document.querySelector('[data-testid="active-filter-count"]')?.textContent?.trim() ?? '',
+    filterButtonPressed: document.querySelector('[data-testid="mobile-filter-trigger"]')?.getAttribute('aria-pressed') ?? '',
   }))()`);
 
   try {
@@ -139,6 +143,8 @@ async function runFilterAudit(port: number, mobile: boolean): Promise<FilterAudi
       finalCount: final.count,
       mobileFilterOpened,
       filterPanelOpened,
+      filterButtonCount: afterApplied.filterButtonCount,
+      filterButtonPressed: afterApplied.filterButtonPressed,
     };
   } finally {
     socket.close();
@@ -171,6 +177,8 @@ describe('Shop metadata filter pointer flow', () => {
         expect(result.finalCount).toBe('18 products');
         expect(result.mobileFilterOpened).toBe(mobile);
         expect(result.filterPanelOpened).toBe(true);
+        expect(result.filterButtonCount).toBe('3');
+        expect(result.filterButtonPressed).toBe('true');
       } finally {
         chrome.kill('SIGTERM');
       }

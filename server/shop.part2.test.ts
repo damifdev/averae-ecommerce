@@ -26,6 +26,15 @@ describe('Shop UX Refinement Part 2', () => {
     expect(shopSource).not.toContain('hidden flex-1 items-center gap-4 md:flex');
   });
 
+  it('keeps the FILTERS control lightweight and separates the active count', () => {
+    expect(shopSource).toContain('data-testid="filter-control-label">FILTERS</span>');
+    expect(shopSource).toContain('data-testid="active-filter-count"');
+    expect(shopSource).toContain('aria-pressed={activeFilterCount > 0}');
+    expect(shopSource).toContain('filter-control-active');
+    expect(shopSource).toContain('SlidersHorizontal size={13}');
+    expect(shopSource).not.toContain('` (${activeFilterCount})`');
+  });
+
   it('contains every requested filter and sort vocabulary', () => {
     for (const label of ['Audience', 'Category', 'Size', 'Colour', 'Price', 'Brand', 'Collection', 'Availability', 'Rating', 'Trend status']) {
       expect(shopSource).toContain(label);

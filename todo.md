@@ -517,3 +517,11 @@
 - [x] Verify TypeScript, Vitest, production build, and responsive Shop routes
 - [x] Save the verified Shop filter UX checkpoint
 
+
+- [x] Refine the Shop FILTERS button into a lightweight icon-label control
+- [x] Separate the active filter count into an elegant compact badge
+- [x] Preserve existing filter-panel behavior and touch-friendly alignment
+- [x] Add regression coverage for inactive and multi-filter button states
+- [x] Verify TypeScript, Vitest, production build, and responsive Shop toolbar states
+- [x] Save the verified FILTERS control refinement checkpoint
+
