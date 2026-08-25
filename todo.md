@@ -486,3 +486,10 @@
 - [x] Add regression coverage for drawer search, analytics contracts, and checkout assistance
 - [x] Verify TypeScript, Vitest, production build, and responsive behavior
 - [x] Save the verified checkout-help analytics checkpoint
+
+- [x] Audit floating help and back-to-top placement, visibility, and homepage scroll behavior
+- [x] Separate floating help and back-to-top controls so they never overlap
+- [x] Ensure back-to-top appears and scrolls to the top on the homepage and long pages
+- [x] Add regression coverage for positioning, visibility, action, keyboard, and responsive behavior
+- [x] Verify TypeScript, Vitest, production build, and responsive behavior
+- [x] Save the verified floating-controls checkpoint

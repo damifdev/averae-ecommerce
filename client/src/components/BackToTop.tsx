@@ -5,7 +5,7 @@ type BackToTopProps = {
   threshold?: number;
 };
 
-export default function BackToTop({ threshold = 480 }: BackToTopProps) {
+export default function BackToTop({ threshold = 320 }: BackToTopProps) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function BackToTop({ threshold = 480 }: BackToTopProps) {
     aria-hidden={!visible}
     tabIndex={visible ? 0 : -1}
     onClick={returnToTop}
-    className={`back-to-top-button focus-ring fixed bottom-24 right-5 z-40 inline-flex h-11 w-11 items-center justify-center bg-[#382820] text-[#FFFDF8] shadow-[0_12px_28px_rgba(56,40,32,.18)] md:bottom-6 ${visible ? 'back-to-top-button-visible pointer-events-auto' : 'pointer-events-none'}`}
+    className={`back-to-top-button focus-ring fixed bottom-24 right-5 z-40 inline-flex h-11 w-11 items-center justify-center bg-[#382820] text-[#FFFDF8] shadow-[0_12px_28px_rgba(56,40,32,.18)] md:bottom-24 ${visible ? 'back-to-top-button-visible pointer-events-auto' : 'pointer-events-none'}`}
   >
     <ArrowUp size={17} strokeWidth={1.4} />
     <span className="sr-only">Back to top</span>
