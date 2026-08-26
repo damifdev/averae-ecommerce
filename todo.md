@@ -567,3 +567,9 @@
 - [x] Verify TypeScript, Vitest, production build, and fresh browser refresh behavior
 - [x] Save the verified root-cause Shop state checkpoint
 
+
+- [ ] Inspect current Git status and configured GitHub remotes
+- [ ] Create or select a private GitHub repository for the current Áveraẹ website
+- [ ] Push the current website source to GitHub
+- [ ] Verify the remote repository and pushed commit
+
